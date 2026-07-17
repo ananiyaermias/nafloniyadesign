@@ -156,7 +156,6 @@ function Index() {
   useReveal();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [filter, setFilter] = useState<(typeof FILTERS)[number]>("All");
   const [sent, setSent] = useState(false);
 
   useEffect(() => {
@@ -172,8 +171,6 @@ function Index() {
       document.body.style.overflow = "";
     };
   }, [menuOpen]);
-
-  const projects = PROJECTS.filter((p) => filter === "All" || p.tag === filter);
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
