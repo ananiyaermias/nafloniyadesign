@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import {
   Menu,
   X,
@@ -15,14 +15,14 @@ import {
   Quote,
   ChevronDown,
 } from "lucide-react";
-import monogram from "@/assets/monogram.png";
-import ananiya from "@/assets/ananiya.jpg";
-import work1 from "@/assets/work-1.jpg";
-import work2 from "@/assets/work-2.jpg";
-import work3 from "@/assets/work-3.jpg";
-import work4 from "@/assets/work-4.jpg";
-import work5 from "@/assets/work-5.jpg";
-import work6 from "@/assets/work-6.jpg";
+import monogramAsset from "@/assets/nafloniya-logo.png.asset.json";
+import ananiyaAsset from "@/assets/ananiya-portrait.jpg.asset.json";
+import burgerVideo from "@/assets/burger-ad.mp4.asset.json";
+import realestateVideo from "@/assets/realestate-ad.mp4.asset.json";
+import furnitureVideo from "@/assets/furniture-ad.mp4.asset.json";
+
+const monogram = monogramAsset.url;
+const ananiya = ananiyaAsset.url;
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -60,15 +60,35 @@ const SERVICES = [
 ];
 
 const PROJECTS = [
-  { img: work1, name: "Aurelia Atelier", tag: "Web" },
-  { img: work2, name: "Leora Identity", tag: "Branding" },
-  { img: work3, name: "Lonk Campaign", tag: "Promotion" },
-  { img: work6, name: "Maison Noire", tag: "Web" },
-  { img: work5, name: "Lasscuery Store", tag: "Web" },
-  { img: work4, name: "Cinema Reel", tag: "Promotion" },
+  {
+    name: "Nafloniya Burger",
+    tag: "Food & Beverage",
+    desc: "A sizzling, appetite-first web experience — cinematic 3D visuals, bold typography, and a menu that converts scrolls into orders.",
+    href: "https://nafloniyaburger.lovable.app",
+    video: burgerVideo.url,
+  },
+  {
+    name: "Nafloniya Real Estate",
+    tag: "Real Estate",
+    desc: "Architectural, high-trust design showcasing premium listings with immersive 3D tours and refined property storytelling.",
+    href: "https://nafloniya-realestate.lovable.app",
+    video: realestateVideo.url,
+  },
+  {
+    name: "Nafloniya Furniture",
+    tag: "Interior & Retail",
+    desc: "A tactile, editorial storefront — every piece framed in warm light, engineered to make craft feel collectible.",
+    href: "https://nafloniya-furniture.lovable.app",
+    video: furnitureVideo.url,
+  },
+  {
+    name: "Nafloniya Hotel",
+    tag: "Hospitality",
+    desc: "A cinematic hospitality site with quiet luxury pacing — bookings, suites, and story woven into one calm journey.",
+    href: "https://nafloniya-hotel.lovable.app",
+    video: null as string | null,
+  },
 ];
-
-const FILTERS = ["All", "Web", "Branding", "Promotion"] as const;
 
 const TESTIMONIALS = [
   {
@@ -132,11 +152,130 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
   );
 }
 
+type Project = (typeof PROJECTS)[number];
+
+function ProjectCard({ project, index }: { project: Project; index: number }) {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  const handleEnter = () => {
+    const v = videoRef.current;
+    if (v) {
+      v.currentTime = 0;
+      void v.play().catch(() => {});
+    }
+  };
+  const handleLeave = () => {
+    const v = videoRef.current;
+    if (v) v.pause();
+  };
+
+  return (
+    <a
+      href={project.href}
+      target="_blank"
+      rel="noreferrer"
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
+      onFocus={handleEnter}
+      onBlur={handleLeave}
+      className="reveal group relative block overflow-hidden border border-[color:var(--gold)]/15 bg-charcoal"
+      style={{ transitionDelay: `${index * 80}ms` }}
+    >
+      <div className="relative aspect-video overflow-hidden bg-black">
+        {project.video ? (
+          <video
+            ref={videoRef}
+            src={project.video}
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            className="h-full w-full object-cover opacity-80 transition-all duration-700 group-hover:scale-[1.03] group-hover:opacity-100"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center">
+            <div className="gold-glow absolute inset-0 opacity-40" />
+            <Monogram className="relative h-24 w-24 opacity-70" />
+          </div>
+        )}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-60" />
+      </div>
+      <div className="relative border-t border-[color:var(--gold)]/15 p-6">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-[0.65rem] uppercase tracking-[0.35em] text-[color:var(--gold)]">
+              {project.tag}
+            </p>
+            <h3 className="mt-2 font-serif text-2xl text-ivory">{project.name}</h3>
+          </div>
+          <ArrowUpRight className="mt-1 h-5 w-5 shrink-0 text-[color:var(--gold)] transition-transform duration-500 group-hover:-translate-y-1 group-hover:translate-x-1" />
+        </div>
+        <p className="mt-3 text-sm leading-relaxed text-ivory/65">{project.desc}</p>
+        <p className="mt-4 truncate text-[0.65rem] uppercase tracking-[0.3em] text-ivory/40 group-hover:text-[color:var(--gold)]">
+          {project.href.replace(/^https?:\/\//, "")}
+        </p>
+      </div>
+    </a>
+  );
+}
+
+function FloatingCursorTag() {
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.matchMedia("(hover: none)").matches) return;
+
+    let raf = 0;
+    let target = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    let current = { ...target };
+
+    const onMove = (e: MouseEvent) => {
+      target = { x: e.clientX, y: e.clientY };
+      if (!visible) setVisible(true);
+    };
+    const onLeave = () => setVisible(false);
+
+    const tick = () => {
+      current.x += (target.x - current.x) * 0.12;
+      current.y += (target.y - current.y) * 0.12;
+      setPos({ x: current.x, y: current.y });
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    window.addEventListener("mousemove", onMove);
+    document.addEventListener("mouseleave", onLeave);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("mousemove", onMove);
+      document.removeEventListener("mouseleave", onLeave);
+    };
+  }, [visible]);
+
+  return (
+    <a
+      href="#contact"
+      aria-label="Get in touch"
+      className="pointer-events-auto fixed left-0 top-0 z-40 hidden -translate-x-1/2 -translate-y-1/2 select-none md:block"
+      style={{
+        transform: `translate3d(${pos.x}px, ${pos.y}px, 0) translate(-50%, -50%)`,
+        opacity: visible ? 1 : 0,
+        transition: "opacity 400ms ease",
+      }}
+    >
+      <span className="mix-blend-difference flex items-center gap-2 border border-[color:var(--gold)] bg-black/70 px-4 py-2 font-serif text-[0.65rem] uppercase tracking-[0.4em] text-[color:var(--gold)] shadow-[0_0_30px_rgba(212,175,55,0.35)] backdrop-blur">
+        Get in Touch
+        <ArrowUpRight className="h-3 w-3" />
+      </span>
+    </a>
+  );
+}
+
 function Index() {
   useReveal();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [filter, setFilter] = useState<(typeof FILTERS)[number]>("All");
   const [sent, setSent] = useState(false);
 
   useEffect(() => {
@@ -153,8 +292,6 @@ function Index() {
     };
   }, [menuOpen]);
 
-  const projects = PROJECTS.filter((p) => filter === "All" || p.tag === filter);
-
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSent(true);
@@ -164,6 +301,7 @@ function Index() {
 
   return (
     <div className="grain min-h-screen bg-background text-foreground">
+      <FloatingCursorTag />
       {/* NAV */}
       <header
         className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
@@ -348,53 +486,15 @@ function Index() {
           <h2 className="mt-6 font-serif text-4xl text-ivory md:text-5xl">
             Selected Projects
           </h2>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-2">
-            {FILTERS.map((f) => (
-              <button
-                key={f}
-                onClick={() => setFilter(f)}
-                className={`border px-5 py-2 text-[0.7rem] uppercase tracking-[0.32em] transition-all duration-300 ${
-                  filter === f
-                    ? "border-[color:var(--gold)] bg-[color:var(--gold)] text-black"
-                    : "border-[color:var(--gold)]/30 text-ivory/70 hover:border-[color:var(--gold)] hover:text-[color:var(--gold)]"
-                }`}
-              >
-                {f}
-              </button>
-            ))}
-          </div>
+          <p className="mt-6 max-w-2xl text-sm leading-relaxed text-ivory/60">
+            A collection of immersive worlds we've crafted — hover any card to
+            play its cinematic reel, then step inside the live site.
+          </p>
         </div>
 
-        <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {projects.map((p, i) => (
-            <a
-              key={p.name + i}
-              href="#contact"
-              className="reveal group relative block overflow-hidden border border-[color:var(--gold)]/15 bg-charcoal"
-              style={{ transitionDelay: `${i * 60}ms` }}
-            >
-              <div className="aspect-[4/3] overflow-hidden">
-                <img
-                  src={p.img}
-                  alt={p.name}
-                  loading="lazy"
-                  className="h-full w-full object-cover grayscale transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0"
-                />
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-70" />
-              <div className="absolute inset-0 bg-[color:var(--gold)]/0 mix-blend-overlay transition-colors duration-500 group-hover:bg-[color:var(--gold)]/25" />
-              <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-6">
-                <div>
-                  <p className="text-[0.65rem] uppercase tracking-[0.35em] text-[color:var(--gold)]">
-                    {p.tag}
-                  </p>
-                  <h3 className="mt-2 font-serif text-2xl text-ivory">
-                    {p.name}
-                  </h3>
-                </div>
-                <ArrowUpRight className="h-5 w-5 text-[color:var(--gold)] transition-transform duration-500 group-hover:-translate-y-1 group-hover:translate-x-1" />
-              </div>
-            </a>
+        <div className="mt-16 grid gap-6 md:grid-cols-2">
+          {PROJECTS.map((p, i) => (
+            <ProjectCard key={p.name} project={p} index={i} />
           ))}
         </div>
       </section>
