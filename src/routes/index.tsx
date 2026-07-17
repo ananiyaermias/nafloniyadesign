@@ -60,15 +60,35 @@ const SERVICES = [
 ];
 
 const PROJECTS = [
-  { img: work1, name: "Aurelia Atelier", tag: "Web" },
-  { img: work2, name: "Leora Identity", tag: "Branding" },
-  { img: work3, name: "Lonk Campaign", tag: "Promotion" },
-  { img: work6, name: "Maison Noire", tag: "Web" },
-  { img: work5, name: "Lasscuery Store", tag: "Web" },
-  { img: work4, name: "Cinema Reel", tag: "Promotion" },
+  {
+    name: "Nafloniya Burger",
+    tag: "Food & Beverage",
+    desc: "A sizzling, appetite-first web experience — cinematic 3D visuals, bold typography, and a menu that converts scrolls into orders.",
+    href: "https://nafloniyaburger.lovable.app",
+    video: burgerVideo.url,
+  },
+  {
+    name: "Nafloniya Real Estate",
+    tag: "Real Estate",
+    desc: "Architectural, high-trust design showcasing premium listings with immersive 3D tours and refined property storytelling.",
+    href: "https://nafloniya-realestate.lovable.app",
+    video: realestateVideo.url,
+  },
+  {
+    name: "Nafloniya Furniture",
+    tag: "Interior & Retail",
+    desc: "A tactile, editorial storefront — every piece framed in warm light, engineered to make craft feel collectible.",
+    href: "https://nafloniya-furniture.lovable.app",
+    video: furnitureVideo.url,
+  },
+  {
+    name: "Nafloniya Hotel",
+    tag: "Hospitality",
+    desc: "A cinematic hospitality site with quiet luxury pacing — bookings, suites, and story woven into one calm journey.",
+    href: "https://nafloniya-hotel.lovable.app",
+    video: null as string | null,
+  },
 ];
-
-const FILTERS = ["All", "Web", "Branding", "Promotion"] as const;
 
 const TESTIMONIALS = [
   {
