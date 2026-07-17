@@ -365,53 +365,15 @@ function Index() {
           <h2 className="mt-6 font-serif text-4xl text-ivory md:text-5xl">
             Selected Projects
           </h2>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-2">
-            {FILTERS.map((f) => (
-              <button
-                key={f}
-                onClick={() => setFilter(f)}
-                className={`border px-5 py-2 text-[0.7rem] uppercase tracking-[0.32em] transition-all duration-300 ${
-                  filter === f
-                    ? "border-[color:var(--gold)] bg-[color:var(--gold)] text-black"
-                    : "border-[color:var(--gold)]/30 text-ivory/70 hover:border-[color:var(--gold)] hover:text-[color:var(--gold)]"
-                }`}
-              >
-                {f}
-              </button>
-            ))}
-          </div>
+          <p className="mt-6 max-w-2xl text-sm leading-relaxed text-ivory/60">
+            A collection of immersive worlds we've crafted — hover any card to
+            play its cinematic reel, then step inside the live site.
+          </p>
         </div>
 
-        <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {projects.map((p, i) => (
-            <a
-              key={p.name + i}
-              href="#contact"
-              className="reveal group relative block overflow-hidden border border-[color:var(--gold)]/15 bg-charcoal"
-              style={{ transitionDelay: `${i * 60}ms` }}
-            >
-              <div className="aspect-[4/3] overflow-hidden">
-                <img
-                  src={p.img}
-                  alt={p.name}
-                  loading="lazy"
-                  className="h-full w-full object-cover grayscale transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0"
-                />
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-70" />
-              <div className="absolute inset-0 bg-[color:var(--gold)]/0 mix-blend-overlay transition-colors duration-500 group-hover:bg-[color:var(--gold)]/25" />
-              <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-6">
-                <div>
-                  <p className="text-[0.65rem] uppercase tracking-[0.35em] text-[color:var(--gold)]">
-                    {p.tag}
-                  </p>
-                  <h3 className="mt-2 font-serif text-2xl text-ivory">
-                    {p.name}
-                  </h3>
-                </div>
-                <ArrowUpRight className="h-5 w-5 text-[color:var(--gold)] transition-transform duration-500 group-hover:-translate-y-1 group-hover:translate-x-1" />
-              </div>
-            </a>
+        <div className="mt-16 grid gap-6 md:grid-cols-2">
+          {PROJECTS.map((p, i) => (
+            <ProjectCard key={p.name} project={p} index={i} />
           ))}
         </div>
       </section>
