@@ -81,16 +81,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "Nafloniya is a creative studio crafting immersive websites, iconic brands, and cinematic promotion for brands that want to stand out." },
       { name: "author", content: "Nafloniya" },
       { property: "og:title", content: "Nafloniya — Website Design and Promotion" },
-      { property: "og:description", content: "A creative studio for immersive websites, iconic brands, and cinematic promotion." },
+      { property: "og:description", content: "Nafloniya is a creative studio crafting immersive websites, iconic brands, and cinematic promotion for brands that want to stand out." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Nafloniya — Website Design and Promotion" },
+      { name: "twitter:description", content: "Nafloniya is a creative studio crafting immersive websites, iconic brands, and cinematic promotion for brands that want to stand out." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/88b7aa7c-9735-4e62-b15e-efd4b752635c" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/88b7aa7c-9735-4e62-b15e-efd4b752635c" },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
