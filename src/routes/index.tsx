@@ -152,6 +152,126 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
   );
 }
 
+type Project = (typeof PROJECTS)[number];
+
+function ProjectCard({ project, index }: { project: Project; index: number }) {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  const handleEnter = () => {
+    const v = videoRef.current;
+    if (v) {
+      v.currentTime = 0;
+      void v.play().catch(() => {});
+    }
+  };
+  const handleLeave = () => {
+    const v = videoRef.current;
+    if (v) v.pause();
+  };
+
+  return (
+    <a
+      href={project.href}
+      target="_blank"
+      rel="noreferrer"
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
+      onFocus={handleEnter}
+      onBlur={handleLeave}
+      className="reveal group relative block overflow-hidden border border-[color:var(--gold)]/15 bg-charcoal"
+      style={{ transitionDelay: `${index * 80}ms` }}
+    >
+      <div className="relative aspect-video overflow-hidden bg-black">
+        {project.video ? (
+          <video
+            ref={videoRef}
+            src={project.video}
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            className="h-full w-full object-cover opacity-80 transition-all duration-700 group-hover:scale-[1.03] group-hover:opacity-100"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center">
+            <div className="gold-glow absolute inset-0 opacity-40" />
+            <Monogram className="relative h-24 w-24 opacity-70" />
+          </div>
+        )}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-60" />
+      </div>
+      <div className="relative border-t border-[color:var(--gold)]/15 p-6">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-[0.65rem] uppercase tracking-[0.35em] text-[color:var(--gold)]">
+              {project.tag}
+            </p>
+            <h3 className="mt-2 font-serif text-2xl text-ivory">{project.name}</h3>
+          </div>
+          <ArrowUpRight className="mt-1 h-5 w-5 shrink-0 text-[color:var(--gold)] transition-transform duration-500 group-hover:-translate-y-1 group-hover:translate-x-1" />
+        </div>
+        <p className="mt-3 text-sm leading-relaxed text-ivory/65">{project.desc}</p>
+        <p className="mt-4 truncate text-[0.65rem] uppercase tracking-[0.3em] text-ivory/40 group-hover:text-[color:var(--gold)]">
+          {project.href.replace(/^https?:\/\//, "")}
+        </p>
+      </div>
+    </a>
+  );
+}
+
+function FloatingCursorTag() {
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.matchMedia("(hover: none)").matches) return;
+
+    let raf = 0;
+    let target = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    let current = { ...target };
+
+    const onMove = (e: MouseEvent) => {
+      target = { x: e.clientX, y: e.clientY };
+      if (!visible) setVisible(true);
+    };
+    const onLeave = () => setVisible(false);
+
+    const tick = () => {
+      current.x += (target.x - current.x) * 0.12;
+      current.y += (target.y - current.y) * 0.12;
+      setPos({ x: current.x, y: current.y });
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    window.addEventListener("mousemove", onMove);
+    document.addEventListener("mouseleave", onLeave);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("mousemove", onMove);
+      document.removeEventListener("mouseleave", onLeave);
+    };
+  }, [visible]);
+
+  return (
+    <a
+      href="#contact"
+      aria-label="Get in touch"
+      className="pointer-events-auto fixed left-0 top-0 z-40 hidden -translate-x-1/2 -translate-y-1/2 select-none md:block"
+      style={{
+        transform: `translate3d(${pos.x}px, ${pos.y}px, 0) translate(-50%, -50%)`,
+        opacity: visible ? 1 : 0,
+        transition: "opacity 400ms ease",
+      }}
+    >
+      <span className="mix-blend-difference flex items-center gap-2 border border-[color:var(--gold)] bg-black/70 px-4 py-2 font-serif text-[0.65rem] uppercase tracking-[0.4em] text-[color:var(--gold)] shadow-[0_0_30px_rgba(212,175,55,0.35)] backdrop-blur">
+        Get in Touch
+        <ArrowUpRight className="h-3 w-3" />
+      </span>
+    </a>
+  );
+}
+
 function Index() {
   useReveal();
   const [scrolled, setScrolled] = useState(false);
