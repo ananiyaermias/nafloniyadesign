@@ -582,10 +582,8 @@ function Index() {
           </p>
         </div>
 
-        <div className="mt-16 grid gap-6 md:grid-cols-2">
-          {PROJECTS.map((p, i) => (
-            <ProjectCard key={p.name} project={p} index={i} />
-          ))}
+        <div className="mt-16">
+          <ProductShowcase />
         </div>
       </section>
 
