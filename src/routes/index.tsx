@@ -526,17 +526,30 @@ function Index() {
         </div>
 
         <div className="reveal mt-20 grid items-center gap-16 md:grid-cols-[minmax(0,1fr)_1.2fr]">
-          <div className="relative mx-auto w-full max-w-sm">
-            <div className="gold-glow absolute -inset-10 animate-glow-pulse" />
-            <div className="relative overflow-hidden rounded-full border border-[color:var(--gold)]/50 shadow-[0_0_60px_rgba(212,175,55,0.25)]">
+          <a
+            href="https://ananiya-portfolio.lovable.app/"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="View Ananiya's portfolio"
+            className="group relative mx-auto block w-full max-w-sm"
+          >
+            <div className="gold-glow absolute -inset-10 animate-glow-pulse transition-opacity duration-700 group-hover:opacity-100" />
+            <div className="absolute -inset-2 rounded-full border border-[color:var(--gold)]/30 opacity-0 transition-all duration-700 group-hover:-inset-4 group-hover:opacity-100" />
+            <div className="absolute -inset-6 rounded-full border border-[color:var(--gold)]/15 opacity-0 transition-all duration-1000 group-hover:-inset-10 group-hover:opacity-100" />
+            <div className="relative overflow-hidden rounded-full border border-[color:var(--gold)]/50 shadow-[0_0_60px_rgba(212,175,55,0.25)] transition-all duration-700 group-hover:border-[color:var(--gold)] group-hover:shadow-[0_0_100px_rgba(212,175,55,0.55)]">
               <img
                 src={ananiya}
                 alt="Ananiya Ermias, Web and Brand Designer"
-                className="aspect-square h-full w-full object-cover"
+                className="aspect-square h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-110"
                 loading="lazy"
               />
+              <div className="absolute inset-0 flex items-end justify-center bg-gradient-to-t from-black/85 via-black/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                <span className="mb-10 flex items-center gap-2 rounded-full border border-[color:var(--gold)] bg-black/70 px-5 py-2 text-[0.65rem] uppercase tracking-[0.4em] text-[color:var(--gold)] backdrop-blur">
+                  View Portfolio <ArrowUpRight className="h-3 w-3" />
+                </span>
+              </div>
             </div>
-          </div>
+          </a>
 
           <div>
             <p className="text-[0.7rem] uppercase tracking-[0.4em] text-[color:var(--gold)]">
