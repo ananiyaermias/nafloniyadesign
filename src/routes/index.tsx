@@ -569,16 +569,17 @@ function Index() {
 
       <Divider />
 
-      {/* PORTFOLIO */}
+      {/* PRODUCTS */}
       <section id="portfolio" className="mx-auto max-w-7xl px-6 md:px-10">
         <div className="reveal flex flex-col items-center text-center">
-          <Eyebrow>Our Work</Eyebrow>
+          <Eyebrow>Our Products</Eyebrow>
           <h2 className="mt-6 font-serif text-4xl text-ivory md:text-5xl">
-            Selected Projects
+            Cinematic Reels · Live Sites
           </h2>
-          <p className="mt-6 max-w-2xl text-sm leading-relaxed text-ivory/60">
-            A collection of immersive worlds we've crafted — hover any card to
-            play its cinematic reel, then step inside the live site.
+          <p className="mt-6 max-w-2xl text-sm leading-relaxed text-ivory/65">
+            The same reels running across TikTok and Instagram — pick a category
+            below to watch it in HD, then step from the film straight into the
+            live website behind it.
           </p>
         </div>
 
@@ -716,14 +717,28 @@ function Index() {
           <div className="gold-glow absolute left-1/2 top-1/2 h-[700px] w-[700px] -translate-x-1/2 -translate-y-1/2 opacity-70" />
         </div>
         <div className="relative mx-auto max-w-6xl">
-          <div className="reveal text-center">
+          <div className="reveal relative text-center">
             <Eyebrow>Get in Touch</Eyebrow>
-            <h2 className="mt-6 font-serif text-4xl leading-tight text-ivory md:text-6xl">
-              Let's Build Something Iconic.
-            </h2>
-            <p className="mx-auto mt-6 max-w-xl text-ivory/70">
-              Tell us about your brand. We'll respond within one business day.
+            <div className="relative mx-auto mt-8 inline-block">
+              <span className="absolute -inset-6 -z-10 rounded-full bg-[color:var(--gold)]/20 blur-3xl animate-glow-pulse" />
+              <h2 className="font-serif text-5xl leading-[1.05] tracking-[0.02em] text-ivory md:text-7xl">
+                Let's Build Something{" "}
+                <span className="relative inline-block bg-gradient-to-r from-[color:var(--gold-light)] via-[color:var(--gold)] to-[color:var(--gold-light)] bg-clip-text italic text-transparent">
+                  Iconic
+                  <span className="absolute -bottom-2 left-0 h-px w-full bg-gradient-to-r from-transparent via-[color:var(--gold)] to-transparent" />
+                </span>
+                .
+              </h2>
+            </div>
+            <p className="mx-auto mt-8 max-w-xl leading-relaxed text-ivory/75">
+              Tell us about your brand — a website, a launch campaign, a full
+              identity. We reply within one business day, in your voice.
             </p>
+            <div className="mx-auto mt-6 flex items-center justify-center gap-3 text-[0.6rem] uppercase tracking-[0.4em] text-[color:var(--gold)]/70">
+              <span className="h-px w-10 bg-[color:var(--gold)]/60" />
+              Now booking select projects
+              <span className="h-px w-10 bg-[color:var(--gold)]/60" />
+            </div>
           </div>
 
           <div className="reveal mt-16 grid gap-16 md:grid-cols-[1.3fr_1fr]">
