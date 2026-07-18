@@ -14,12 +14,19 @@ import {
   Rocket,
   Quote,
   ChevronDown,
+  Play,
+  Sparkles,
 } from "lucide-react";
 import monogramAsset from "@/assets/nafloniya-logo.png.asset.json";
 import ananiyaAsset from "@/assets/ananiya-portrait.jpg.asset.json";
-import burgerVideo from "@/assets/burger-ad.mp4.asset.json";
-import realestateVideo from "@/assets/realestate-ad.mp4.asset.json";
-import furnitureVideo from "@/assets/furniture-ad.mp4.asset.json";
+import burgerVideo from "@/assets/burger-ad-v2.mp4.asset.json";
+import realestateVideo from "@/assets/realestate-ad-v2.mp4.asset.json";
+import furnitureVideo from "@/assets/furniture-ad-v2.mp4.asset.json";
+import hotelVideo from "@/assets/hotel-ad.mp4.asset.json";
+import burgerBg from "@/assets/burger-bg.png.asset.json";
+import furnitureBg from "@/assets/furniture-bg.png.asset.json";
+import hotelBg from "@/assets/hotel-bg.png.asset.json";
+import realestateBg from "@/assets/realestate-bg.png.asset.json";
 
 const monogram = monogramAsset.url;
 const ananiya = ananiyaAsset.url;
@@ -61,32 +68,44 @@ const SERVICES = [
 
 const PROJECTS = [
   {
+    key: "burger",
     name: "Nafloniya Burger",
+    label: "Burger",
     tag: "Food & Beverage",
     desc: "A sizzling, appetite-first web experience — cinematic 3D visuals, bold typography, and a menu that converts scrolls into orders.",
     href: "https://nafloniyaburger.lovable.app",
     video: burgerVideo.url,
+    bg: burgerBg.url,
   },
   {
-    name: "Nafloniya Real Estate",
-    tag: "Real Estate",
-    desc: "Architectural, high-trust design showcasing premium listings with immersive 3D tours and refined property storytelling.",
-    href: "https://nafloniya-realestate.lovable.app",
-    video: realestateVideo.url,
-  },
-  {
+    key: "furniture",
     name: "Nafloniya Furniture",
+    label: "Furniture",
     tag: "Interior & Retail",
     desc: "A tactile, editorial storefront — every piece framed in warm light, engineered to make craft feel collectible.",
     href: "https://nafloniya-furniture.lovable.app",
     video: furnitureVideo.url,
+    bg: furnitureBg.url,
   },
   {
+    key: "hotel",
     name: "Nafloniya Hotel",
+    label: "Hotel",
     tag: "Hospitality",
     desc: "A cinematic hospitality site with quiet luxury pacing — bookings, suites, and story woven into one calm journey.",
     href: "https://nafloniya-hotel.lovable.app",
-    video: null as string | null,
+    video: hotelVideo.url,
+    bg: hotelBg.url,
+  },
+  {
+    key: "realestate",
+    name: "Nafloniya Real Estate",
+    label: "Real Estate",
+    tag: "Real Estate",
+    desc: "Architectural, high-trust design showcasing premium listings with immersive 3D tours and refined property storytelling.",
+    href: "https://nafloniya-realestate.lovable.app",
+    video: realestateVideo.url,
+    bg: realestateBg.url,
   },
 ];
 
@@ -154,89 +173,132 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 
 type Project = (typeof PROJECTS)[number];
 
-function ProjectCard({ project, index }: { project: Project; index: number }) {
+function ProductShowcase() {
+  const [active, setActive] = useState<Project["key"]>(PROJECTS[0].key);
+  const project = PROJECTS.find((p) => p.key === active) ?? PROJECTS[0];
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const cardRef = useRef<HTMLAnchorElement | null>(null);
-  const [tilt, setTilt] = useState({ rx: 0, ry: 0 });
+  const [playing, setPlaying] = useState(true);
 
-  const handleEnter = () => {
+  // Preload all videos silently for instant switch
+  useEffect(() => {
+    PROJECTS.forEach((p) => {
+      if (!p.video) return;
+      const v = document.createElement("video");
+      v.preload = "auto";
+      v.src = p.video;
+    });
+  }, []);
+
+  useEffect(() => {
     const v = videoRef.current;
-    if (v) {
-      v.currentTime = 0;
-      void v.play().catch(() => {});
-    }
-  };
-  const handleLeave = () => {
-    const v = videoRef.current;
-    if (v) v.pause();
-    setTilt({ rx: 0, ry: 0 });
-  };
-  const handleMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const el = cardRef.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width - 0.5;
-    const y = (e.clientY - r.top) / r.height - 0.5;
-    setTilt({ rx: -y * 6, ry: x * 8 });
-  };
+    if (!v) return;
+    v.currentTime = 0;
+    v.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+  }, [active]);
 
   return (
-    <a
-      ref={cardRef}
-      href={project.href}
-      target="_blank"
-      rel="noreferrer"
-      onMouseEnter={handleEnter}
-      onMouseLeave={handleLeave}
-      onMouseMove={handleMove}
-      onFocus={handleEnter}
-      onBlur={handleLeave}
-      className="reveal group relative block overflow-hidden border border-[color:var(--gold)]/15 bg-charcoal transition-[transform,box-shadow,border-color] duration-500 will-change-transform hover:border-[color:var(--gold)]/60 hover:shadow-[0_30px_80px_-20px_rgba(212,175,55,0.35)]"
-      style={{
-        transitionDelay: `${index * 80}ms`,
-        transform: `perspective(1200px) rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg)`,
-      }}
-    >
-      <div className="relative aspect-video overflow-hidden bg-black">
-        {project.video ? (
-          <video
-            ref={videoRef}
-            src={project.video}
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            className="h-full w-full object-cover opacity-80 transition-all duration-700 group-hover:scale-[1.06] group-hover:opacity-100"
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center">
-            <div className="gold-glow absolute inset-0 opacity-40" />
-            <Monogram className="relative h-24 w-24 opacity-70" />
-          </div>
-        )}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-60" />
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-          <span className="flex items-center gap-2 rounded-full border border-[color:var(--gold)] bg-black/70 px-5 py-2 text-[0.65rem] uppercase tracking-[0.4em] text-[color:var(--gold)] shadow-[0_0_30px_rgba(212,175,55,0.5)] backdrop-blur">
-            Visit Live Site <ArrowUpRight className="h-3 w-3" />
-          </span>
-        </div>
+    <div className="reveal">
+      {/* Category buttons */}
+      <div className="mb-10 flex flex-wrap items-center justify-center gap-3 md:gap-4">
+        {PROJECTS.map((p) => {
+          const isActive = p.key === active;
+          return (
+            <button
+              key={p.key}
+              type="button"
+              onClick={() => setActive(p.key)}
+              className={`group relative overflow-hidden rounded-full border px-6 py-3 text-[0.7rem] uppercase tracking-[0.32em] transition-all duration-500 ${
+                isActive
+                  ? "border-[color:var(--gold)] bg-[color:var(--gold)] text-black shadow-[0_10px_40px_-10px_rgba(212,175,55,0.8)]"
+                  : "border-[color:var(--gold)]/30 text-ivory/70 hover:border-[color:var(--gold)] hover:text-[color:var(--gold)]"
+              }`}
+            >
+              <span className="relative z-10">{p.label}</span>
+              {isActive && (
+                <span className="absolute inset-0 -z-0 animate-pulse bg-[color:var(--gold)]/30 blur-md" />
+              )}
+            </button>
+          );
+        })}
       </div>
-      <div className="relative border-t border-[color:var(--gold)]/15 p-6">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="text-[0.65rem] uppercase tracking-[0.35em] text-[color:var(--gold)]">
+
+      {/* Stage */}
+      <div
+        key={project.key}
+        className="relative overflow-hidden rounded-2xl border border-[color:var(--gold)]/25 bg-black shadow-[0_40px_120px_-30px_rgba(212,175,55,0.35)]"
+      >
+        {/* Background = landing page hero */}
+        <div
+          className="absolute inset-0 scale-110 bg-cover bg-center transition-all duration-1000"
+          style={{ backgroundImage: `url(${project.bg})` }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+
+        <div className="relative grid gap-8 p-6 md:grid-cols-[1.05fr_1fr] md:p-10 lg:gap-14 lg:p-14">
+          {/* Video */}
+          <div className="relative overflow-hidden rounded-xl border border-[color:var(--gold)]/40 bg-black shadow-[0_20px_60px_-10px_rgba(0,0,0,0.9)]">
+            <video
+              ref={videoRef}
+              key={project.video}
+              src={project.video}
+              muted
+              loop
+              playsInline
+              autoPlay
+              preload="auto"
+              className="aspect-[9/16] h-full w-full object-cover md:aspect-[4/5]"
+            />
+            <button
+              type="button"
+              onClick={() => {
+                const v = videoRef.current;
+                if (!v) return;
+                if (v.paused) { void v.play(); setPlaying(true); }
+                else { v.pause(); setPlaying(false); }
+              }}
+              aria-label={playing ? "Pause" : "Play"}
+              className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${playing ? "opacity-0 hover:opacity-100" : "opacity-100"}`}
+            >
+              <span className="flex h-16 w-16 items-center justify-center rounded-full border border-[color:var(--gold)] bg-black/60 text-[color:var(--gold)] backdrop-blur">
+                <Play className="h-6 w-6" fill="currentColor" />
+              </span>
+            </button>
+            <span className="absolute left-4 top-4 rounded-full border border-[color:var(--gold)]/60 bg-black/60 px-3 py-1 text-[0.6rem] uppercase tracking-[0.35em] text-[color:var(--gold)] backdrop-blur">
+              Reel · HD
+            </span>
+          </div>
+
+          {/* Info */}
+          <div className="flex flex-col justify-center">
+            <p className="text-[0.7rem] uppercase tracking-[0.4em] text-[color:var(--gold)]">
               {project.tag}
             </p>
-            <h3 className="mt-2 font-serif text-2xl text-ivory">{project.name}</h3>
+            <h3 className="mt-4 font-serif text-3xl leading-tight text-ivory md:text-5xl">
+              {project.name}
+            </h3>
+            <div className="mt-5 h-px w-16 bg-[color:var(--gold)]/70" />
+            <p className="mt-6 max-w-lg leading-relaxed text-ivory/80">{project.desc}</p>
+            <p className="mt-4 truncate text-[0.65rem] uppercase tracking-[0.32em] text-[color:var(--gold)]/70">
+              {project.href.replace(/^https?:\/\//, "")}
+            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-4">
+              <a
+                href={project.href}
+                target="_blank"
+                rel="noreferrer"
+                className="btn-gold-solid"
+              >
+                Visit Live Site <ArrowUpRight className="h-3.5 w-3.5" />
+              </a>
+              <a href="#contact" className="btn-gold">
+                Want One Like It <ArrowRight className="h-3.5 w-3.5" />
+              </a>
+            </div>
           </div>
-          <ArrowUpRight className="mt-1 h-5 w-5 shrink-0 text-[color:var(--gold)] transition-transform duration-500 group-hover:-translate-y-1 group-hover:translate-x-1" />
         </div>
-        <p className="mt-3 text-sm leading-relaxed text-ivory/65">{project.desc}</p>
-        <p className="mt-4 truncate text-[0.65rem] uppercase tracking-[0.3em] text-ivory/40 group-hover:text-[color:var(--gold)]">
-          {project.href.replace(/^https?:\/\//, "")}
-        </p>
       </div>
-    </a>
+    </div>
   );
 }
 
@@ -268,20 +330,33 @@ function FloatingGetInTouch() {
     <a
       href="#contact"
       aria-label="Get in touch"
-      className={`group fixed bottom-6 right-6 z-40 select-none transition-all duration-500 md:bottom-10 md:right-10 ${
+      className={`group fixed bottom-6 right-6 z-40 select-none transition-all duration-700 md:bottom-10 md:right-10 ${
         visible
           ? "pointer-events-auto translate-y-0 opacity-100"
-          : "pointer-events-none translate-y-6 opacity-0"
+          : "pointer-events-none translate-y-8 opacity-0"
       }`}
     >
-      <span className="absolute inset-0 -z-10 rounded-full bg-[color:var(--gold)] opacity-30 blur-xl transition-opacity duration-500 group-hover:opacity-70" />
-      <span className="relative flex items-center gap-3 rounded-full border border-[color:var(--gold)] bg-black/80 px-6 py-3 font-serif text-xs uppercase tracking-[0.4em] text-[color:var(--gold)] shadow-[0_10px_40px_-10px_rgba(212,175,55,0.6)] backdrop-blur-md transition-all duration-500 hover:bg-[color:var(--gold)] hover:text-black hover:shadow-[0_15px_50px_-10px_rgba(212,175,55,0.9)] md:px-7 md:py-4">
+      {/* Outer breathing halo */}
+      <span className="absolute inset-0 -z-20 rounded-full bg-[color:var(--gold)] opacity-30 blur-2xl animate-glow-pulse" />
+      {/* Rotating conic ring */}
+      <span
+        className="absolute -inset-[3px] -z-10 rounded-full opacity-70 blur-[1px]"
+        style={{
+          background:
+            "conic-gradient(from 0deg, transparent, rgba(212,175,55,0.9), transparent, rgba(233,216,166,0.8), transparent)",
+          animation: "spin 6s linear infinite",
+        }}
+      />
+      <span className="relative flex items-center gap-3 rounded-full border border-[color:var(--gold)] bg-black/85 px-6 py-3.5 font-serif text-xs uppercase tracking-[0.4em] text-[color:var(--gold)] shadow-[0_15px_50px_-10px_rgba(212,175,55,0.7)] backdrop-blur-xl transition-all duration-500 group-hover:bg-[color:var(--gold)] group-hover:text-black group-hover:shadow-[0_20px_60px_-10px_rgba(212,175,55,1)] md:px-8 md:py-4">
+        <Sparkles className="h-3.5 w-3.5 text-[color:var(--gold)] transition-colors duration-500 group-hover:text-black" strokeWidth={1.5} />
+        <span className="relative">
+          Let's Talk
+          <span className="absolute -bottom-1 left-0 h-px w-0 bg-current transition-all duration-500 group-hover:w-full" />
+        </span>
         <span className="relative flex h-2 w-2">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[color:var(--gold)] opacity-60" />
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[color:var(--gold)] opacity-70 group-hover:bg-black" />
           <span className="relative inline-flex h-2 w-2 rounded-full bg-[color:var(--gold)] group-hover:bg-black" />
         </span>
-        Get in Touch
-        <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
       </span>
     </a>
   );
@@ -494,23 +569,22 @@ function Index() {
 
       <Divider />
 
-      {/* PORTFOLIO */}
+      {/* PRODUCTS */}
       <section id="portfolio" className="mx-auto max-w-7xl px-6 md:px-10">
         <div className="reveal flex flex-col items-center text-center">
-          <Eyebrow>Our Work</Eyebrow>
+          <Eyebrow>Our Products</Eyebrow>
           <h2 className="mt-6 font-serif text-4xl text-ivory md:text-5xl">
-            Selected Projects
+            Cinematic Reels · Live Sites
           </h2>
-          <p className="mt-6 max-w-2xl text-sm leading-relaxed text-ivory/60">
-            A collection of immersive worlds we've crafted — hover any card to
-            play its cinematic reel, then step inside the live site.
+          <p className="mt-6 max-w-2xl text-sm leading-relaxed text-ivory/65">
+            The same reels running across TikTok and Instagram — pick a category
+            below to watch it in HD, then step from the film straight into the
+            live website behind it.
           </p>
         </div>
 
-        <div className="mt-16 grid gap-6 md:grid-cols-2">
-          {PROJECTS.map((p, i) => (
-            <ProjectCard key={p.name} project={p} index={i} />
-          ))}
+        <div className="mt-16">
+          <ProductShowcase />
         </div>
       </section>
 
@@ -643,14 +717,28 @@ function Index() {
           <div className="gold-glow absolute left-1/2 top-1/2 h-[700px] w-[700px] -translate-x-1/2 -translate-y-1/2 opacity-70" />
         </div>
         <div className="relative mx-auto max-w-6xl">
-          <div className="reveal text-center">
+          <div className="reveal relative text-center">
             <Eyebrow>Get in Touch</Eyebrow>
-            <h2 className="mt-6 font-serif text-4xl leading-tight text-ivory md:text-6xl">
-              Let's Build Something Iconic.
-            </h2>
-            <p className="mx-auto mt-6 max-w-xl text-ivory/70">
-              Tell us about your brand. We'll respond within one business day.
+            <div className="relative mx-auto mt-8 inline-block">
+              <span className="absolute -inset-6 -z-10 rounded-full bg-[color:var(--gold)]/20 blur-3xl animate-glow-pulse" />
+              <h2 className="font-serif text-5xl leading-[1.05] tracking-[0.02em] text-ivory md:text-7xl">
+                Let's Build Something{" "}
+                <span className="relative inline-block bg-gradient-to-r from-[color:var(--gold-light)] via-[color:var(--gold)] to-[color:var(--gold-light)] bg-clip-text italic text-transparent">
+                  Iconic
+                  <span className="absolute -bottom-2 left-0 h-px w-full bg-gradient-to-r from-transparent via-[color:var(--gold)] to-transparent" />
+                </span>
+                .
+              </h2>
+            </div>
+            <p className="mx-auto mt-8 max-w-xl leading-relaxed text-ivory/75">
+              Tell us about your brand — a website, a launch campaign, a full
+              identity. We reply within one business day, in your voice.
             </p>
+            <div className="mx-auto mt-6 flex items-center justify-center gap-3 text-[0.6rem] uppercase tracking-[0.4em] text-[color:var(--gold)]/70">
+              <span className="h-px w-10 bg-[color:var(--gold)]/60" />
+              Now booking select projects
+              <span className="h-px w-10 bg-[color:var(--gold)]/60" />
+            </div>
           </div>
 
           <div className="reveal mt-16 grid gap-16 md:grid-cols-[1.3fr_1fr]">
