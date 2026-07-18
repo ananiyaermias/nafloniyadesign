@@ -156,6 +156,8 @@ type Project = (typeof PROJECTS)[number];
 
 function ProjectCard({ project, index }: { project: Project; index: number }) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const cardRef = useRef<HTMLAnchorElement | null>(null);
+  const [tilt, setTilt] = useState({ rx: 0, ry: 0 });
 
   const handleEnter = () => {
     const v = videoRef.current;
@@ -167,19 +169,33 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
   const handleLeave = () => {
     const v = videoRef.current;
     if (v) v.pause();
+    setTilt({ rx: 0, ry: 0 });
+  };
+  const handleMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const el = cardRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5;
+    const y = (e.clientY - r.top) / r.height - 0.5;
+    setTilt({ rx: -y * 6, ry: x * 8 });
   };
 
   return (
     <a
+      ref={cardRef}
       href={project.href}
       target="_blank"
       rel="noreferrer"
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
+      onMouseMove={handleMove}
       onFocus={handleEnter}
       onBlur={handleLeave}
-      className="reveal group relative block overflow-hidden border border-[color:var(--gold)]/15 bg-charcoal"
-      style={{ transitionDelay: `${index * 80}ms` }}
+      className="reveal group relative block overflow-hidden border border-[color:var(--gold)]/15 bg-charcoal transition-[transform,box-shadow,border-color] duration-500 will-change-transform hover:border-[color:var(--gold)]/60 hover:shadow-[0_30px_80px_-20px_rgba(212,175,55,0.35)]"
+      style={{
+        transitionDelay: `${index * 80}ms`,
+        transform: `perspective(1200px) rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg)`,
+      }}
     >
       <div className="relative aspect-video overflow-hidden bg-black">
         {project.video ? (
@@ -190,7 +206,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             loop
             playsInline
             preload="metadata"
-            className="h-full w-full object-cover opacity-80 transition-all duration-700 group-hover:scale-[1.03] group-hover:opacity-100"
+            className="h-full w-full object-cover opacity-80 transition-all duration-700 group-hover:scale-[1.06] group-hover:opacity-100"
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
@@ -199,6 +215,11 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
           </div>
         )}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-60" />
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+          <span className="flex items-center gap-2 rounded-full border border-[color:var(--gold)] bg-black/70 px-5 py-2 text-[0.65rem] uppercase tracking-[0.4em] text-[color:var(--gold)] shadow-[0_0_30px_rgba(212,175,55,0.5)] backdrop-blur">
+            Visit Live Site <ArrowUpRight className="h-3 w-3" />
+          </span>
+        </div>
       </div>
       <div className="relative border-t border-[color:var(--gold)]/15 p-6">
         <div className="flex items-start justify-between gap-4">
@@ -219,54 +240,48 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
   );
 }
 
-function FloatingCursorTag() {
-  const [pos, setPos] = useState({ x: 0, y: 0 });
+function FloatingGetInTouch() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (window.matchMedia("(hover: none)").matches) return;
-
-    let raf = 0;
-    let target = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-    let current = { ...target };
-
-    const onMove = (e: MouseEvent) => {
-      target = { x: e.clientX, y: e.clientY };
-      if (!visible) setVisible(true);
+    const onScroll = () => {
+      const hero = document.getElementById("home");
+      const contact = document.getElementById("contact");
+      const heroBottom = hero ? hero.getBoundingClientRect().bottom : 0;
+      const contactTop = contact
+        ? contact.getBoundingClientRect().top
+        : window.innerHeight * 2;
+      // Show once past the hero, hide once contact is on screen
+      setVisible(heroBottom < 80 && contactTop > window.innerHeight * 0.6);
     };
-    const onLeave = () => setVisible(false);
-
-    const tick = () => {
-      current.x += (target.x - current.x) * 0.12;
-      current.y += (target.y - current.y) * 0.12;
-      setPos({ x: current.x, y: current.y });
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    window.addEventListener("mousemove", onMove);
-    document.addEventListener("mouseleave", onLeave);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
     return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("mousemove", onMove);
-      document.removeEventListener("mouseleave", onLeave);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
     };
-  }, [visible]);
+  }, []);
 
   return (
     <a
       href="#contact"
       aria-label="Get in touch"
-      className="pointer-events-auto fixed left-0 top-0 z-40 hidden -translate-x-1/2 -translate-y-1/2 select-none md:block"
-      style={{
-        transform: `translate3d(${pos.x}px, ${pos.y}px, 0) translate(-50%, -50%)`,
-        opacity: visible ? 1 : 0,
-        transition: "opacity 400ms ease",
-      }}
+      className={`group fixed bottom-6 right-6 z-40 select-none transition-all duration-500 md:bottom-10 md:right-10 ${
+        visible
+          ? "pointer-events-auto translate-y-0 opacity-100"
+          : "pointer-events-none translate-y-6 opacity-0"
+      }`}
     >
-      <span className="mix-blend-difference flex items-center gap-2 border border-[color:var(--gold)] bg-black/70 px-4 py-2 font-serif text-[0.65rem] uppercase tracking-[0.4em] text-[color:var(--gold)] shadow-[0_0_30px_rgba(212,175,55,0.35)] backdrop-blur">
+      <span className="absolute inset-0 -z-10 rounded-full bg-[color:var(--gold)] opacity-30 blur-xl transition-opacity duration-500 group-hover:opacity-70" />
+      <span className="relative flex items-center gap-3 rounded-full border border-[color:var(--gold)] bg-black/80 px-6 py-3 font-serif text-xs uppercase tracking-[0.4em] text-[color:var(--gold)] shadow-[0_10px_40px_-10px_rgba(212,175,55,0.6)] backdrop-blur-md transition-all duration-500 hover:bg-[color:var(--gold)] hover:text-black hover:shadow-[0_15px_50px_-10px_rgba(212,175,55,0.9)] md:px-7 md:py-4">
+        <span className="relative flex h-2 w-2">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[color:var(--gold)] opacity-60" />
+          <span className="relative inline-flex h-2 w-2 rounded-full bg-[color:var(--gold)] group-hover:bg-black" />
+        </span>
         Get in Touch
-        <ArrowUpRight className="h-3 w-3" />
+        <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
       </span>
     </a>
   );
@@ -301,7 +316,7 @@ function Index() {
 
   return (
     <div className="grain min-h-screen bg-background text-foreground">
-      <FloatingCursorTag />
+      <FloatingGetInTouch />
       {/* NAV */}
       <header
         className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
