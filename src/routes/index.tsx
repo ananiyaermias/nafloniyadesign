@@ -651,38 +651,6 @@ function Index() {
 
       <Divider />
 
-      {/* TESTIMONIALS */}
-      <section className="mx-auto max-w-7xl px-6 md:px-10">
-        <div className="reveal text-center">
-          <Eyebrow>Kind Words</Eyebrow>
-          <h2 className="mt-6 font-serif text-4xl text-ivory md:text-5xl">
-            Trusted for the details.
-          </h2>
-        </div>
-        <div className="mt-16 grid gap-8 md:grid-cols-3">
-          {TESTIMONIALS.map((t, i) => (
-            <figure
-              key={t.author}
-              className="reveal relative flex flex-col gap-6 border border-[color:var(--gold)]/15 bg-charcoal p-10"
-              style={{ transitionDelay: `${i * 100}ms` }}
-            >
-              <Quote className="h-8 w-8 text-[color:var(--gold)]" strokeWidth={1} />
-              <blockquote className="font-serif text-lg italic leading-relaxed text-ivory/85">
-                "{t.quote}"
-              </blockquote>
-              <figcaption className="mt-auto">
-                <div className="text-[0.7rem] uppercase tracking-[0.32em] text-[color:var(--gold)]">
-                  {t.author}
-                </div>
-                <div className="mt-1 text-sm text-ivory/55">{t.role}</div>
-              </figcaption>
-            </figure>
-          ))}
-        </div>
-      </section>
-
-      <Divider />
-
       {/* CONTACT */}
       <section id="contact" className="relative overflow-hidden px-6 py-8 md:px-10">
         <div className="pointer-events-none absolute inset-0">
