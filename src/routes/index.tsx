@@ -102,27 +102,6 @@ const PROJECTS = [
   },
 ];
 
-const TESTIMONIALS = [
-  {
-    quote:
-      "Nafloniya didn't just design our site — they gave our brand a voice. Every pixel feels intentional.",
-    author: "Selam T.",
-    role: "Founder, Aurelia Atelier",
-  },
-  {
-    quote:
-      "The campaign visuals felt like a film. Our engagement tripled in the first month.",
-    author: "Michael B.",
-    role: "Marketing Lead, Lonk",
-  },
-  {
-    quote:
-      "A rare studio that treats craft with real reverence. The identity system is flawless.",
-    author: "Hanna G.",
-    role: "Creative Director, Leora",
-  },
-];
-
 function useReveal() {
   useEffect(() => {
     const els = document.querySelectorAll<HTMLElement>(".reveal");
