@@ -6,6 +6,8 @@ import {
   Phone,
   Mail,
   Globe,
+  Instagram,
+  Linkedin,
   ArrowRight,
   ArrowUpRight,
   Layout,
@@ -14,6 +16,9 @@ import {
   ChevronDown,
   Play,
   Sparkles,
+  Volume2,
+  VolumeX,
+  Maximize,
 } from "lucide-react";
 import monogramAsset from "@/assets/nafloniya-logo.png.asset.json";
 import ananiyaAsset from "@/assets/ananiya-portrait.jpg.asset.json";
