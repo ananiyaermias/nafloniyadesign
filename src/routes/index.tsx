@@ -892,6 +892,18 @@ function FormField({
   placeholder?: string;
   textarea?: boolean;
 }) {
+  label,
+  name,
+  type = "text",
+  placeholder,
+  textarea,
+}: {
+  label: string;
+  name: string;
+  type?: string;
+  placeholder?: string;
+  textarea?: boolean;
+}) {
   return (
     <label className="flex flex-col gap-2">
       <span className="text-[0.65rem] uppercase tracking-[0.4em] text-[color:var(--gold)]">
