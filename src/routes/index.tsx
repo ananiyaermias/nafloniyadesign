@@ -10,9 +10,7 @@ import {
   ArrowUpRight,
   Layout,
   Palette,
-  Megaphone,
   Rocket,
-  Quote,
   ChevronDown,
   Play,
   Sparkles,
@@ -47,22 +45,17 @@ const SERVICES = [
   {
     icon: Layout,
     title: "Web Design",
-    desc: "Custom, modern, responsive websites engineered for performance and story.",
+    desc: "Full-stack web development — we design and build the entire system: pixel-perfect front-end interfaces, secure back-end logic, databases, authentication, and admin dashboards, deployed as a single, fast, production-ready website.",
   },
   {
     icon: Palette,
-    title: "Brand & Logo Design",
-    desc: "Identity systems, monograms, and stationery that hold their own on any surface.",
-  },
-  {
-    icon: Megaphone,
-    title: "Digital Promotion",
-    desc: "Growth for Telegram, Instagram, and paid campaigns — content that converts.",
+    title: "Business Card Design",
+    desc: "Custom, print-ready business cards — refined typography, tactile finishes, and a monogram-led layout that makes your first handshake feel unforgettable.",
   },
   {
     icon: Rocket,
     title: "Content & Motion",
-    desc: "Cinematic promotional videos, motion graphics, and campaign visuals.",
+    desc: "Cinematic 3D promotional reels — the same films you see running in our Burger, Furniture, Hotel and Real Estate showcases: fully modeled, lit and animated in 3D, cut for TikTok and Instagram to pull viewers straight from the feed into the brand.",
   },
 ];
 
@@ -106,27 +99,6 @@ const PROJECTS = [
     href: "https://nafloniya-realestate.lovable.app",
     video: realestateVideo.url,
     bg: realestateBg.url,
-  },
-];
-
-const TESTIMONIALS = [
-  {
-    quote:
-      "Nafloniya didn't just design our site — they gave our brand a voice. Every pixel feels intentional.",
-    author: "Selam T.",
-    role: "Founder, Aurelia Atelier",
-  },
-  {
-    quote:
-      "The campaign visuals felt like a film. Our engagement tripled in the first month.",
-    author: "Michael B.",
-    role: "Marketing Lead, Lonk",
-  },
-  {
-    quote:
-      "A rare studio that treats craft with real reverence. The identity system is flawless.",
-    author: "Hanna G.",
-    role: "Creative Director, Leora",
   },
 ];
 
@@ -384,9 +356,35 @@ function Index() {
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    const name = String(data.get("name") ?? "").trim();
+    const email = String(data.get("email") ?? "").trim();
+    const brand = String(data.get("brand") ?? "").trim();
+    const goal = String(data.get("goal") ?? "").trim();
+    const message = String(data.get("message") ?? "").trim();
+
+    const subject = `New Nafloniya inquiry — ${name || "Website enquiry"}`;
+    const body = [
+      `Name: ${name}`,
+      `Email: ${email}`,
+      `Brand / Company: ${brand}`,
+      `What they want from Nafloniya: ${goal}`,
+      "",
+      "Message:",
+      message,
+      "",
+      "— Sent from nafloniyadesign.com",
+    ].join("\n");
+
+    const href = `mailto:ananiyaermias7@gmail.com?subject=${encodeURIComponent(
+      subject,
+    )}&body=${encodeURIComponent(body)}`;
+    window.location.href = href;
+
     setSent(true);
-    (e.target as HTMLFormElement).reset();
-    setTimeout(() => setSent(false), 4000);
+    form.reset();
+    setTimeout(() => setSent(false), 5000);
   };
 
   return (
@@ -679,38 +677,6 @@ function Index() {
 
       <Divider />
 
-      {/* TESTIMONIALS */}
-      <section className="mx-auto max-w-7xl px-6 md:px-10">
-        <div className="reveal text-center">
-          <Eyebrow>Kind Words</Eyebrow>
-          <h2 className="mt-6 font-serif text-4xl text-ivory md:text-5xl">
-            Trusted for the details.
-          </h2>
-        </div>
-        <div className="mt-16 grid gap-8 md:grid-cols-3">
-          {TESTIMONIALS.map((t, i) => (
-            <figure
-              key={t.author}
-              className="reveal relative flex flex-col gap-6 border border-[color:var(--gold)]/15 bg-charcoal p-10"
-              style={{ transitionDelay: `${i * 100}ms` }}
-            >
-              <Quote className="h-8 w-8 text-[color:var(--gold)]" strokeWidth={1} />
-              <blockquote className="font-serif text-lg italic leading-relaxed text-ivory/85">
-                "{t.quote}"
-              </blockquote>
-              <figcaption className="mt-auto">
-                <div className="text-[0.7rem] uppercase tracking-[0.32em] text-[color:var(--gold)]">
-                  {t.author}
-                </div>
-                <div className="mt-1 text-sm text-ivory/55">{t.role}</div>
-              </figcaption>
-            </figure>
-          ))}
-        </div>
-      </section>
-
-      <Divider />
-
       {/* CONTACT */}
       <section id="contact" className="relative overflow-hidden px-6 py-8 md:px-10">
         <div className="pointer-events-none absolute inset-0">
@@ -718,45 +684,73 @@ function Index() {
         </div>
         <div className="relative mx-auto max-w-6xl">
           <div className="reveal relative text-center">
-            <Eyebrow>Get in Touch</Eyebrow>
+            <div className="relative mx-auto inline-flex flex-col items-center">
+              <span className="mb-4 flex items-center gap-3 text-[0.7rem] uppercase tracking-[0.5em] text-[color:var(--gold)]/80">
+                <span className="h-px w-8 bg-[color:var(--gold)]/60" />
+                Now booking select projects
+                <span className="h-px w-8 bg-[color:var(--gold)]/60" />
+              </span>
+              <h3 className="font-serif text-5xl leading-none tracking-[0.18em] text-[color:var(--gold)] md:text-7xl lg:text-8xl">
+                GET IN TOUCH
+              </h3>
+              <span className="mt-6 h-px w-40 bg-gradient-to-r from-transparent via-[color:var(--gold)] to-transparent" />
+            </div>
             <div className="relative mx-auto mt-8 inline-block">
-              <span className="absolute -inset-6 -z-10 rounded-full bg-[color:var(--gold)]/20 blur-3xl animate-glow-pulse" />
-              <h2 className="font-serif text-5xl leading-[1.05] tracking-[0.02em] text-ivory md:text-7xl">
-                Let's Build Something{" "}
-                <span className="relative inline-block bg-gradient-to-r from-[color:var(--gold-light)] via-[color:var(--gold)] to-[color:var(--gold-light)] bg-clip-text italic text-transparent">
-                  Iconic
-                  <span className="absolute -bottom-2 left-0 h-px w-full bg-gradient-to-r from-transparent via-[color:var(--gold)] to-transparent" />
-                </span>
-                .
+              <span className="absolute -inset-6 -z-10 rounded-full bg-[color:var(--gold)]/15 blur-3xl animate-glow-pulse" />
+              <h2 className="font-serif text-3xl leading-[1.15] tracking-[0.02em] text-white md:text-5xl">
+                Let's Build Something Iconic.
               </h2>
             </div>
-            <p className="mx-auto mt-8 max-w-xl leading-relaxed text-ivory/75">
-              Tell us about your brand — a website, a launch campaign, a full
-              identity. We reply within one business day, in your voice.
+            <p className="mx-auto mt-6 max-w-xl leading-relaxed text-ivory/75">
+              Tell us what you want out of Nafloniya — a full website, a brand,
+              a launch reel, or all three. Fill the form below and it lands
+              directly in Ananiya's inbox. We reply within one business day.
             </p>
-            <div className="mx-auto mt-6 flex items-center justify-center gap-3 text-[0.6rem] uppercase tracking-[0.4em] text-[color:var(--gold)]/70">
-              <span className="h-px w-10 bg-[color:var(--gold)]/60" />
-              Now booking select projects
-              <span className="h-px w-10 bg-[color:var(--gold)]/60" />
-            </div>
           </div>
 
           <div className="reveal mt-16 grid gap-16 md:grid-cols-[1.3fr_1fr]">
-            <form onSubmit={onSubmit} className="flex flex-col gap-6">
+            <form
+              onSubmit={onSubmit}
+              className="relative flex flex-col gap-6 rounded-2xl border border-[color:var(--gold)]/25 bg-black/60 p-8 shadow-[0_30px_80px_-20px_rgba(212,175,55,0.35)] backdrop-blur-md md:p-10"
+            >
+              <span className="pointer-events-none absolute -inset-px -z-10 rounded-2xl bg-gradient-to-br from-[color:var(--gold)]/40 via-transparent to-[color:var(--gold)]/20 opacity-60 blur-md" />
+              <div className="flex items-center justify-between">
+                <p className="text-[0.65rem] uppercase tracking-[0.45em] text-[color:var(--gold)]">
+                  Tell us what you want from Nafloniya
+                </p>
+                <span className="flex items-center gap-2 text-[0.6rem] uppercase tracking-[0.35em] text-ivory/50">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[color:var(--gold)] opacity-70" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-[color:var(--gold)]" />
+                  </span>
+                  Live
+                </span>
+              </div>
               <div className="grid gap-6 sm:grid-cols-2">
                 <FormField label="Name" name="name" placeholder="Your full name" />
                 <FormField label="Email" name="email" type="email" placeholder="you@studio.com" />
               </div>
+              <div className="grid gap-6 sm:grid-cols-2">
+                <FormField label="Brand / Company" name="brand" placeholder="Brand name" />
+                <FormField
+                  label="What do you want from Nafloniya?"
+                  name="goal"
+                  placeholder="Website · Brand · Promo Reel · Business Card"
+                />
+              </div>
               <FormField
-                label="Message"
+                label="Project details"
                 name="message"
-                placeholder="Tell us about the project…"
+                placeholder="Tell us about your brand, goals, timeline and budget…"
                 textarea
               />
-              <div>
-                <button type="submit" className="btn-gold">
-                  {sent ? "Message sent ✓" : "Send Message"}
-                  {!sent && <ArrowRight className="h-3.5 w-3.5" />}
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <p className="text-[0.65rem] uppercase tracking-[0.35em] text-ivory/45">
+                  Delivered to ananiyaermias7@gmail.com
+                </p>
+                <button type="submit" className="btn-gold-solid">
+                  {sent ? "Opening your mail ✓" : "Send to Nafloniya"}
+                  {!sent && <ArrowUpRight className="h-3.5 w-3.5" />}
                 </button>
               </div>
             </form>
