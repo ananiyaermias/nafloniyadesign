@@ -155,6 +155,7 @@ function ProductShowcase() {
   const project = PROJECTS.find((p) => p.key === active) ?? PROJECTS[0];
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [playing, setPlaying] = useState(true);
+  const [muted, setMuted] = useState(false);
 
   // Preload all videos silently for instant switch
   useEffect(() => {
@@ -170,8 +171,14 @@ function ProductShowcase() {
     const v = videoRef.current;
     if (!v) return;
     v.currentTime = 0;
+    v.muted = muted;
     v.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
   }, [active]);
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (v) v.muted = muted;
+  }, [muted]);
 
   return (
     <div className="reveal">
@@ -219,7 +226,6 @@ function ProductShowcase() {
               ref={videoRef}
               key={project.video}
               src={project.video}
-              muted
               loop
               playsInline
               autoPlay
@@ -244,6 +250,34 @@ function ProductShowcase() {
             <span className="absolute left-4 top-4 rounded-full border border-[color:var(--gold)]/60 bg-black/60 px-3 py-1 text-[0.6rem] uppercase tracking-[0.35em] text-[color:var(--gold)] backdrop-blur">
               Reel · HD
             </span>
+            {/* Video controls */}
+            <div className="absolute bottom-4 right-4 z-10 flex items-center gap-2">
+              <button
+                type="button"
+                onClick={(e) => { e.stopPropagation(); setMuted((m) => !m); }}
+                aria-label={muted ? "Unmute" : "Mute"}
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-[color:var(--gold)]/70 bg-black/70 text-[color:var(--gold)] backdrop-blur transition-all hover:border-[color:var(--gold)] hover:bg-[color:var(--gold)] hover:text-black"
+              >
+                {muted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  const v = videoRef.current;
+                  if (!v) return;
+                  const anyV = v as HTMLVideoElement & { webkitEnterFullscreen?: () => void };
+                  if (document.fullscreenElement) void document.exitFullscreen();
+                  else if (anyV.requestFullscreen) void anyV.requestFullscreen();
+                  else if (anyV.webkitEnterFullscreen) anyV.webkitEnterFullscreen();
+                }}
+                aria-label="Watch full video"
+                title="Watch full video"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-[color:var(--gold)]/70 bg-black/70 text-[color:var(--gold)] backdrop-blur transition-all hover:border-[color:var(--gold)] hover:bg-[color:var(--gold)] hover:text-black"
+              >
+                <Maximize className="h-4 w-4" />
+              </button>
+            </div>
           </div>
 
           {/* Info */}
