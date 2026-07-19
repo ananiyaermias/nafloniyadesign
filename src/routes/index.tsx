@@ -6,6 +6,8 @@ import {
   Phone,
   Mail,
   Globe,
+  Instagram,
+  Linkedin,
   ArrowRight,
   ArrowUpRight,
   Layout,
@@ -14,6 +16,9 @@ import {
   ChevronDown,
   Play,
   Sparkles,
+  Volume2,
+  VolumeX,
+  Maximize,
 } from "lucide-react";
 import monogramAsset from "@/assets/nafloniya-logo.png.asset.json";
 import ananiyaAsset from "@/assets/ananiya-portrait.jpg.asset.json";
@@ -125,6 +130,24 @@ function Monogram({ className = "" }: { className?: string }) {
   return <img src={monogram} alt="Nafloniya monogram" className={className} />;
 }
 
+function TelegramIcon({ className = "", strokeWidth = 1.25 }: { className?: string; strokeWidth?: number }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M21.5 3.5 2.5 10.8c-.7.3-.7 1.3 0 1.6l4.6 1.7 1.8 5.6c.2.7 1.1.9 1.6.4l2.6-2.6 4.8 3.5c.6.4 1.4.1 1.6-.6l3.2-15.4c.2-.9-.7-1.6-1.5-1.3Z" />
+      <path d="m7.1 14.1 10.9-8.4-8.4 9.9" />
+    </svg>
+  );
+}
+
 function Divider() {
   return (
     <div className="my-24 flex items-center justify-center gap-4 text-[color:var(--gold)]">
@@ -150,6 +173,7 @@ function ProductShowcase() {
   const project = PROJECTS.find((p) => p.key === active) ?? PROJECTS[0];
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [playing, setPlaying] = useState(true);
+  const [muted, setMuted] = useState(false);
 
   // Preload all videos silently for instant switch
   useEffect(() => {
@@ -165,8 +189,14 @@ function ProductShowcase() {
     const v = videoRef.current;
     if (!v) return;
     v.currentTime = 0;
+    v.muted = muted;
     v.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
   }, [active]);
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (v) v.muted = muted;
+  }, [muted]);
 
   return (
     <div className="reveal">
@@ -214,7 +244,6 @@ function ProductShowcase() {
               ref={videoRef}
               key={project.video}
               src={project.video}
-              muted
               loop
               playsInline
               autoPlay
@@ -239,6 +268,34 @@ function ProductShowcase() {
             <span className="absolute left-4 top-4 rounded-full border border-[color:var(--gold)]/60 bg-black/60 px-3 py-1 text-[0.6rem] uppercase tracking-[0.35em] text-[color:var(--gold)] backdrop-blur">
               Reel · HD
             </span>
+            {/* Video controls */}
+            <div className="absolute bottom-4 right-4 z-10 flex items-center gap-2">
+              <button
+                type="button"
+                onClick={(e) => { e.stopPropagation(); setMuted((m) => !m); }}
+                aria-label={muted ? "Unmute" : "Mute"}
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-[color:var(--gold)]/70 bg-black/70 text-[color:var(--gold)] backdrop-blur transition-all hover:border-[color:var(--gold)] hover:bg-[color:var(--gold)] hover:text-black"
+              >
+                {muted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  const v = videoRef.current;
+                  if (!v) return;
+                  const anyV = v as HTMLVideoElement & { webkitEnterFullscreen?: () => void };
+                  if (document.fullscreenElement) void document.exitFullscreen();
+                  else if (anyV.requestFullscreen) void anyV.requestFullscreen();
+                  else if (anyV.webkitEnterFullscreen) anyV.webkitEnterFullscreen();
+                }}
+                aria-label="Watch full video"
+                title="Watch full video"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-[color:var(--gold)]/70 bg-black/70 text-[color:var(--gold)] backdrop-blur transition-all hover:border-[color:var(--gold)] hover:bg-[color:var(--gold)] hover:text-black"
+              >
+                <Maximize className="h-4 w-4" />
+              </button>
+            </div>
           </div>
 
           {/* Info */}
@@ -544,21 +601,26 @@ function Index() {
           </p>
         </div>
 
-        <div className="mt-20 grid gap-px bg-[color:var(--gold)]/15 md:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-20 grid gap-px bg-[color:var(--gold)]/15 md:grid-cols-3">
           {SERVICES.map((s, i) => {
             const Icon = s.icon;
             return (
               <div
                 key={s.title}
-                className="reveal group relative flex flex-col gap-6 bg-background p-10 transition-colors duration-500 hover:bg-[color:var(--charcoal)]"
+                className="reveal group relative flex flex-col gap-6 overflow-hidden bg-background p-10 transition-all duration-500 hover:-translate-y-1 hover:bg-[color:var(--charcoal)]"
                 style={{ transitionDelay: `${i * 80}ms` }}
               >
-                <div className="flex h-14 w-14 items-center justify-center rounded-full border border-[color:var(--gold)]/40 text-[color:var(--gold)] transition-all duration-500 group-hover:border-[color:var(--gold)] group-hover:shadow-[0_0_30px_rgba(212,175,55,0.35)]">
-                  <Icon className="h-6 w-6" strokeWidth={1} />
+                <span className="pointer-events-none absolute inset-0 -z-0 bg-gradient-to-br from-[color:var(--gold)]/8 via-transparent to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
+                <span className="pointer-events-none absolute -right-24 -top-24 h-56 w-56 rounded-full bg-[color:var(--gold)]/10 blur-3xl opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
+                <div className="relative flex h-16 w-16 items-center justify-center rounded-full border border-[color:var(--gold)]/40 text-[color:var(--gold)] transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 group-hover:border-[color:var(--gold)] group-hover:shadow-[0_0_40px_rgba(212,175,55,0.55)]">
+                  <span className="absolute inset-0 rounded-full border border-[color:var(--gold)]/0 transition-all duration-700 group-hover:inset-[-8px] group-hover:border-[color:var(--gold)]/30" />
+                  <Icon className="h-6 w-6 transition-transform duration-500 group-hover:scale-110" strokeWidth={1} />
                 </div>
-                <h3 className="font-serif text-2xl text-ivory">{s.title}</h3>
-                <p className="text-sm leading-relaxed text-ivory/65">{s.desc}</p>
-                <span className="mt-auto h-px w-8 bg-[color:var(--gold)]/60" />
+                <h3 className="relative font-serif text-2xl text-ivory transition-colors duration-500 group-hover:text-[color:var(--gold)]">
+                  {s.title}
+                </h3>
+                <p className="relative text-sm leading-relaxed text-ivory/70">{s.desc}</p>
+                <span className="relative mt-auto h-px w-8 bg-[color:var(--gold)]/60 transition-all duration-500 group-hover:w-24" />
               </div>
             );
           })}
@@ -656,15 +718,18 @@ function Index() {
               </a>
               <div className="flex items-center gap-3">
                 {[
-                  { icon: Mail, href: "mailto:ananiyaermias7@gmail.com", label: "Email" },
+                  { icon: TelegramIcon, href: "https://t.me/+251949709118", label: "Telegram" },
+                  { icon: Instagram, href: "https://instagram.com/ananiya_ermias", label: "Instagram" },
+                  { icon: Linkedin, href: "https://www.linkedin.com/in/ananiya-ermias", label: "LinkedIn" },
                   { icon: Phone, href: "tel:+251949709118", label: "Phone" },
-                  { icon: Globe, href: "https://ananiya-portfolio.lovable.app/", label: "Portfolio" },
                 ].map(({ icon: Icon, href, label }) => (
                   <a
                     key={label}
                     href={href}
+                    target="_blank"
+                    rel="noreferrer"
                     aria-label={label}
-                    className="flex h-11 w-11 items-center justify-center rounded-full border border-[color:var(--gold)]/40 text-[color:var(--gold)] transition-all hover:border-[color:var(--gold)] hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]"
+                    className="group/icon relative flex h-11 w-11 items-center justify-center rounded-full border border-[color:var(--gold)]/40 text-[color:var(--gold)] transition-all duration-500 hover:-translate-y-1 hover:border-[color:var(--gold)] hover:bg-[color:var(--gold)] hover:text-black hover:shadow-[0_10px_30px_-5px_rgba(212,175,55,0.6)]"
                   >
                     <Icon className="h-4 w-4" strokeWidth={1.25} />
                   </a>
