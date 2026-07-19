@@ -700,15 +700,18 @@ function Index() {
               </a>
               <div className="flex items-center gap-3">
                 {[
-                  { icon: Mail, href: "mailto:ananiyaermias7@gmail.com", label: "Email" },
+                  { icon: TelegramIcon, href: "https://t.me/+251949709118", label: "Telegram" },
+                  { icon: Instagram, href: "https://instagram.com/ananiya_ermias", label: "Instagram" },
+                  { icon: Linkedin, href: "https://www.linkedin.com/in/ananiya-ermias", label: "LinkedIn" },
                   { icon: Phone, href: "tel:+251949709118", label: "Phone" },
-                  { icon: Globe, href: "https://ananiya-portfolio.lovable.app/", label: "Portfolio" },
                 ].map(({ icon: Icon, href, label }) => (
                   <a
                     key={label}
                     href={href}
+                    target="_blank"
+                    rel="noreferrer"
                     aria-label={label}
-                    className="flex h-11 w-11 items-center justify-center rounded-full border border-[color:var(--gold)]/40 text-[color:var(--gold)] transition-all hover:border-[color:var(--gold)] hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]"
+                    className="group/icon relative flex h-11 w-11 items-center justify-center rounded-full border border-[color:var(--gold)]/40 text-[color:var(--gold)] transition-all duration-500 hover:-translate-y-1 hover:border-[color:var(--gold)] hover:bg-[color:var(--gold)] hover:text-black hover:shadow-[0_10px_30px_-5px_rgba(212,175,55,0.6)]"
                   >
                     <Icon className="h-4 w-4" strokeWidth={1.25} />
                   </a>
