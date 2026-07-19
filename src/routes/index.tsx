@@ -10,9 +10,7 @@ import {
   ArrowUpRight,
   Layout,
   Palette,
-  Megaphone,
   Rocket,
-  Quote,
   ChevronDown,
   Play,
   Sparkles,
@@ -47,22 +45,17 @@ const SERVICES = [
   {
     icon: Layout,
     title: "Web Design",
-    desc: "Custom, modern, responsive websites engineered for performance and story.",
+    desc: "Full-stack web development — we design and build the entire system: pixel-perfect front-end interfaces, secure back-end logic, databases, authentication, and admin dashboards, deployed as a single, fast, production-ready website.",
   },
   {
     icon: Palette,
-    title: "Brand & Logo Design",
-    desc: "Identity systems, monograms, and stationery that hold their own on any surface.",
-  },
-  {
-    icon: Megaphone,
-    title: "Digital Promotion",
-    desc: "Growth for Telegram, Instagram, and paid campaigns — content that converts.",
+    title: "Business Card Design",
+    desc: "Custom, print-ready business cards — refined typography, tactile finishes, and a monogram-led layout that makes your first handshake feel unforgettable.",
   },
   {
     icon: Rocket,
     title: "Content & Motion",
-    desc: "Cinematic promotional videos, motion graphics, and campaign visuals.",
+    desc: "Cinematic 3D promotional reels — the same films you see running in our Burger, Furniture, Hotel and Real Estate showcases: fully modeled, lit and animated in 3D, cut for TikTok and Instagram to pull viewers straight from the feed into the brand.",
   },
 ];
 
