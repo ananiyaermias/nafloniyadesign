@@ -130,6 +130,24 @@ function Monogram({ className = "" }: { className?: string }) {
   return <img src={monogram} alt="Nafloniya monogram" className={className} />;
 }
 
+function TelegramIcon({ className = "", strokeWidth = 1.25 }: { className?: string; strokeWidth?: number }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M21.5 3.5 2.5 10.8c-.7.3-.7 1.3 0 1.6l4.6 1.7 1.8 5.6c.2.7 1.1.9 1.6.4l2.6-2.6 4.8 3.5c.6.4 1.4.1 1.6-.6l3.2-15.4c.2-.9-.7-1.6-1.5-1.3Z" />
+      <path d="m7.1 14.1 10.9-8.4-8.4 9.9" />
+    </svg>
+  );
+}
+
 function Divider() {
   return (
     <div className="my-24 flex items-center justify-center gap-4 text-[color:var(--gold)]">
