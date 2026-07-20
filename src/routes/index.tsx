@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import emailjs from "@emailjs/browser";
 import {
   Menu,
   X,
@@ -395,6 +396,8 @@ function Index() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -410,7 +413,7 @@ function Index() {
     };
   }, [menuOpen]);
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     const data = new FormData(form);
@@ -420,27 +423,35 @@ function Index() {
     const goal = String(data.get("goal") ?? "").trim();
     const message = String(data.get("message") ?? "").trim();
 
-    const subject = `New Nafloniya inquiry — ${name || "Website enquiry"}`;
-    const body = [
-      `Name: ${name}`,
-      `Email: ${email}`,
-      `Brand / Company: ${brand}`,
-      `What they want from Nafloniya: ${goal}`,
-      "",
-      "Message:",
-      message,
-      "",
-      "— Sent from nafloniyadesign.com",
-    ].join("\n");
-
-    const href = `mailto:ananiyaermias7@gmail.com?subject=${encodeURIComponent(
-      subject,
-    )}&body=${encodeURIComponent(body)}`;
-    window.location.href = href;
-
-    setSent(true);
-    form.reset();
-    setTimeout(() => setSent(false), 5000);
+    setErrorMsg(null);
+    setSending(true);
+    try {
+      await emailjs.send(
+        "service_ehf333o",
+        "template_1kcar0n",
+        {
+          from_name: name,
+          from_email: email,
+          reply_to: email,
+          brand,
+          goal,
+          message,
+          to_email: "ananiyaermias7@gmail.com",
+          subject: `New Nafloniya inquiry — ${name || "Website enquiry"}`,
+        },
+        { publicKey: "z9U5DwdRoZAGsLMGy" },
+      );
+      setSent(true);
+      form.reset();
+      setTimeout(() => setSent(false), 6000);
+    } catch (err) {
+      console.error("EmailJS error:", err);
+      setErrorMsg(
+        "Something went wrong sending your message. Please email ananiyaermias7@gmail.com directly.",
+      );
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -802,11 +813,18 @@ function Index() {
                 <p className="text-[0.65rem] uppercase tracking-[0.35em] text-ivory/45">
                   Delivered to ananiyaermias7@gmail.com
                 </p>
-                <button type="submit" className="btn-gold-solid">
-                  {sent ? "Opening your mail ✓" : "Send to Nafloniya"}
-                  {!sent && <ArrowUpRight className="h-3.5 w-3.5" />}
+                <button type="submit" className="btn-gold-solid" disabled={sending}>
+                  {sending
+                    ? "Sending…"
+                    : sent
+                      ? "Message sent ✓"
+                      : "Send to Nafloniya"}
+                  {!sending && !sent && <ArrowUpRight className="h-3.5 w-3.5" />}
                 </button>
               </div>
+              {errorMsg && (
+                <p className="text-xs text-red-400/90">{errorMsg}</p>
+              )}
             </form>
 
             <aside className="flex flex-col gap-6 border-l border-[color:var(--gold)]/20 md:pl-12">
