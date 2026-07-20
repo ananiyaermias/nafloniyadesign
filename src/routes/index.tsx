@@ -813,11 +813,18 @@ function Index() {
                 <p className="text-[0.65rem] uppercase tracking-[0.35em] text-ivory/45">
                   Delivered to ananiyaermias7@gmail.com
                 </p>
-                <button type="submit" className="btn-gold-solid">
-                  {sent ? "Opening your mail ✓" : "Send to Nafloniya"}
-                  {!sent && <ArrowUpRight className="h-3.5 w-3.5" />}
+                <button type="submit" className="btn-gold-solid" disabled={sending}>
+                  {sending
+                    ? "Sending…"
+                    : sent
+                      ? "Message sent ✓"
+                      : "Send to Nafloniya"}
+                  {!sending && !sent && <ArrowUpRight className="h-3.5 w-3.5" />}
                 </button>
               </div>
+              {errorMsg && (
+                <p className="text-xs text-red-400/90">{errorMsg}</p>
+              )}
             </form>
 
             <aside className="flex flex-col gap-6 border-l border-[color:var(--gold)]/20 md:pl-12">
