@@ -41,7 +41,6 @@ export const Route = createFileRoute("/")({
 const NAV = [
   { label: "Home", href: "#home" },
   { label: "Services", href: "#services" },
-  { label: "Portfolio", href: "#team" },
   { label: "Team", href: "#team" },
   { label: "Contact", href: "#contact" },
 ];
@@ -256,7 +255,7 @@ function ProductShowcase() {
                 const v = videoRef.current;
                 if (!v) return;
                 if (v.paused) { void v.play(); setPlaying(true); }
-                else { v.pause(); setPlaying(false); }
+                else { v.pause(); v.muted = true; setMuted(true); setPlaying(false); }
               }}
               aria-label={playing ? "Pause" : "Play"}
               className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${playing ? "opacity-0 hover:opacity-100" : "opacity-100"}`}
@@ -660,13 +659,7 @@ function Index() {
         </div>
 
         <div className="reveal mt-20 grid items-center gap-16 md:grid-cols-[minmax(0,1fr)_1.2fr]">
-          <a
-            href="https://ananiya-portfolio.lovable.app/"
-            target="_blank"
-            rel="noreferrer"
-            aria-label="View Ananiya's portfolio"
-            className="group relative mx-auto block w-full max-w-sm"
-          >
+          <div className="group relative mx-auto block w-full max-w-sm">
             <div className="gold-glow absolute -inset-10 animate-glow-pulse transition-opacity duration-700 group-hover:opacity-100" />
             <div className="absolute -inset-2 rounded-full border border-[color:var(--gold)]/30 opacity-0 transition-all duration-700 group-hover:-inset-4 group-hover:opacity-100" />
             <div className="absolute -inset-6 rounded-full border border-[color:var(--gold)]/15 opacity-0 transition-all duration-1000 group-hover:-inset-10 group-hover:opacity-100" />
@@ -677,13 +670,8 @@ function Index() {
                 className="aspect-square h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-110"
                 loading="lazy"
               />
-              <div className="absolute inset-0 flex items-end justify-center bg-gradient-to-t from-black/85 via-black/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                <span className="mb-10 flex items-center gap-2 rounded-full border border-[color:var(--gold)] bg-black/70 px-5 py-2 text-[0.65rem] uppercase tracking-[0.4em] text-[color:var(--gold)] backdrop-blur">
-                  View Portfolio <ArrowUpRight className="h-3 w-3" />
-                </span>
-              </div>
             </div>
-          </a>
+          </div>
 
           <div>
             <p className="text-[0.7rem] uppercase tracking-[0.4em] text-[color:var(--gold)]">
@@ -718,10 +706,11 @@ function Index() {
               </a>
               <div className="flex items-center gap-3">
                 {[
-                  { icon: TelegramIcon, href: "https://t.me/+251949709118", label: "Telegram" },
-                  { icon: Instagram, href: "https://instagram.com/ananiya_ermias", label: "Instagram" },
+                  { icon: TelegramIcon, href: "https://t.me/Nafloniya", label: "Telegram" },
+                  { icon: Instagram, href: "https://instagram.com/ananiermi", label: "Instagram" },
                   { icon: Linkedin, href: "https://www.linkedin.com/in/ananiya-ermias", label: "LinkedIn" },
                   { icon: Phone, href: "tel:+251949709118", label: "Phone" },
+                  { icon: Mail, href: "mailto:ananiyaermias7@gmail.com", label: "Gmail" },
                 ].map(({ icon: Icon, href, label }) => (
                   <a
                     key={label}
