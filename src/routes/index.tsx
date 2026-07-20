@@ -443,6 +443,172 @@ function ProductShowcase() {
   );
 }
 
+function PackagesSection() {
+  return (
+    <section id="packages" className="mx-auto max-w-7xl px-6 md:px-10">
+      <div className="reveal mx-auto max-w-2xl text-center">
+        <Eyebrow>Exclusive Service Offer</Eyebrow>
+        <h2 className="mt-6 font-serif text-4xl leading-tight text-ivory md:text-5xl">
+          Choose Your Stage.
+        </h2>
+        <p className="mt-6 text-ivory/70">
+          Four crafted packages — from a single, elegant page to a full
+          cinematic launch with brand, print, and promo film. Every stage is
+          delivered by Nafloniya end-to-end, with hosting, domain, and care
+          included.
+        </p>
+        <p className="mt-4 text-[0.65rem] uppercase tracking-[0.45em] text-[color:var(--gold)]/80">
+          50% deposit to begin · 50% on delivery
+        </p>
+      </div>
+
+      <div className="reveal mt-16 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+        {PACKAGES.map((p, i) => {
+          const Icon = p.icon;
+          return (
+            <article
+              key={p.key}
+              style={{ transitionDelay: `${i * 70}ms` }}
+              className={`group relative flex flex-col overflow-hidden rounded-2xl border p-8 transition-all duration-500 hover:-translate-y-2 ${
+                p.featured
+                  ? "border-[color:var(--gold)]/70 bg-gradient-to-b from-[color:var(--gold)]/8 via-black to-black shadow-[0_30px_80px_-20px_rgba(212,175,55,0.55)]"
+                  : "border-[color:var(--gold)]/20 bg-black/60 hover:border-[color:var(--gold)]/60 hover:shadow-[0_25px_70px_-25px_rgba(212,175,55,0.45)]"
+              }`}
+            >
+              {/* Ambient corner glow */}
+              <span
+                className={`pointer-events-none absolute -right-24 -top-24 h-56 w-56 rounded-full blur-3xl transition-opacity duration-700 ${
+                  p.featured ? "bg-[color:var(--gold)]/25 opacity-100" : "bg-[color:var(--gold)]/10 opacity-0 group-hover:opacity-100"
+                }`}
+              />
+
+              {/* Ribbon */}
+              {p.ribbon && (
+                <span className="absolute right-5 top-5 rounded-full border border-[color:var(--gold)] bg-black/80 px-3 py-1 text-[0.55rem] uppercase tracking-[0.35em] text-[color:var(--gold)] backdrop-blur">
+                  {p.ribbon}
+                </span>
+              )}
+
+              <div className="relative flex items-center gap-3">
+                <span className="flex h-12 w-12 items-center justify-center rounded-full border border-[color:var(--gold)]/50 text-[color:var(--gold)] transition-all duration-500 group-hover:rotate-6 group-hover:border-[color:var(--gold)] group-hover:shadow-[0_0_30px_rgba(212,175,55,0.6)]">
+                  <Icon className="h-5 w-5" strokeWidth={1.2} />
+                </span>
+                <p className="text-[0.6rem] uppercase tracking-[0.42em] text-[color:var(--gold)]/80">
+                  {p.stage}
+                </p>
+              </div>
+
+              <h3 className="relative mt-6 font-serif text-4xl leading-none text-ivory">
+                {p.name}
+              </h3>
+              <p className="relative mt-2 font-serif italic text-sm text-ivory/60">
+                {p.tagline}
+              </p>
+
+              <div className="relative mt-6 flex items-baseline gap-2">
+                <span className="font-serif text-4xl text-[color:var(--gold)]">
+                  {p.price}
+                </span>
+                <span className="text-xs uppercase tracking-[0.32em] text-ivory/60">
+                  {p.currency}
+                </span>
+              </div>
+              <p className="relative mt-1 text-[0.65rem] uppercase tracking-[0.35em] text-ivory/50">
+                {p.duration}
+              </p>
+
+              <span className="relative my-6 h-px w-full bg-gradient-to-r from-transparent via-[color:var(--gold)]/40 to-transparent" />
+
+              <ul className="relative flex flex-col gap-3 text-sm text-ivory/80">
+                {p.features.map((f) => (
+                  <li key={f} className="flex items-start gap-3">
+                    <Check className="mt-[3px] h-3.5 w-3.5 shrink-0 text-[color:var(--gold)]" strokeWidth={2.5} />
+                    <span>{f}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <p className="relative mt-6 font-serif italic text-xs text-ivory/50">
+                {p.footnote}
+              </p>
+
+              <a
+                href="#contact"
+                className={`relative mt-8 inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-[0.65rem] uppercase tracking-[0.4em] transition-all duration-500 ${
+                  p.featured
+                    ? "bg-[color:var(--gold)] text-black shadow-[0_15px_50px_-10px_rgba(212,175,55,0.9)] hover:shadow-[0_20px_60px_-10px_rgba(212,175,55,1)]"
+                    : "border border-[color:var(--gold)]/60 text-[color:var(--gold)] hover:bg-[color:var(--gold)] hover:text-black"
+                }`}
+              >
+                Choose {p.name} <ArrowUpRight className="h-3.5 w-3.5" />
+              </a>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+type ToastState = { kind: "success" | "error"; message: string } | null;
+
+function StatusToast({ toast, onClose }: { toast: ToastState; onClose: () => void }) {
+  const visible = !!toast;
+  const isSuccess = toast?.kind === "success";
+  return (
+    <div
+      className={`pointer-events-none fixed inset-x-0 top-6 z-[70] flex justify-center px-4 transition-all duration-500 md:top-10 ${
+        visible ? "translate-y-0 opacity-100" : "-translate-y-6 opacity-0"
+      }`}
+      role="status"
+      aria-live="polite"
+    >
+      <div
+        className={`pointer-events-auto relative flex max-w-md items-start gap-4 overflow-hidden rounded-full border px-6 py-4 backdrop-blur-xl shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)] ${
+          isSuccess
+            ? "border-[color:var(--gold)] bg-black/85"
+            : "border-red-400/60 bg-black/85"
+        }`}
+      >
+        <span
+          className={`absolute inset-0 -z-10 opacity-70 blur-2xl ${
+            isSuccess ? "bg-[color:var(--gold)]/25" : "bg-red-500/20"
+          }`}
+        />
+        <span
+          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${
+            isSuccess
+              ? "bg-[color:var(--gold)] text-black"
+              : "bg-red-500/90 text-black"
+          }`}
+        >
+          {isSuccess ? <Heart className="h-4 w-4" fill="currentColor" /> : <X className="h-4 w-4" strokeWidth={2.5} />}
+        </span>
+        <div className="min-w-0 pr-2">
+          <p
+            className={`font-serif text-sm tracking-wide ${
+              isSuccess ? "text-[color:var(--gold)]" : "text-red-200"
+            }`}
+          >
+            {isSuccess ? "Your message is on its way ✓" : "Message didn't send"}
+          </p>
+          <p className="mt-1 text-xs leading-relaxed text-ivory/75">
+            {toast?.message}
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Dismiss"
+          className="ml-2 text-ivory/50 hover:text-ivory"
+        >
+          <X className="h-4 w-4" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function FloatingGetInTouch() {
   const [visible, setVisible] = useState(false);
 
