@@ -20,6 +20,10 @@ import {
   Volume2,
   VolumeX,
   Maximize,
+  Check,
+  Crown,
+  Star,
+  Heart,
 } from "lucide-react";
 import monogramAsset from "@/assets/nafloniya-logo.png.asset.json";
 import ananiyaAsset from "@/assets/ananiya-portrait.jpg.asset.json";
@@ -42,6 +46,7 @@ export const Route = createFileRoute("/")({
 const NAV = [
   { label: "Home", href: "#home" },
   { label: "Services", href: "#services" },
+  { label: "Packages", href: "#packages" },
   { label: "Team", href: "#team" },
   { label: "Contact", href: "#contact" },
 ];
