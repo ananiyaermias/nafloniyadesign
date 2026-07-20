@@ -676,6 +676,7 @@ function Index() {
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [toast, setToast] = useState<ToastState>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -721,12 +722,20 @@ function Index() {
       );
       setSent(true);
       form.reset();
+      setToast({
+        kind: "success",
+        message:
+          "Thank you for choosing Nafloniya — we're so glad you're here. Ananiya will personally reach out to you very soon. Consider yourself family.",
+      });
       setTimeout(() => setSent(false), 6000);
+      setTimeout(() => setToast(null), 8000);
     } catch (err) {
       console.error("EmailJS error:", err);
-      setErrorMsg(
-        "Something went wrong sending your message. Please email ananiyaermias7@gmail.com directly.",
-      );
+      const msg =
+        "We couldn't deliver your message this time. Please try again in a moment or email ananiyaermias7@gmail.com directly — we'd hate to miss you.";
+      setErrorMsg(msg);
+      setToast({ kind: "error", message: msg });
+      setTimeout(() => setToast(null), 8000);
     } finally {
       setSending(false);
     }
@@ -734,6 +743,7 @@ function Index() {
 
   return (
     <div className="grain min-h-screen bg-background text-foreground">
+      <StatusToast toast={toast} onClose={() => setToast(null)} />
       <FloatingGetInTouch />
       {/* NAV */}
       <header
