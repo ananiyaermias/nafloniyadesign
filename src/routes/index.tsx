@@ -113,6 +113,122 @@ const PROJECTS = [
 ];
 
 function useReveal() {
+  // reveal on scroll
+  useEffect(() => {
+    // no-op wrapper, keep single implementation below
+  }, []);
+}
+
+type Pkg = {
+  key: string;
+  stage: string;
+  name: string;
+  tagline: string;
+  price: string;
+  currency: string;
+  duration: string;
+  ribbon?: string;
+  icon: typeof Crown;
+  features: string[];
+  footnote: string;
+  featured?: boolean;
+};
+
+const PACKAGES: Pkg[] = [
+  {
+    key: "basic",
+    stage: "Stage 00",
+    name: "Basic",
+    tagline: "Single-Page Website Package",
+    price: "40,000",
+    currency: "ETB",
+    duration: "4–6 Weeks · Standard Delivery",
+    icon: Star,
+    features: [
+      "1-Page Professional Website, mobile-optimized",
+      "First-Year Domain Registration",
+      "1 year of standard hosting included",
+      "One admin role, limited access",
+      "2 rounds of revisions",
+      "15 days of post-launch support",
+    ],
+    footnote: "A clean, professional single-page presence.",
+  },
+  {
+    key: "classic",
+    stage: "Stage 01",
+    name: "Classic",
+    tagline: "Full-Stack Website Package",
+    price: "75,000",
+    currency: "ETB",
+    duration: "8–10 Weeks · Priority Delivery",
+    ribbon: "Best Value",
+    icon: Sparkles,
+    features: [
+      "Full-Stack Multi-Page Website (up to 6 pages)",
+      "First-Year Domain Registration",
+      "1 year of managed hosting",
+      "Several admin roles with custom permissions",
+      "On-page SEO setup for search visibility",
+      "5 rounds of revisions",
+      "30 days of post-launch support",
+    ],
+    footnote: "A complete website built to scale with your business.",
+  },
+  {
+    key: "golden",
+    stage: "Stage 01",
+    name: "Golden",
+    tagline: "Essential Launch Package",
+    price: "95,000",
+    currency: "ETB",
+    duration: "1 Month · Expedited Delivery",
+    ribbon: "Most Popular",
+    icon: Crown,
+    featured: true,
+    features: [
+      "Full-Stack Multi-Page Website (up to 5 custom pages)",
+      "Custom Admin Dashboard for inquiries or bookings",
+      "100 professional print-ready business cards",
+      "Branded Telegram digital flyer",
+      "1 week of guided mentoring",
+      "First-Year Premium Domain Registration",
+      "1 year of managed hosting",
+      "5 rounds of revisions",
+      "30 days of post-launch technical support",
+    ],
+    footnote: "Everything you need to launch with confidence.",
+  },
+  {
+    key: "premium",
+    stage: "Stage 02",
+    name: "Premium",
+    tagline: "Complete Growth Package",
+    price: "140,000",
+    currency: "ETB",
+    duration: "1 Month · Express VIP Delivery",
+    ribbon: "Most Complete",
+    icon: Rocket,
+    featured: true,
+    features: [
+      "Elite Interactive Web Experience (3D & animations)",
+      "High-performance full-stack + e-commerce or booking engine",
+      "3 professionally edited TikTok & Instagram promo videos",
+      "200 professional print-ready business cards",
+      "2 variations of branded Telegram flyers",
+      "2 weeks of guided mentoring",
+      "First-Year Premium Domain Registration",
+      "1 year of managed hosting",
+      "Unlimited revisions during the build phase",
+      "60 days of priority post-launch support",
+    ],
+    footnote: "Full-spectrum digital presence from day one.",
+  },
+];
+
+function _useRevealNoop() {}
+
+function useRevealImpl() {
   useEffect(() => {
     const els = document.querySelectorAll<HTMLElement>(".reveal");
     const io = new IntersectionObserver(
