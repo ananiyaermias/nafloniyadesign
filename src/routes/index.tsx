@@ -396,6 +396,8 @@ function Index() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -411,7 +413,7 @@ function Index() {
     };
   }, [menuOpen]);
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     const data = new FormData(form);
@@ -421,27 +423,35 @@ function Index() {
     const goal = String(data.get("goal") ?? "").trim();
     const message = String(data.get("message") ?? "").trim();
 
-    const subject = `New Nafloniya inquiry — ${name || "Website enquiry"}`;
-    const body = [
-      `Name: ${name}`,
-      `Email: ${email}`,
-      `Brand / Company: ${brand}`,
-      `What they want from Nafloniya: ${goal}`,
-      "",
-      "Message:",
-      message,
-      "",
-      "— Sent from nafloniyadesign.com",
-    ].join("\n");
-
-    const href = `mailto:ananiyaermias7@gmail.com?subject=${encodeURIComponent(
-      subject,
-    )}&body=${encodeURIComponent(body)}`;
-    window.location.href = href;
-
-    setSent(true);
-    form.reset();
-    setTimeout(() => setSent(false), 5000);
+    setErrorMsg(null);
+    setSending(true);
+    try {
+      await emailjs.send(
+        "service_ehf333o",
+        "template_1kcar0n",
+        {
+          from_name: name,
+          from_email: email,
+          reply_to: email,
+          brand,
+          goal,
+          message,
+          to_email: "ananiyaermias7@gmail.com",
+          subject: `New Nafloniya inquiry — ${name || "Website enquiry"}`,
+        },
+        { publicKey: "z9U5DwdRoZAGsLMGy" },
+      );
+      setSent(true);
+      form.reset();
+      setTimeout(() => setSent(false), 6000);
+    } catch (err) {
+      console.error("EmailJS error:", err);
+      setErrorMsg(
+        "Something went wrong sending your message. Please email ananiyaermias7@gmail.com directly.",
+      );
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
