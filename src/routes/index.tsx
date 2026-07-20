@@ -948,6 +948,11 @@ function Index() {
 
       <Divider />
 
+      {/* PACKAGES */}
+      <PackagesSection />
+
+      <Divider />
+
       {/* TEAM */}
       <section id="team" className="mx-auto max-w-6xl px-6 md:px-10">
         <div className="reveal text-center">
