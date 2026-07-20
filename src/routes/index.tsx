@@ -112,13 +112,6 @@ const PROJECTS = [
   },
 ];
 
-function useReveal() {
-  // reveal on scroll
-  useEffect(() => {
-    // no-op wrapper, keep single implementation below
-  }, []);
-}
-
 type Pkg = {
   key: string;
   stage: string;
@@ -226,9 +219,7 @@ const PACKAGES: Pkg[] = [
   },
 ];
 
-function _useRevealNoop() {}
-
-function useRevealImpl() {
+function useReveal() {
   useEffect(() => {
     const els = document.querySelectorAll<HTMLElement>(".reveal");
     const io = new IntersectionObserver(
