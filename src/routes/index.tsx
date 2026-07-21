@@ -443,62 +443,121 @@ function ProductShowcase() {
   );
 }
 
-function PackagesSection() {
+function PackagesSection({ onChoose }: { onChoose: (name: string) => void }) {
   return (
     <section id="packages" className="mx-auto max-w-7xl px-6 md:px-10">
       <div className="reveal mx-auto max-w-2xl text-center">
         <Eyebrow>Exclusive Service Offer</Eyebrow>
         <h2 className="mt-6 font-serif text-4xl leading-tight text-ivory md:text-5xl">
-          Choose Your Stage.
+          Climb Your Stage.
         </h2>
         <p className="mt-6 text-ivory/70">
-          Four crafted packages — from a single, elegant page to a full
-          cinematic launch with brand, print, and promo film. Every stage is
-          delivered by Nafloniya end-to-end, with hosting, domain, and care
-          included.
+          Four ascending stages — each one lifts your brand higher than the
+          last. Start clean with <span className="text-ivory">Basic</span>,
+          grow into <span className="text-ivory">Classic</span>, launch with
+          <span className="text-ivory"> Golden</span>, and reach the summit
+          with <span className="text-[color:var(--gold)]">Premium</span> —
+          our full cinematic, full-stack, full-brand experience.
         </p>
         <p className="mt-4 text-[0.65rem] uppercase tracking-[0.45em] text-[color:var(--gold)]/80">
           50% deposit to begin · 50% on delivery
         </p>
       </div>
 
-      <div className="reveal mt-16 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+      {/* Ascending progression rail */}
+      <div className="reveal mt-16 grid items-end gap-6 md:grid-cols-2 xl:grid-cols-4">
         {PACKAGES.map((p, i) => {
           const Icon = p.icon;
+          const isPeak = p.key === "premium";
+          // subtle upward staircase: each tier sits a bit higher
+          const lift = ["xl:mt-10", "xl:mt-6", "xl:mt-3", "xl:mt-0"][i] ?? "";
+          const level = `LV ${String(i + 1).padStart(2, "0")}`;
           return (
             <article
               key={p.key}
-              style={{ transitionDelay: `${i * 70}ms` }}
-              className={`group relative flex flex-col overflow-hidden rounded-2xl border p-8 transition-all duration-500 hover:-translate-y-2 ${
-                p.featured
-                  ? "border-[color:var(--gold)]/70 bg-gradient-to-b from-[color:var(--gold)]/8 via-black to-black shadow-[0_30px_80px_-20px_rgba(212,175,55,0.55)]"
+              style={{ transitionDelay: `${i * 90}ms` }}
+              className={`group relative flex flex-col overflow-hidden rounded-2xl border p-8 transition-all duration-500 hover:-translate-y-3 ${lift} ${
+                isPeak
+                  ? "border-[color:var(--gold)] bg-gradient-to-b from-[color:var(--gold)]/15 via-black to-black shadow-[0_40px_120px_-20px_rgba(212,175,55,0.7)] xl:scale-[1.04]"
+                  : p.featured
+                  ? "border-[color:var(--gold)]/60 bg-gradient-to-b from-[color:var(--gold)]/8 via-black to-black shadow-[0_25px_70px_-25px_rgba(212,175,55,0.5)]"
                   : "border-[color:var(--gold)]/20 bg-black/60 hover:border-[color:var(--gold)]/60 hover:shadow-[0_25px_70px_-25px_rgba(212,175,55,0.45)]"
               }`}
             >
+              {/* Peak crown halo */}
+              {isPeak && (
+                <>
+                  <span className="pointer-events-none absolute -inset-px -z-10 rounded-2xl bg-gradient-to-b from-[color:var(--gold)]/50 via-transparent to-transparent opacity-70 blur-md" />
+                  <span className="pointer-events-none absolute -top-24 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-[color:var(--gold)]/25 blur-3xl" />
+                </>
+              )}
               {/* Ambient corner glow */}
               <span
                 className={`pointer-events-none absolute -right-24 -top-24 h-56 w-56 rounded-full blur-3xl transition-opacity duration-700 ${
-                  p.featured ? "bg-[color:var(--gold)]/25 opacity-100" : "bg-[color:var(--gold)]/10 opacity-0 group-hover:opacity-100"
+                  isPeak
+                    ? "bg-[color:var(--gold)]/40 opacity-100"
+                    : p.featured
+                    ? "bg-[color:var(--gold)]/25 opacity-100"
+                    : "bg-[color:var(--gold)]/10 opacity-0 group-hover:opacity-100"
                 }`}
               />
 
               {/* Ribbon */}
               {p.ribbon && (
-                <span className="absolute right-5 top-5 rounded-full border border-[color:var(--gold)] bg-black/80 px-3 py-1 text-[0.55rem] uppercase tracking-[0.35em] text-[color:var(--gold)] backdrop-blur">
+                <span
+                  className={`absolute right-5 top-5 rounded-full border px-3 py-1 text-[0.55rem] uppercase tracking-[0.35em] backdrop-blur ${
+                    isPeak
+                      ? "border-transparent bg-[color:var(--gold)] text-black shadow-[0_10px_30px_-8px_rgba(212,175,55,0.9)]"
+                      : "border-[color:var(--gold)] bg-black/80 text-[color:var(--gold)]"
+                  }`}
+                >
                   {p.ribbon}
                 </span>
               )}
 
-              <div className="relative flex items-center gap-3">
-                <span className="flex h-12 w-12 items-center justify-center rounded-full border border-[color:var(--gold)]/50 text-[color:var(--gold)] transition-all duration-500 group-hover:rotate-6 group-hover:border-[color:var(--gold)] group-hover:shadow-[0_0_30px_rgba(212,175,55,0.6)]">
-                  <Icon className="h-5 w-5" strokeWidth={1.2} />
-                </span>
-                <p className="text-[0.6rem] uppercase tracking-[0.42em] text-[color:var(--gold)]/80">
-                  {p.stage}
-                </p>
+              {/* Level rail */}
+              <div className="relative flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <span
+                    className={`flex h-12 w-12 items-center justify-center rounded-full border text-[color:var(--gold)] transition-all duration-500 group-hover:rotate-6 ${
+                      isPeak
+                        ? "border-[color:var(--gold)] bg-[color:var(--gold)]/10 shadow-[0_0_40px_rgba(212,175,55,0.75)]"
+                        : "border-[color:var(--gold)]/50 group-hover:border-[color:var(--gold)] group-hover:shadow-[0_0_30px_rgba(212,175,55,0.6)]"
+                    }`}
+                  >
+                    <Icon className="h-5 w-5" strokeWidth={1.2} />
+                  </span>
+                  <div className="flex flex-col">
+                    <span className="text-[0.55rem] uppercase tracking-[0.45em] text-[color:var(--gold)]">
+                      {level}
+                    </span>
+                    <span className="text-[0.6rem] uppercase tracking-[0.35em] text-ivory/50">
+                      {p.stage}
+                    </span>
+                  </div>
+                </div>
+                {/* progression dots */}
+                <div className="flex items-center gap-1.5">
+                  {PACKAGES.map((_, di) => (
+                    <span
+                      key={di}
+                      className={`h-1.5 rounded-full transition-all duration-500 ${
+                        di <= i
+                          ? "w-4 bg-[color:var(--gold)]"
+                          : "w-1.5 bg-[color:var(--gold)]/25"
+                      }`}
+                    />
+                  ))}
+                </div>
               </div>
 
-              <h3 className="relative mt-6 font-serif text-4xl leading-none text-ivory">
+              <h3
+                className={`relative mt-6 font-serif text-4xl leading-none ${
+                  isPeak
+                    ? "bg-gradient-to-r from-[color:var(--gold)] via-ivory to-[color:var(--gold)] bg-clip-text text-transparent"
+                    : "text-ivory"
+                }`}
+              >
                 {p.name}
               </h3>
               <p className="relative mt-2 font-serif italic text-sm text-ivory/60">
@@ -506,7 +565,9 @@ function PackagesSection() {
               </p>
 
               <div className="relative mt-6 flex items-baseline gap-2">
-                <span className="font-serif text-4xl text-[color:var(--gold)]">
+                <span
+                  className={`font-serif ${isPeak ? "text-5xl" : "text-4xl"} text-[color:var(--gold)]`}
+                >
                   {p.price}
                 </span>
                 <span className="text-xs uppercase tracking-[0.32em] text-ivory/60">
@@ -518,6 +579,12 @@ function PackagesSection() {
               </p>
 
               <span className="relative my-6 h-px w-full bg-gradient-to-r from-transparent via-[color:var(--gold)]/40 to-transparent" />
+
+              {i > 0 && (
+                <p className="relative -mt-3 mb-4 text-[0.6rem] uppercase tracking-[0.35em] text-[color:var(--gold)]/70">
+                  Everything in {PACKAGES[i - 1].name}, plus —
+                </p>
+              )}
 
               <ul className="relative flex flex-col gap-3 text-sm text-ivory/80">
                 {p.features.map((f) => (
@@ -532,20 +599,28 @@ function PackagesSection() {
                 {p.footnote}
               </p>
 
-              <a
-                href="#contact"
+              <button
+                type="button"
+                onClick={() => onChoose(p.name)}
                 className={`relative mt-8 inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-[0.65rem] uppercase tracking-[0.4em] transition-all duration-500 ${
-                  p.featured
+                  isPeak
+                    ? "bg-[color:var(--gold)] text-black shadow-[0_20px_60px_-10px_rgba(212,175,55,1)] hover:shadow-[0_25px_80px_-10px_rgba(212,175,55,1)]"
+                    : p.featured
                     ? "bg-[color:var(--gold)] text-black shadow-[0_15px_50px_-10px_rgba(212,175,55,0.9)] hover:shadow-[0_20px_60px_-10px_rgba(212,175,55,1)]"
                     : "border border-[color:var(--gold)]/60 text-[color:var(--gold)] hover:bg-[color:var(--gold)] hover:text-black"
                 }`}
               >
-                Choose {p.name} <ArrowUpRight className="h-3.5 w-3.5" />
-              </a>
+                {isPeak ? `Ascend to ${p.name}` : `Choose ${p.name}`}
+                <ArrowUpRight className="h-3.5 w-3.5" />
+              </button>
             </article>
           );
         })}
       </div>
+
+      <p className="reveal mx-auto mt-12 max-w-xl text-center text-[0.7rem] uppercase tracking-[0.4em] text-[color:var(--gold)]/70">
+        ↑ Every tier stacks on the one before it — Premium is everything Nafloniya can build for you.
+      </p>
     </section>
   );
 }
