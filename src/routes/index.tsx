@@ -835,6 +835,25 @@ function Index() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const scrollToId = (href: string) => {
+    if (!href.startsWith("#")) return;
+    const id = href.slice(1);
+    const el = document.getElementById(id);
+    if (!el) return;
+    const header = document.querySelector("header");
+    const offset = (header?.getBoundingClientRect().height ?? 80) + 12;
+    const top = el.getBoundingClientRect().top + window.scrollY - offset;
+    window.scrollTo({ top, behavior: "smooth" });
+    history.replaceState(null, "", href);
+  };
+  const handleNavClick =
+    (href: string, after?: () => void) => (e: MouseEvent<HTMLAnchorElement>) => {
+      if (!href.startsWith("#")) return;
+      e.preventDefault();
+      scrollToId(href);
+      after?.();
+    };
+
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => {
