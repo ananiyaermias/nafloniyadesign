@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent, type MouseEvent } from "react";
 import emailjs from "@emailjs/browser";
 import {
   Menu,
@@ -835,6 +835,25 @@ function Index() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const scrollToId = (href: string) => {
+    if (!href.startsWith("#")) return;
+    const id = href.slice(1);
+    const el = document.getElementById(id);
+    if (!el) return;
+    const header = document.querySelector("header");
+    const offset = (header?.getBoundingClientRect().height ?? 80) + 12;
+    const top = el.getBoundingClientRect().top + window.scrollY - offset;
+    window.scrollTo({ top, behavior: "smooth" });
+    history.replaceState(null, "", href);
+  };
+  const handleNavClick =
+    (href: string, after?: () => void) => (e: MouseEvent<HTMLAnchorElement>) => {
+      if (!href.startsWith("#")) return;
+      e.preventDefault();
+      scrollToId(href);
+      after?.();
+    };
+
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => {
@@ -907,7 +926,7 @@ function Index() {
         }`}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 md:px-10">
-          <a href="#home" className="flex items-center gap-3">
+          <a href="#home" onClick={handleNavClick("#home")} className="flex items-center gap-3">
             <Monogram className="h-9 w-9 object-contain" />
             <span className="font-serif text-lg tracking-[0.35em] text-ivory">
               NAFLONIYA
@@ -918,6 +937,7 @@ function Index() {
               <a
                 key={n.href}
                 href={n.href}
+                onClick={handleNavClick(n.href)}
                 className="group relative text-xs uppercase tracking-[0.28em] text-ivory/80 transition-colors hover:text-[color:var(--gold)]"
               >
                 {n.label}
@@ -925,7 +945,7 @@ function Index() {
               </a>
             ))}
           </nav>
-          <a href="#contact" className="btn-gold hidden md:inline-flex">
+          <a href="#contact" onClick={handleNavClick("#contact")} className="btn-gold hidden md:inline-flex">
             Get in Touch
           </a>
           <button
@@ -959,7 +979,7 @@ function Index() {
               <a
                 key={n.href}
                 href={n.href}
-                onClick={() => setMenuOpen(false)}
+                onClick={handleNavClick(n.href, () => setMenuOpen(false))}
                 className="font-serif text-3xl tracking-[0.2em] text-ivory hover:text-[color:var(--gold)]"
               >
                 {n.label}
@@ -967,7 +987,7 @@ function Index() {
             ))}
             <a
               href="#contact"
-              onClick={() => setMenuOpen(false)}
+              onClick={handleNavClick("#contact", () => setMenuOpen(false))}
               className="btn-gold mt-6"
             >
               Get in Touch
@@ -1315,7 +1335,11 @@ function Index() {
             <ul className="mt-6 space-y-3 text-sm text-ivory/70">
               {NAV.map((n) => (
                 <li key={n.href}>
-                  <a href={n.href} className="transition-colors hover:text-[color:var(--gold)]">
+                  <a
+                    href={n.href}
+                    onClick={handleNavClick(n.href)}
+                    className="transition-colors hover:text-[color:var(--gold)]"
+                  >
                     {n.label}
                   </a>
                 </li>
@@ -1327,9 +1351,28 @@ function Index() {
               Contact
             </p>
             <ul className="mt-6 space-y-3 text-sm text-ivory/70">
-              <li>+251 949 709 118</li>
-              <li>ananiyaermias7@gmail.com</li>
-              <li>www.nafloniyadesign.com</li>
+              <li>
+                <a href="tel:+251949709118" className="transition-colors hover:text-[color:var(--gold)]">
+                  +251 949 709 118
+                </a>
+              </li>
+              <li>
+                <a
+                  href="mailto:ananiyaermias7@gmail.com"
+                  className="transition-colors hover:text-[color:var(--gold)]"
+                >
+                  ananiyaermias7@gmail.com
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#contact"
+                  onClick={handleNavClick("#contact")}
+                  className="transition-colors hover:text-[color:var(--gold)]"
+                >
+                  www.nafloniyadesign.com
+                </a>
+              </li>
             </ul>
           </div>
         </div>
