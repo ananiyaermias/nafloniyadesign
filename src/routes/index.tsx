@@ -926,7 +926,7 @@ function Index() {
         }`}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 md:px-10">
-          <a href="#home" className="flex items-center gap-3">
+          <a href="#home" onClick={handleNavClick("#home")} className="flex items-center gap-3">
             <Monogram className="h-9 w-9 object-contain" />
             <span className="font-serif text-lg tracking-[0.35em] text-ivory">
               NAFLONIYA
@@ -937,6 +937,7 @@ function Index() {
               <a
                 key={n.href}
                 href={n.href}
+                onClick={handleNavClick(n.href)}
                 className="group relative text-xs uppercase tracking-[0.28em] text-ivory/80 transition-colors hover:text-[color:var(--gold)]"
               >
                 {n.label}
@@ -944,7 +945,7 @@ function Index() {
               </a>
             ))}
           </nav>
-          <a href="#contact" className="btn-gold hidden md:inline-flex">
+          <a href="#contact" onClick={handleNavClick("#contact")} className="btn-gold hidden md:inline-flex">
             Get in Touch
           </a>
           <button
@@ -978,7 +979,7 @@ function Index() {
               <a
                 key={n.href}
                 href={n.href}
-                onClick={() => setMenuOpen(false)}
+                onClick={handleNavClick(n.href, () => setMenuOpen(false))}
                 className="font-serif text-3xl tracking-[0.2em] text-ivory hover:text-[color:var(--gold)]"
               >
                 {n.label}
@@ -986,7 +987,7 @@ function Index() {
             ))}
             <a
               href="#contact"
-              onClick={() => setMenuOpen(false)}
+              onClick={handleNavClick("#contact", () => setMenuOpen(false))}
               className="btn-gold mt-6"
             >
               Get in Touch
