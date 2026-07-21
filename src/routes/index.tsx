@@ -1335,7 +1335,11 @@ function Index() {
             <ul className="mt-6 space-y-3 text-sm text-ivory/70">
               {NAV.map((n) => (
                 <li key={n.href}>
-                  <a href={n.href} className="transition-colors hover:text-[color:var(--gold)]">
+                  <a
+                    href={n.href}
+                    onClick={handleNavClick(n.href)}
+                    className="transition-colors hover:text-[color:var(--gold)]"
+                  >
                     {n.label}
                   </a>
                 </li>
@@ -1347,9 +1351,28 @@ function Index() {
               Contact
             </p>
             <ul className="mt-6 space-y-3 text-sm text-ivory/70">
-              <li>+251 949 709 118</li>
-              <li>ananiyaermias7@gmail.com</li>
-              <li>www.nafloniyadesign.com</li>
+              <li>
+                <a href="tel:+251949709118" className="transition-colors hover:text-[color:var(--gold)]">
+                  +251 949 709 118
+                </a>
+              </li>
+              <li>
+                <a
+                  href="mailto:ananiyaermias7@gmail.com"
+                  className="transition-colors hover:text-[color:var(--gold)]"
+                >
+                  ananiyaermias7@gmail.com
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#contact"
+                  onClick={handleNavClick("#contact")}
+                  className="transition-colors hover:text-[color:var(--gold)]"
+                >
+                  www.nafloniyadesign.com
+                </a>
+              </li>
             </ul>
           </div>
         </div>
