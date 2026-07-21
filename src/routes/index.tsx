@@ -627,59 +627,99 @@ function PackagesSection({ onChoose }: { onChoose: (name: string) => void }) {
 
 type ToastState = { kind: "success" | "error"; message: string } | null;
 
-function StatusToast({ toast, onClose }: { toast: ToastState; onClose: () => void }) {
-  const visible = !!toast;
+function StatusToast({
+  toast,
+  visible,
+  showClose,
+  onClose,
+}: {
+  toast: ToastState;
+  visible: boolean;
+  showClose: boolean;
+  onClose: () => void;
+}) {
   const isSuccess = toast?.kind === "success";
   return (
     <div
-      className={`pointer-events-none fixed inset-x-0 top-6 z-[70] flex justify-center px-4 transition-all duration-500 md:top-10 ${
-        visible ? "translate-y-0 opacity-100" : "-translate-y-6 opacity-0"
+      className={`pointer-events-none fixed bottom-6 right-6 z-[70] flex justify-end px-2 transition-all duration-500 md:bottom-10 md:right-10 ${
+        visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
       }`}
       role="status"
       aria-live="polite"
     >
-      <div
-        className={`pointer-events-auto relative flex max-w-md items-start gap-4 overflow-hidden rounded-full border px-6 py-4 backdrop-blur-xl shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)] ${
-          isSuccess
-            ? "border-[color:var(--gold)] bg-black/85"
-            : "border-red-400/60 bg-black/85"
-        }`}
-      >
-        <span
-          className={`absolute inset-0 -z-10 opacity-70 blur-2xl ${
-            isSuccess ? "bg-[color:var(--gold)]/25" : "bg-red-500/20"
-          }`}
-        />
-        <span
-          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${
+      {toast && (
+        <div
+          className={`pointer-events-auto relative flex w-[22rem] max-w-[92vw] items-start gap-4 overflow-hidden rounded-2xl border p-5 backdrop-blur-xl shadow-[0_40px_120px_-20px_rgba(0,0,0,0.9)] ${
             isSuccess
-              ? "bg-[color:var(--gold)] text-black"
-              : "bg-red-500/90 text-black"
+              ? "border-[color:var(--gold)] bg-black/90"
+              : "border-red-400/60 bg-black/90"
           }`}
         >
-          {isSuccess ? <Heart className="h-4 w-4" fill="currentColor" /> : <X className="h-4 w-4" strokeWidth={2.5} />}
-        </span>
-        <div className="min-w-0 pr-2">
-          <p
-            className={`font-serif text-sm tracking-wide ${
-              isSuccess ? "text-[color:var(--gold)]" : "text-red-200"
+          {/* Ambient halo */}
+          <span
+            className={`pointer-events-none absolute -inset-4 -z-10 opacity-70 blur-2xl ${
+              isSuccess ? "bg-[color:var(--gold)]/30" : "bg-red-500/20"
+            }`}
+          />
+          {/* Rotating gold rim on success */}
+          {isSuccess && (
+            <span
+              className="pointer-events-none absolute -inset-px -z-10 rounded-2xl opacity-70 blur-[1px]"
+              style={{
+                background:
+                  "conic-gradient(from 0deg, transparent, rgba(212,175,55,0.9), transparent, rgba(233,216,166,0.8), transparent)",
+                animation: "spin 6s linear infinite",
+              }}
+            />
+          )}
+          <span
+            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${
+              isSuccess
+                ? "bg-[color:var(--gold)] text-black shadow-[0_0_30px_rgba(212,175,55,0.7)]"
+                : "bg-red-500/90 text-black"
             }`}
           >
-            {isSuccess ? "Your message is on its way ✓" : "Message didn't send"}
-          </p>
-          <p className="mt-1 text-xs leading-relaxed text-ivory/75">
-            {toast?.message}
-          </p>
+            {isSuccess ? (
+              <Heart className="h-4 w-4" fill="currentColor" />
+            ) : (
+              <Sparkles className="h-4 w-4" strokeWidth={2} />
+            )}
+          </span>
+          <div className="min-w-0 flex-1 pr-1">
+            <p
+              className={`font-serif text-sm tracking-wide ${
+                isSuccess ? "text-[color:var(--gold)]" : "text-red-200"
+              }`}
+            >
+              {isSuccess
+                ? "Message sent — welcome to the family"
+                : "Message didn't send"}
+            </p>
+            <p className="mt-1 text-xs leading-relaxed text-ivory/75">
+              {toast?.message}
+            </p>
+          </div>
+          {showClose && (
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Dismiss"
+              className="ml-1 text-ivory/50 transition-colors hover:text-ivory"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          )}
+          {/* Countdown bar */}
+          <span
+            className={`pointer-events-none absolute bottom-0 left-0 h-[2px] ${
+              isSuccess ? "bg-[color:var(--gold)]" : "bg-red-400"
+            }`}
+            style={{
+              animation: visible ? "toastBar 6s linear forwards" : "none",
+            }}
+          />
         </div>
-        <button
-          type="button"
-          onClick={onClose}
-          aria-label="Dismiss"
-          className="ml-2 text-ivory/50 hover:text-ivory"
-        >
-          <X className="h-4 w-4" />
-        </button>
-      </div>
+      )}
     </div>
   );
 }
@@ -752,6 +792,41 @@ function Index() {
   const [sending, setSending] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [toast, setToast] = useState<ToastState>(null);
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastShowClose, setToastShowClose] = useState(false);
+
+  const showToast = (t: NonNullable<ToastState>) => {
+    setToast(t);
+    setToastVisible(true);
+    setToastShowClose(false);
+    // reveal close button after brief moment so it isn't hidden but also not distracting on exit
+    window.setTimeout(() => setToastShowClose(true), 400);
+    // start exit animation
+    window.setTimeout(() => {
+      setToastShowClose(false);
+      setToastVisible(false);
+    }, 6000);
+    // unmount content only after fade completes
+    window.setTimeout(() => setToast(null), 6700);
+  };
+
+  const dismissToast = () => {
+    setToastShowClose(false);
+    setToastVisible(false);
+    window.setTimeout(() => setToast(null), 600);
+  };
+
+  const preselectPlan = (name: string) => {
+    const el = document.querySelector<HTMLInputElement>('input[name="goal"]');
+    if (el) {
+      el.value = `Use the ${name} plan`;
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    }
+    document
+      .getElementById("contact")
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    window.setTimeout(() => el?.focus({ preventScroll: true }), 700);
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -797,20 +872,18 @@ function Index() {
       );
       setSent(true);
       form.reset();
-      setToast({
+      showToast({
         kind: "success",
         message:
           "Thank you for choosing Nafloniya — we're so glad you're here. Ananiya will personally reach out to you very soon. Consider yourself family.",
       });
       setTimeout(() => setSent(false), 6000);
-      setTimeout(() => setToast(null), 8000);
     } catch (err) {
       console.error("EmailJS error:", err);
       const msg =
         "We couldn't deliver your message this time. Please try again in a moment or email ananiyaermias7@gmail.com directly — we'd hate to miss you.";
       setErrorMsg(msg);
-      setToast({ kind: "error", message: msg });
-      setTimeout(() => setToast(null), 8000);
+      showToast({ kind: "error", message: msg });
     } finally {
       setSending(false);
     }
@@ -818,7 +891,12 @@ function Index() {
 
   return (
     <div className="grain min-h-screen bg-background text-foreground">
-      <StatusToast toast={toast} onClose={() => setToast(null)} />
+      <StatusToast
+        toast={toast}
+        visible={toastVisible}
+        showClose={toastShowClose}
+        onClose={dismissToast}
+      />
       <FloatingGetInTouch />
       {/* NAV */}
       <header
@@ -1024,7 +1102,7 @@ function Index() {
       <Divider />
 
       {/* PACKAGES */}
-      <PackagesSection />
+      <PackagesSection onChoose={preselectPlan} />
 
       <Divider />
 
@@ -1075,14 +1153,6 @@ function Index() {
             </p>
 
             <div className="mt-10 flex flex-wrap items-center gap-4">
-              <a
-                href="https://ananiya-portfolio.lovable.app/"
-                target="_blank"
-                rel="noreferrer"
-                className="btn-gold-solid"
-              >
-                View Full Portfolio <ArrowUpRight className="h-3.5 w-3.5" />
-              </a>
               <div className="flex items-center gap-3">
                 {[
                   { icon: TelegramIcon, href: "https://t.me/Nafloniya", label: "Telegram" },
