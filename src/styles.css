@@ -266,6 +266,11 @@
   50% { transform: translateY(-8px); }
 }
 
+@keyframes toastBar {
+  from { width: 100%; }
+  to { width: 0%; }
+}
+
 @utility animate-rise {
   animation: rise 0.9s ease-out both;
 }
