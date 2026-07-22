@@ -25,19 +25,16 @@ import {
   Star,
   Heart,
 } from "lucide-react";
-import monogramAsset from "@/assets/nafloniya-logo.png.asset.json";
-import ananiyaAsset from "@/assets/ananiya-portrait.jpg.asset.json";
-import burgerVideo from "@/assets/burger-ad-v2.mp4.asset.json";
-import realestateVideo from "@/assets/realestate-ad-v2.mp4.asset.json";
-import furnitureVideo from "@/assets/furniture-ad-v2.mp4.asset.json";
-import hotelVideo from "@/assets/hotel-ad.mp4.asset.json";
-import burgerBg from "@/assets/burger-bg.png.asset.json";
-import furnitureBg from "@/assets/furniture-bg.png.asset.json";
-import hotelBg from "@/assets/hotel-bg.png.asset.json";
-import realestateBg from "@/assets/realestate-bg.png.asset.json";
-
-const monogram = monogramAsset.url;
-const ananiya = ananiyaAsset.url;
+import monogram from "@/assets/nafloniya-logo.png";
+import ananiya from "@/assets/ananiya-portrait.jpg";
+import burgerVideo from "@/assets/burger-ad.mp4";
+import realestateVideo from "@/assets/realestate-ad.mp4";
+import furnitureVideo from "@/assets/furniture-ad.mp4";
+import hotelVideo from "@/assets/hotel-ad.mp4";
+import burgerBg from "@/assets/burger-bg.png";
+import furnitureBg from "@/assets/furniture-bg.png";
+import hotelBg from "@/assets/hotel-bg.png";
+import realestateBg from "@/assets/realestate-bg.png";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -77,8 +74,8 @@ const PROJECTS = [
     tag: "Food & Beverage",
     desc: "A sizzling, appetite-first web experience — cinematic 3D visuals, bold typography, and a menu that converts scrolls into orders.",
     href: "https://nafloniyaburger.lovable.app",
-    video: burgerVideo.url,
-    bg: burgerBg.url,
+   video: burgerVideo,
+bg: burgerBg,
   },
   {
     key: "furniture",
@@ -87,8 +84,8 @@ const PROJECTS = [
     tag: "Interior & Retail",
     desc: "A tactile, editorial storefront — every piece framed in warm light, engineered to make craft feel collectible.",
     href: "https://nafloniya-furniture.lovable.app",
-    video: furnitureVideo.url,
-    bg: furnitureBg.url,
+   video: furnitureVideo,
+bg: furnitureBg,
   },
   {
     key: "hotel",
@@ -97,8 +94,8 @@ const PROJECTS = [
     tag: "Hospitality",
     desc: "A cinematic hospitality site with quiet luxury pacing — bookings, suites, and story woven into one calm journey.",
     href: "https://nafloniya-hotel.lovable.app",
-    video: hotelVideo.url,
-    bg: hotelBg.url,
+   video: hotelVideo,
+bg: hotelBg,
   },
   {
     key: "realestate",
@@ -107,8 +104,8 @@ const PROJECTS = [
     tag: "Real Estate",
     desc: "Architectural, high-trust design showcasing premium listings with immersive 3D tours and refined property storytelling.",
     href: "https://nafloniya-realestate.lovable.app",
-    video: realestateVideo.url,
-    bg: realestateBg.url,
+   video: realestateVideo,
+bg: realestateBg,
   },
 ];
 
