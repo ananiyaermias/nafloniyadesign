@@ -124,7 +124,7 @@ type Pkg = {
   featured?: boolean;
 };
 
-const PACKAGES: Pkg[] = [
+   const PACKAGES: Pkg[] = [
   {
     key: "basic",
     stage: "Stage 00",
@@ -167,10 +167,10 @@ const PACKAGES: Pkg[] = [
   },
   {
     key: "golden",
-    stage: "Stage 01",
+    stage: "Stage 02",
     name: "Golden",
     tagline: "Essential Launch Package",
-    price: "95,000",
+    price: "100,000",
     currency: "ETB",
     duration: "1 Month · Expedited Delivery",
     ribbon: "Most Popular",
@@ -180,7 +180,8 @@ const PACKAGES: Pkg[] = [
       "Full-Stack Multi-Page Website (up to 5 custom pages)",
       "Custom Admin Dashboard for inquiries or bookings",
       "100 professional print-ready business cards",
-      "Branded Telegram digital flyer",
+      "3 branded digital flyers (Telegram & LinkedIn)",
+      "2 promotional videos with 3D cinematic motion",
       "1 week of guided mentoring",
       "First-Year Premium Domain Registration",
       "1 year of managed hosting",
@@ -191,10 +192,10 @@ const PACKAGES: Pkg[] = [
   },
   {
     key: "premium",
-    stage: "Stage 02",
+    stage: "Stage 03",
     name: "Premium",
     tagline: "Complete Growth Package",
-    price: "140,000",
+    price: "160,000",
     currency: "ETB",
     duration: "1 Month · Express VIP Delivery",
     ribbon: "Most Complete",
@@ -203,9 +204,12 @@ const PACKAGES: Pkg[] = [
     features: [
       "Elite Interactive Web Experience (3D & animations)",
       "High-performance full-stack + e-commerce or booking engine",
-      "3 professionally edited TikTok & Instagram promo videos",
+      "1 month of social media management",
+      "9 branded digital flyers (Telegram & LinkedIn)",
+      "5 promotional videos with 3D cinematic motion",
+      "12 promotional videos shot with camera",
+      "10 social media posts",
       "200 professional print-ready business cards",
-      "2 variations of branded Telegram flyers",
       "2 weeks of guided mentoring",
       "First-Year Premium Domain Registration",
       "1 year of managed hosting",
@@ -215,7 +219,6 @@ const PACKAGES: Pkg[] = [
     footnote: "Full-spectrum digital presence from day one.",
   },
 ];
-
 function useReveal() {
   useEffect(() => {
     const els = document.querySelectorAll<HTMLElement>(".reveal");
