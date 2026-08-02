@@ -290,3 +290,9 @@
   opacity: 1;
   transform: translateY(0);
 }
+
+@keyframes flyerIn {
+  from { opacity: 0; transform: translateY(28px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.reveal-in { animation: flyerIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) both; }

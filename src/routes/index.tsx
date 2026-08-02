@@ -41,6 +41,10 @@ import flyerFurnitureImg from "@/assets/flyer-furniture.jpg.asset.json";
 import flyerHotelImg from "@/assets/flyer-hotel.jpg.asset.json";
 import flyerFurniturePdf from "@/assets/flyer-furniture.pdf.asset.json";
 import flyerHotelPdf from "@/assets/flyer-hotel.pdf.asset.json";
+import flyerBurgerImg from "@/assets/flyer-burger.jpg.asset.json";
+import flyerRealestateImg from "@/assets/flyer-realestate.jpg.asset.json";
+import flyerBurgerPdf from "@/assets/flyer-burger.pdf.asset.json";
+import flyerRealestatePdf from "@/assets/flyer-realestate.pdf.asset.json";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -82,7 +86,7 @@ const PROJECTS = [
     href: "https://nafloniyaburger.lovable.app",
    video: burgerVideo,
 bg: burgerBg,
-    flyer: null as null | { image: string; pdf: string; title: string },
+    flyer: { image: flyerBurgerImg.url, pdf: flyerBurgerPdf.url, title: "Burger Flyer" },
   },
   {
     key: "furniture",
@@ -115,7 +119,7 @@ bg: hotelBg,
     href: "https://nafloniya-realestate.lovable.app",
    video: realestateVideo,
 bg: realestateBg,
-    flyer: null as null | { image: string; pdf: string; title: string },
+    flyer: { image: flyerRealestateImg.url, pdf: flyerRealestatePdf.url, title: "Real Estate Flyer" },
   },
 ];
 
@@ -449,23 +453,44 @@ function ProductShowcase() {
               >
                 Visit Live Site <ArrowUpRight className="h-3.5 w-3.5" />
               </a>
-              {project.flyer && (
-                <button
-                  type="button"
-                  onClick={() => setFlyerOpen(true)}
-                  className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full border border-[color:var(--gold)]/60 bg-[color:var(--gold)]/[0.06] px-6 py-3 text-[0.68rem] uppercase tracking-[0.3em] text-[color:var(--gold)] backdrop-blur transition-all duration-500 hover:border-[color:var(--gold)] hover:bg-[color:var(--gold)] hover:text-black"
-                >
-                  <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-[color:var(--gold)]/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-                  <span className="relative flex h-6 w-5 shrink-0 items-center justify-center rounded-[3px] border border-current">
-                    <FileText className="h-3 w-3" />
-                  </span>
-                  <span className="relative">View Flyer</span>
-                </button>
-              )}
               <a href="#contact" className="btn-gold">
                 Want One Like It <ArrowRight className="h-3.5 w-3.5" />
               </a>
             </div>
+
+            {/* Flyer teaser */}
+            {project.flyer && (
+              <button
+                type="button"
+                onClick={() => setFlyerOpen(true)}
+                className="group relative mt-8 flex w-full max-w-md items-center gap-5 overflow-hidden rounded-2xl border border-[color:var(--gold)]/30 bg-black/45 p-3 pr-6 text-left backdrop-blur-md transition-all duration-500 hover:-translate-y-1 hover:border-[color:var(--gold)]/80 hover:shadow-[0_30px_80px_-25px_rgba(212,175,55,0.55)]"
+              >
+                <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-[color:var(--gold)]/15 to-transparent transition-transform duration-[1200ms] group-hover:translate-x-full" />
+                <span className="relative h-24 w-[4.5rem] shrink-0 overflow-hidden rounded-lg border border-[color:var(--gold)]/40 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.9)]">
+                  <img
+                    src={project.flyer.image}
+                    alt=""
+                    loading="lazy"
+                    className="h-full w-full object-cover object-top transition-transform duration-[1500ms] group-hover:scale-110"
+                  />
+                  <span className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                </span>
+                <span className="relative flex-1">
+                  <span className="flex items-center gap-2 text-[0.58rem] uppercase tracking-[0.42em] text-[color:var(--gold)]">
+                    <Sparkles className="h-3 w-3" /> Official Flyer
+                  </span>
+                  <span className="mt-2 block font-serif text-xl text-ivory">
+                    {project.flyer.title}
+                  </span>
+                  <span className="mt-1 block text-[0.68rem] tracking-[0.12em] text-ivory/50">
+                    A4 · print &amp; digital — tap to open
+                  </span>
+                </span>
+                <span className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[color:var(--gold)]/60 text-[color:var(--gold)] transition-all duration-500 group-hover:bg-[color:var(--gold)] group-hover:text-black">
+                  <FileText className="h-4 w-4" />
+                </span>
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -473,11 +498,11 @@ function ProductShowcase() {
       {/* Flyer lightbox */}
       {project.flyer && flyerOpen && (
         <div
-          className="fixed inset-0 z-[120] flex items-start justify-center overflow-y-auto bg-black/90 p-4 backdrop-blur-md md:p-10"
+          className="fixed inset-0 z-[120] flex items-start justify-center overflow-y-auto bg-black/92 p-4 backdrop-blur-xl md:p-10"
           onClick={() => setFlyerOpen(false)}
         >
           <div
-            className="relative my-auto w-full max-w-3xl overflow-hidden rounded-2xl border border-[color:var(--gold)]/35 bg-[#0A0A0A] shadow-[0_60px_160px_-40px_rgba(212,175,55,0.5)]"
+            className="reveal-in relative my-auto w-full max-w-3xl overflow-hidden rounded-[1.75rem] border border-[color:var(--gold)]/40 bg-[#0A0A0A] shadow-[0_70px_180px_-40px_rgba(212,175,55,0.55)]"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between gap-4 border-b border-[color:var(--gold)]/20 px-5 py-4 md:px-7">
@@ -498,7 +523,8 @@ function ProductShowcase() {
                 <X className="h-4 w-4" />
               </button>
             </div>
-            <div className="max-h-[65vh] overflow-y-auto bg-black">
+            <div className="relative max-h-[66vh] overflow-y-auto bg-black">
+              <span className="pointer-events-none sticky top-0 z-10 -mb-10 block h-10 bg-gradient-to-b from-black to-transparent" />
               <img
                 src={project.flyer.image}
                 alt={`${project.name} flyer`}
@@ -506,9 +532,9 @@ function ProductShowcase() {
                 loading="eager"
               />
             </div>
-            <div className="flex flex-wrap items-center justify-between gap-4 border-t border-[color:var(--gold)]/20 px-5 py-4 md:px-7">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-t border-[color:var(--gold)]/20 bg-gradient-to-r from-[color:var(--gold)]/[0.06] to-transparent px-5 py-4 md:px-7">
               <p className="text-[0.65rem] uppercase tracking-[0.3em] text-ivory/50">
-                A4 · Print ready
+                A4 · Print ready · Scroll to explore
               </p>
               <div className="flex flex-wrap gap-3">
                 <a
