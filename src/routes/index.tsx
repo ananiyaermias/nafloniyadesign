@@ -24,6 +24,8 @@ import {
   Crown,
   Star,
   Heart,
+  FileText,
+  Download,
 } from "lucide-react";
 import monogram from "@/assets/nafloniya-logo.png";
 import ananiya from "@/assets/ananiya-portrait.jpg";
@@ -35,6 +37,10 @@ import burgerBg from "@/assets/burger-bg.png";
 import furnitureBg from "@/assets/furniture-bg.png";
 import hotelBg from "@/assets/hotel-bg.png";
 import realestateBg from "@/assets/realestate-bg.png";
+import flyerFurnitureImg from "@/assets/flyer-furniture.jpg.asset.json";
+import flyerHotelImg from "@/assets/flyer-hotel.jpg.asset.json";
+import flyerFurniturePdf from "@/assets/flyer-furniture.pdf.asset.json";
+import flyerHotelPdf from "@/assets/flyer-hotel.pdf.asset.json";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -76,6 +82,7 @@ const PROJECTS = [
     href: "https://nafloniyaburger.lovable.app",
    video: burgerVideo,
 bg: burgerBg,
+    flyer: null as null | { image: string; pdf: string; title: string },
   },
   {
     key: "furniture",
@@ -86,6 +93,7 @@ bg: burgerBg,
     href: "https://nafloniya-furniture.lovable.app",
    video: furnitureVideo,
 bg: furnitureBg,
+    flyer: { image: flyerFurnitureImg.url, pdf: flyerFurniturePdf.url, title: "Furniture Flyer" },
   },
   {
     key: "hotel",
@@ -96,6 +104,7 @@ bg: furnitureBg,
     href: "https://nafloniya-hotel.lovable.app",
    video: hotelVideo,
 bg: hotelBg,
+    flyer: { image: flyerHotelImg.url, pdf: flyerHotelPdf.url, title: "Hotel Flyer" },
   },
   {
     key: "realestate",
@@ -106,6 +115,7 @@ bg: hotelBg,
     href: "https://nafloniya-realestate.lovable.app",
    video: realestateVideo,
 bg: realestateBg,
+    flyer: null as null | { image: string; pdf: string; title: string },
   },
 ];
 
@@ -282,6 +292,17 @@ function ProductShowcase() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [playing, setPlaying] = useState(true);
   const [muted, setMuted] = useState(false);
+  const [flyerOpen, setFlyerOpen] = useState(false);
+
+  useEffect(() => { setFlyerOpen(false); }, [active]);
+
+  useEffect(() => {
+    if (!flyerOpen) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setFlyerOpen(false); };
+    window.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => { window.removeEventListener("keydown", onKey); document.body.style.overflow = ""; };
+  }, [flyerOpen]);
 
   // Preload all videos silently for instant switch
   useEffect(() => {
@@ -428,6 +449,19 @@ function ProductShowcase() {
               >
                 Visit Live Site <ArrowUpRight className="h-3.5 w-3.5" />
               </a>
+              {project.flyer && (
+                <button
+                  type="button"
+                  onClick={() => setFlyerOpen(true)}
+                  className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full border border-[color:var(--gold)]/60 bg-[color:var(--gold)]/[0.06] px-6 py-3 text-[0.68rem] uppercase tracking-[0.3em] text-[color:var(--gold)] backdrop-blur transition-all duration-500 hover:border-[color:var(--gold)] hover:bg-[color:var(--gold)] hover:text-black"
+                >
+                  <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-[color:var(--gold)]/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+                  <span className="relative flex h-6 w-5 shrink-0 items-center justify-center rounded-[3px] border border-current">
+                    <FileText className="h-3 w-3" />
+                  </span>
+                  <span className="relative">View Flyer</span>
+                </button>
+              )}
               <a href="#contact" className="btn-gold">
                 Want One Like It <ArrowRight className="h-3.5 w-3.5" />
               </a>
@@ -435,6 +469,64 @@ function ProductShowcase() {
           </div>
         </div>
       </div>
+
+      {/* Flyer lightbox */}
+      {project.flyer && flyerOpen && (
+        <div
+          className="fixed inset-0 z-[120] flex items-start justify-center overflow-y-auto bg-black/90 p-4 backdrop-blur-md md:p-10"
+          onClick={() => setFlyerOpen(false)}
+        >
+          <div
+            className="relative my-auto w-full max-w-3xl overflow-hidden rounded-2xl border border-[color:var(--gold)]/35 bg-[#0A0A0A] shadow-[0_60px_160px_-40px_rgba(212,175,55,0.5)]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between gap-4 border-b border-[color:var(--gold)]/20 px-5 py-4 md:px-7">
+              <div>
+                <p className="text-[0.6rem] uppercase tracking-[0.4em] text-[color:var(--gold)]">
+                  Nafloniya · Print & Digital
+                </p>
+                <h4 className="mt-1 font-serif text-xl text-ivory md:text-2xl">
+                  {project.flyer.title}
+                </h4>
+              </div>
+              <button
+                type="button"
+                onClick={() => setFlyerOpen(false)}
+                aria-label="Close flyer"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[color:var(--gold)]/50 text-[color:var(--gold)] transition-all hover:bg-[color:var(--gold)] hover:text-black"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+            <div className="max-h-[65vh] overflow-y-auto bg-black">
+              <img
+                src={project.flyer.image}
+                alt={`${project.name} flyer`}
+                className="w-full"
+                loading="eager"
+              />
+            </div>
+            <div className="flex flex-wrap items-center justify-between gap-4 border-t border-[color:var(--gold)]/20 px-5 py-4 md:px-7">
+              <p className="text-[0.65rem] uppercase tracking-[0.3em] text-ivory/50">
+                A4 · Print ready
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <a
+                  href={project.flyer.pdf}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn-gold-solid"
+                >
+                  Download PDF <Download className="h-3.5 w-3.5" />
+                </a>
+                <a href="#contact" onClick={() => setFlyerOpen(false)} className="btn-gold">
+                  Get Yours <ArrowRight className="h-3.5 w-3.5" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
