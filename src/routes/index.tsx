@@ -80,6 +80,7 @@ const PROJECTS = [
     href: "https://nafloniyaburger.lovable.app",
    video: burgerVideo,
 bg: burgerBg,
+    flyer: null as null | { image: string; pdf: string; title: string },
   },
   {
     key: "furniture",
@@ -112,6 +113,7 @@ bg: hotelBg,
     href: "https://nafloniya-realestate.lovable.app",
    video: realestateVideo,
 bg: realestateBg,
+    flyer: null as null | { image: string; pdf: string; title: string },
   },
 ];
 
