@@ -35,6 +35,10 @@ import burgerBg from "@/assets/burger-bg.png";
 import furnitureBg from "@/assets/furniture-bg.png";
 import hotelBg from "@/assets/hotel-bg.png";
 import realestateBg from "@/assets/realestate-bg.png";
+import flyerFurnitureImg from "@/assets/flyer-furniture.jpg.asset.json";
+import flyerHotelImg from "@/assets/flyer-hotel.jpg.asset.json";
+import flyerFurniturePdf from "@/assets/flyer-furniture.pdf.asset.json";
+import flyerHotelPdf from "@/assets/flyer-hotel.pdf.asset.json";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -86,6 +90,7 @@ bg: burgerBg,
     href: "https://nafloniya-furniture.lovable.app",
    video: furnitureVideo,
 bg: furnitureBg,
+    flyer: { image: flyerFurnitureImg.url, pdf: flyerFurniturePdf.url, title: "Furniture Flyer" },
   },
   {
     key: "hotel",
@@ -96,6 +101,7 @@ bg: furnitureBg,
     href: "https://nafloniya-hotel.lovable.app",
    video: hotelVideo,
 bg: hotelBg,
+    flyer: { image: flyerHotelImg.url, pdf: flyerHotelPdf.url, title: "Hotel Flyer" },
   },
   {
     key: "realestate",
