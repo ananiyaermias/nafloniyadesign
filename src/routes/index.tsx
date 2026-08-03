@@ -508,14 +508,14 @@ function ProductShowcase() {
       {/* Flyer lightbox */}
       {project.flyer && flyerOpen && (
         <div
-          className="fixed inset-0 z-[120] flex items-start justify-center overflow-y-auto bg-black/92 p-4 backdrop-blur-xl md:p-10"
+          className="fixed inset-0 z-[120] flex items-center justify-center bg-black/92 p-3 backdrop-blur-xl md:p-8"
           onClick={() => setFlyerOpen(false)}
         >
           <div
-            className="reveal-in relative my-auto w-full max-w-3xl overflow-hidden rounded-[1.75rem] border border-[color:var(--gold)]/40 bg-[#0A0A0A] shadow-[0_70px_180px_-40px_rgba(212,175,55,0.55)]"
+            className="reveal-in relative flex max-h-[94vh] w-full max-w-3xl flex-col overflow-hidden rounded-[1.75rem] border border-[color:var(--gold)]/40 bg-[#0A0A0A] shadow-[0_70px_180px_-40px_rgba(212,175,55,0.55)]"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between gap-4 border-b border-[color:var(--gold)]/20 px-5 py-4 md:px-7">
+            <div className="flex shrink-0 items-center justify-between gap-4 border-b border-[color:var(--gold)]/20 px-5 py-4 md:px-7">
               <div>
                 <p className="text-[0.6rem] uppercase tracking-[0.4em] text-[color:var(--gold)]">
                   Nafloniya · Print & Digital
@@ -533,24 +533,31 @@ function ProductShowcase() {
                 <X className="h-4 w-4" />
               </button>
             </div>
-            <div className="relative max-h-[66vh] overflow-y-auto bg-black">
-              <span className="pointer-events-none sticky top-0 z-10 -mb-10 block h-10 bg-gradient-to-b from-black to-transparent" />
+            <div className="relative min-h-0 flex-1 overflow-y-auto overscroll-contain bg-black">
+              {!flyerLoaded && (
+                <div className="flex h-64 items-center justify-center">
+                  <span className="h-8 w-8 animate-spin rounded-full border-2 border-[color:var(--gold)]/30 border-t-[color:var(--gold)]" />
+                </div>
+              )}
               <img
                 src={project.flyer.image}
                 alt={`${project.name} flyer`}
-                className="w-full"
+                onLoad={() => setFlyerLoaded(true)}
+                decoding="async"
+                className={`block w-full ${flyerLoaded ? "" : "hidden"}`}
                 loading="eager"
               />
             </div>
-            <div className="flex flex-wrap items-center justify-between gap-4 border-t border-[color:var(--gold)]/20 bg-gradient-to-r from-[color:var(--gold)]/[0.06] to-transparent px-5 py-4 md:px-7">
+            <div className="flex shrink-0 flex-wrap items-center justify-between gap-4 border-t border-[color:var(--gold)]/20 bg-gradient-to-r from-[color:var(--gold)]/[0.06] to-transparent px-5 py-4 md:px-7">
               <p className="text-[0.65rem] uppercase tracking-[0.3em] text-ivory/50">
-                A4 · Print ready · Scroll to explore
+                A4 · Print ready · Scan the QR to open the live site
               </p>
               <div className="flex flex-wrap gap-3">
                 <a
                   href={project.flyer.pdf}
+                  download={`${project.flyer.title.replace(/\s+/g, "-").toLowerCase()}.pdf`}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noreferrer noopener"
                   className="btn-gold-solid"
                 >
                   Download PDF <Download className="h-3.5 w-3.5" />
