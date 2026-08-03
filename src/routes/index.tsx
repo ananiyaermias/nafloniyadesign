@@ -300,8 +300,9 @@ function ProductShowcase() {
   const [muted, setMuted] = useState(false);
   const [flyerOpen, setFlyerOpen] = useState(false);
   const [flyerLoaded, setFlyerLoaded] = useState(false);
+  const [flyerFull, setFlyerFull] = useState(false);
 
-  useEffect(() => { setFlyerOpen(false); setFlyerLoaded(false); }, [active]);
+  useEffect(() => { setFlyerOpen(false); setFlyerLoaded(false); setFlyerFull(false); }, [active]);
 
   // Preload flyer images so the lightbox opens instantly
   useEffect(() => {
@@ -314,7 +315,9 @@ function ProductShowcase() {
 
   useEffect(() => {
     if (!flyerOpen) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setFlyerOpen(false); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") { if (flyerFull) setFlyerFull(false); else setFlyerOpen(false); }
+    };
     window.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
     return () => { window.removeEventListener("keydown", onKey); document.body.style.overflow = ""; };
