@@ -509,11 +509,11 @@ function ProductShowcase() {
       {/* Flyer lightbox */}
       {project.flyer && flyerOpen && typeof document !== "undefined" && createPortal(
         <div
-          className="fixed inset-0 z-[120] flex items-center justify-center bg-black/92 p-3 backdrop-blur-xl md:p-8"
+          className="fixed inset-0 z-[120] flex items-center justify-center bg-black/92 px-3 pb-4 pt-24 backdrop-blur-xl md:px-8 md:pb-8 md:pt-28"
           onClick={() => setFlyerOpen(false)}
         >
           <div
-            className="reveal-in relative flex max-h-[94vh] w-full max-w-3xl flex-col overflow-hidden rounded-[1.75rem] border border-[color:var(--gold)]/40 bg-[#0A0A0A] shadow-[0_70px_180px_-40px_rgba(212,175,55,0.55)]"
+            className="reveal-in relative flex max-h-full w-full max-w-3xl flex-col overflow-hidden rounded-[1.75rem] border border-[color:var(--gold)]/40 bg-[#0A0A0A] shadow-[0_70px_180px_-40px_rgba(212,175,55,0.55)]"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex shrink-0 items-center justify-between gap-4 border-b border-[color:var(--gold)]/20 px-5 py-4 md:px-7">
