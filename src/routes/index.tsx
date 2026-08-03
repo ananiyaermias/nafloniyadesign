@@ -494,7 +494,7 @@ function ProductShowcase() {
                     {project.flyer.title}
                   </span>
                   <span className="mt-1 block text-[0.68rem] tracking-[0.12em] text-ivory/50">
-                    A4 · print &amp; digital — tap to open
+                    A4 · print &amp; digital · scannable QR — tap to open
                   </span>
                 </span>
                 <span className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[color:var(--gold)]/60 text-[color:var(--gold)] transition-all duration-500 group-hover:bg-[color:var(--gold)] group-hover:text-black">
