@@ -538,6 +538,15 @@ function ProductShowcase() {
                 <X className="h-4 w-4" />
               </button>
             </div>
+            <div className="flex shrink-0 justify-end px-5 pt-3 md:px-7">
+              <button
+                type="button"
+                onClick={() => setFlyerFull(true)}
+                className="btn-gold"
+              >
+                Full View <Maximize className="h-3.5 w-3.5" />
+              </button>
+            </div>
             <div className="relative min-h-0 flex-1 overflow-y-auto overscroll-contain bg-black">
               {!flyerLoaded && (
                 <div className="flex h-64 items-center justify-center">
@@ -573,6 +582,30 @@ function ProductShowcase() {
               </div>
             </div>
           </div>
+        </div>,
+        document.body
+      )}
+
+      {/* Distraction-free full view — flyer only */}
+      {project.flyer && flyerOpen && flyerFull && typeof document !== "undefined" && createPortal(
+        <div
+          className="fixed inset-0 z-[140] flex items-center justify-center bg-black p-2 md:p-6"
+          onClick={() => setFlyerFull(false)}
+        >
+          <img
+            src={project.flyer.image}
+            alt={`${project.name} flyer full view`}
+            onClick={(e) => e.stopPropagation()}
+            className="reveal-in max-h-full max-w-full object-contain"
+          />
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); setFlyerFull(false); }}
+            aria-label="Exit full view"
+            className="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-full border border-[color:var(--gold)]/60 bg-black/70 text-[color:var(--gold)] backdrop-blur transition-all hover:bg-[color:var(--gold)] hover:text-black md:right-6 md:top-6"
+          >
+            <Minimize2 className="h-4 w-4" />
+          </button>
         </div>,
         document.body
       )}
