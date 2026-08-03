@@ -297,8 +297,18 @@ function ProductShowcase() {
   const [playing, setPlaying] = useState(true);
   const [muted, setMuted] = useState(false);
   const [flyerOpen, setFlyerOpen] = useState(false);
+  const [flyerLoaded, setFlyerLoaded] = useState(false);
 
-  useEffect(() => { setFlyerOpen(false); }, [active]);
+  useEffect(() => { setFlyerOpen(false); setFlyerLoaded(false); }, [active]);
+
+  // Preload flyer images so the lightbox opens instantly
+  useEffect(() => {
+    PROJECTS.forEach((p) => {
+      if (!p.flyer) return;
+      const img = new Image();
+      img.src = p.flyer.image;
+    });
+  }, []);
 
   useEffect(() => {
     if (!flyerOpen) return;
