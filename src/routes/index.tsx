@@ -21,6 +21,7 @@ import {
   Volume2,
   VolumeX,
   Maximize,
+  Minimize2,
   Check,
   Crown,
   Star,
