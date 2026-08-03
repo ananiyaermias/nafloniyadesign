@@ -507,7 +507,7 @@ function ProductShowcase() {
       </div>
 
       {/* Flyer lightbox */}
-      {project.flyer && flyerOpen && (
+      {project.flyer && flyerOpen && typeof document !== "undefined" && createPortal(
         <div
           className="fixed inset-0 z-[120] flex items-center justify-center bg-black/92 p-3 backdrop-blur-xl md:p-8"
           onClick={() => setFlyerOpen(false)}
@@ -569,7 +569,8 @@ function ProductShowcase() {
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
