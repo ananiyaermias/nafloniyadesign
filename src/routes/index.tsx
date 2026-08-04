@@ -592,23 +592,71 @@ function ProductShowcase() {
       {/* Distraction-free full view — flyer only */}
       {project.flyer && flyerOpen && flyerFull && typeof document !== "undefined" && createPortal(
         <div
-          className="fixed inset-0 z-[140] flex items-center justify-center bg-black p-2 md:p-6"
-          onClick={() => setFlyerFull(false)}
+          className="fixed inset-0 z-[140] flex flex-col bg-black"
+          onClick={() => { setFlyerFull(false); setFlyerZoom(1); }}
         >
-          <img
-            src={project.flyer.image}
-            alt={`${project.name} flyer full view`}
-            onClick={(e) => e.stopPropagation()}
-            className="reveal-in max-h-full max-w-full object-contain"
-          />
-          <button
-            type="button"
-            onClick={(e) => { e.stopPropagation(); setFlyerFull(false); }}
-            aria-label="Exit full view"
-            className="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-full border border-[color:var(--gold)]/60 bg-black/70 text-[color:var(--gold)] backdrop-blur transition-all hover:bg-[color:var(--gold)] hover:text-black md:right-6 md:top-6"
+          <div
+            className="flex min-h-0 flex-1 items-start justify-center overflow-auto overscroll-contain p-2 md:p-6"
+            onClick={() => { setFlyerFull(false); setFlyerZoom(1); }}
           >
-            <Minimize2 className="h-4 w-4" />
-          </button>
+            <img
+              src={project.flyer.image}
+              alt={`${project.name} flyer full view`}
+              onClick={(e) => {
+                e.stopPropagation();
+                setFlyerZoom((z) => (z >= 3 ? 1 : Math.min(3, z + 1)));
+              }}
+              decoding="async"
+              className="reveal-in m-auto max-w-none cursor-zoom-in object-contain"
+              style={{
+                height: `calc((100vh - 7rem) * ${flyerZoom})`,
+                width: "auto",
+                maxWidth: flyerZoom === 1 ? "100%" : "none",
+              }}
+            />
+          </div>
+
+          {/* Full-view controls */}
+          <div
+            className="pointer-events-auto flex shrink-0 flex-wrap items-center justify-center gap-3 border-t border-[color:var(--gold)]/25 bg-black/90 px-4 py-3 backdrop-blur"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setFlyerZoom((z) => Math.max(1, +(z - 0.5).toFixed(2)))}
+              aria-label="Zoom out"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-[color:var(--gold)]/50 text-[color:var(--gold)] transition-all hover:bg-[color:var(--gold)] hover:text-black"
+            >
+              <ZoomOut className="h-4 w-4" />
+            </button>
+            <span className="min-w-[3.5rem] text-center text-[0.7rem] tracking-[0.25em] text-ivory/60">
+              {Math.round(flyerZoom * 100)}%
+            </span>
+            <button
+              type="button"
+              onClick={() => setFlyerZoom((z) => Math.min(4, +(z + 0.5).toFixed(2)))}
+              aria-label="Zoom in"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-[color:var(--gold)]/50 text-[color:var(--gold)] transition-all hover:bg-[color:var(--gold)] hover:text-black"
+            >
+              <ZoomIn className="h-4 w-4" />
+            </button>
+            <a
+              href={project.flyer.pdf}
+              download={`${project.flyer.title.replace(/\s+/g, "-").toLowerCase()}.pdf`}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="btn-gold-solid"
+            >
+              Download PDF <Download className="h-3.5 w-3.5" />
+            </a>
+            <button
+              type="button"
+              onClick={() => { setFlyerFull(false); setFlyerZoom(1); }}
+              className="btn-gold"
+            >
+              Exit Full View <Minimize2 className="h-3.5 w-3.5" />
+            </button>
+          </div>
         </div>,
         document.body
       )}
