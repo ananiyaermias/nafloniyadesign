@@ -303,8 +303,9 @@ function ProductShowcase() {
   const [flyerOpen, setFlyerOpen] = useState(false);
   const [flyerLoaded, setFlyerLoaded] = useState(false);
   const [flyerFull, setFlyerFull] = useState(false);
+  const [flyerZoom, setFlyerZoom] = useState(1);
 
-  useEffect(() => { setFlyerOpen(false); setFlyerLoaded(false); setFlyerFull(false); }, [active]);
+  useEffect(() => { setFlyerOpen(false); setFlyerLoaded(false); setFlyerFull(false); setFlyerZoom(1); }, [active]);
 
   // Preload flyer images so the lightbox opens instantly
   useEffect(() => {
