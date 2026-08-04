@@ -296,3 +296,59 @@
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 .reveal-in { animation: flyerIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+/* ---- Iconic interaction layer ---- */
+
+@keyframes marqueeSlide {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marqueeSlide 38s linear infinite;
+}
+.marquee-shell:hover .marquee-track { animation-play-state: paused; }
+
+@keyframes shimmerSweep {
+  from { background-position: -200% 0; }
+  to { background-position: 200% 0; }
+}
+.gold-shimmer {
+  background: linear-gradient(
+    100deg,
+    var(--gold) 0%,
+    #fff4cf 20%,
+    var(--gold) 40%,
+    var(--gold) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmerSweep 6s linear infinite;
+}
+
+/* Cursor spotlight that trails the pointer (desktop only) */
+.cursor-spot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 45;
+  height: 420px;
+  width: 420px;
+  margin: -210px 0 0 -210px;
+  border-radius: 9999px;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.14), rgba(212, 175, 55, 0.04) 45%, transparent 70%);
+  transition: opacity 500ms ease;
+  will-change: transform;
+}
+
+@media (hover: none), (prefers-reduced-motion: reduce) {
+  .cursor-spot { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
+  .gold-shimmer { animation: none; }
+}
