@@ -304,6 +304,7 @@ function ProductShowcase() {
   const [flyerLoaded, setFlyerLoaded] = useState(false);
   const [flyerFull, setFlyerFull] = useState(false);
   const [flyerZoom, setFlyerZoom] = useState(1);
+  const [flyerNaturalW, setFlyerNaturalW] = useState(1600);
 
   useEffect(() => { setFlyerOpen(false); setFlyerLoaded(false); setFlyerFull(false); setFlyerZoom(1); }, [active]);
 
