@@ -1186,6 +1186,7 @@ function useActiveSection(ids: string[]) {
 
 function Index() {
   useReveal();
+  const activeSection = useActiveSection(["home", "services", "portfolio", "packages", "team", "contact"]);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [sent, setSent] = useState(false);
