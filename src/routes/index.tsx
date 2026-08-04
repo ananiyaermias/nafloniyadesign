@@ -477,7 +477,7 @@ function ProductShowcase() {
             {project.flyer && (
               <button
                 type="button"
-                onClick={() => setFlyerOpen(true)}
+                onClick={() => { setFlyerOpen(true); setFlyerFull(true); }}
                 className="group relative mt-8 flex w-full max-w-md items-center gap-5 overflow-hidden rounded-2xl border border-[color:var(--gold)]/30 bg-black/45 p-3 pr-6 text-left backdrop-blur-md transition-all duration-500 hover:-translate-y-1 hover:border-[color:var(--gold)]/80 hover:shadow-[0_30px_80px_-25px_rgba(212,175,55,0.55)]"
               >
                 <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-[color:var(--gold)]/15 to-transparent transition-transform duration-[1200ms] group-hover:translate-x-full" />
