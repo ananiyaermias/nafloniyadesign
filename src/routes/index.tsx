@@ -1310,6 +1310,8 @@ function Index() {
 
   return (
     <div className="grain min-h-screen bg-background text-foreground">
+      <ScrollProgress />
+      <CursorSpotlight />
       <StatusToast
         toast={toast}
         visible={toastVisible}
