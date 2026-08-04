@@ -1532,6 +1532,11 @@ function Index() {
 
       <Divider />
 
+      {/* STATS */}
+      <StatsStrip />
+
+      <Divider />
+
       {/* PACKAGES */}
       <PackagesSection onChoose={preselectPlan} />
 
