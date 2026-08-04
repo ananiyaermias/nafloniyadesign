@@ -1340,10 +1340,18 @@ function Index() {
                 key={n.href}
                 href={n.href}
                 onClick={handleNavClick(n.href)}
-                className="group relative text-xs uppercase tracking-[0.28em] text-ivory/80 transition-colors hover:text-[color:var(--gold)]"
+                className={`group relative text-xs uppercase tracking-[0.28em] transition-colors hover:text-[color:var(--gold)] ${
+                  activeSection === n.href.slice(1)
+                    ? "text-[color:var(--gold)]"
+                    : "text-ivory/80"
+                }`}
               >
                 {n.label}
-                <span className="absolute -bottom-1 left-0 h-px w-0 bg-[color:var(--gold)] transition-all duration-300 group-hover:w-full" />
+                <span
+                  className={`absolute -bottom-1 left-0 h-px bg-[color:var(--gold)] transition-all duration-300 group-hover:w-full ${
+                    activeSection === n.href.slice(1) ? "w-full" : "w-0"
+                  }`}
+                />
               </a>
             ))}
           </nav>
