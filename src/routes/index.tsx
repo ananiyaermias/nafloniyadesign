@@ -1431,7 +1431,7 @@ function Index() {
           </h1>
 
           <p
-            className="animate-rise mt-6 text-[0.72rem] font-medium uppercase tracking-[0.5em] text-[color:var(--gold)] md:text-sm"
+            className="animate-rise gold-shimmer mt-6 text-[0.72rem] font-medium uppercase tracking-[0.5em] md:text-sm"
             style={{ animationDelay: "0.3s" }}
           >
             Website Design and Promotion
@@ -1467,7 +1467,7 @@ function Index() {
         </a>
       </section>
 
-      <Divider />
+      <GoldMarquee />
 
       {/* SERVICES */}
       <section id="services" className="mx-auto max-w-7xl px-6 md:px-10">
