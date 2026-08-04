@@ -28,6 +28,8 @@ import {
   Heart,
   FileText,
   Download,
+  ZoomIn,
+  ZoomOut,
 } from "lucide-react";
 import monogram from "@/assets/nafloniya-logo.png";
 import ananiya from "@/assets/ananiya-portrait.jpg";
