@@ -304,6 +304,7 @@ function ProductShowcase() {
   const [flyerLoaded, setFlyerLoaded] = useState(false);
   const [flyerFull, setFlyerFull] = useState(false);
   const [flyerZoom, setFlyerZoom] = useState(1);
+  const [flyerNaturalW, setFlyerNaturalW] = useState(1600);
 
   useEffect(() => { setFlyerOpen(false); setFlyerLoaded(false); setFlyerFull(false); setFlyerZoom(1); }, [active]);
 
@@ -607,11 +608,14 @@ function ProductShowcase() {
                 setFlyerZoom((z) => (z >= 3 ? 1 : Math.min(3, z + 1)));
               }}
               decoding="async"
-              className="reveal-in m-auto max-w-none cursor-zoom-in object-contain"
+              onLoad={(e) => setFlyerNaturalW(e.currentTarget.naturalWidth)}
+              className="reveal-in mx-auto max-w-none cursor-zoom-in"
               style={{
-                height: `calc((100vh - 7rem) * ${flyerZoom})`,
-                width: "auto",
-                maxWidth: flyerZoom === 1 ? "100%" : "none",
+                // Fit by width, then zoom — never scaled beyond the file's real
+                // pixel width, so it stays sharp at every zoom level.
+                width: `min(${flyerZoom * 100}%, ${flyerNaturalW}px)`,
+                height: "auto",
+                imageRendering: "auto",
               }}
             />
           </div>
