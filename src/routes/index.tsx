@@ -1009,6 +1009,181 @@ function FloatingGetInTouch() {
   );
 }
 
+function ScrollProgress() {
+  const [pct, setPct] = useState(0);
+  useEffect(() => {
+    const onScroll = () => {
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      setPct(h > 0 ? Math.min(100, (window.scrollY / h) * 100) : 0);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+  return (
+    <div className="pointer-events-none fixed inset-x-0 top-0 z-[70] h-[2px] bg-transparent">
+      <div
+        className="h-full bg-gradient-to-r from-[color:var(--gold)]/30 via-[color:var(--gold)] to-[#fff2c8] shadow-[0_0_18px_rgba(212,175,55,0.8)] transition-[width] duration-150 ease-out"
+        style={{ width: `${pct}%` }}
+      />
+    </div>
+  );
+}
+
+function CursorSpotlight() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (window.matchMedia("(hover: none)").matches) return;
+    let raf = 0;
+    let x = window.innerWidth / 2;
+    let y = window.innerHeight / 2;
+    let cx = x;
+    let cy = y;
+    const move = (e: PointerEvent) => {
+      x = e.clientX;
+      y = e.clientY;
+      if (ref.current) ref.current.style.opacity = "1";
+    };
+    const leave = () => {
+      if (ref.current) ref.current.style.opacity = "0";
+    };
+    const loop = () => {
+      cx += (x - cx) * 0.12;
+      cy += (y - cy) * 0.12;
+      if (ref.current) ref.current.style.transform = `translate3d(${cx}px, ${cy}px, 0)`;
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    window.addEventListener("pointermove", move, { passive: true });
+    document.addEventListener("pointerleave", leave);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("pointermove", move);
+      document.removeEventListener("pointerleave", leave);
+    };
+  }, []);
+  return <div ref={ref} className="cursor-spot" style={{ opacity: 0 }} aria-hidden />;
+}
+
+const MARQUEE_WORDS = [
+  "Website Design",
+  "Full-Stack Systems",
+  "Business Card Design",
+  "3D Motion Reels",
+  "Brand Promotion",
+  "Cinematic Websites",
+];
+
+function GoldMarquee() {
+  const row = [...MARQUEE_WORDS, ...MARQUEE_WORDS];
+  return (
+    <div className="marquee-shell relative overflow-hidden border-y border-[color:var(--gold)]/15 bg-gradient-to-r from-transparent via-[color:var(--gold)]/[0.05] to-transparent py-5">
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-background to-transparent" />
+      <div className="marquee-track">
+        {row.map((w, i) => (
+          <span key={`${w}-${i}`} className="flex items-center gap-8 px-8">
+            <span className="font-serif text-lg uppercase tracking-[0.42em] text-ivory/70 transition-colors duration-300 hover:text-[color:var(--gold)] md:text-2xl">
+              {w}
+            </span>
+            <Star className="h-3 w-3 shrink-0 text-[color:var(--gold)]" />
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+const STATS = [
+  { value: 4, suffix: "+", label: "Live Client Sites" },
+  { value: 100, suffix: "%", label: "Custom Built" },
+  { value: 24, suffix: "h", label: "Reply Time" },
+  { value: 4, suffix: "", label: "Studio Packages" },
+];
+
+function CountUp({ to, suffix }: { to: number; suffix: string }) {
+  const [n, setN] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let raf = 0;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0]?.isIntersecting) return;
+        io.disconnect();
+        const start = performance.now();
+        const dur = 1600;
+        const tick = (t: number) => {
+          const p = Math.min(1, (t - start) / dur);
+          const eased = 1 - Math.pow(1 - p, 3);
+          setN(Math.round(to * eased));
+          if (p < 1) raf = requestAnimationFrame(tick);
+        };
+        raf = requestAnimationFrame(tick);
+      },
+      { threshold: 0.4 },
+    );
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      cancelAnimationFrame(raf);
+    };
+  }, [to]);
+  return (
+    <span ref={ref}>
+      {n}
+      {suffix}
+    </span>
+  );
+}
+
+function StatsStrip() {
+  return (
+    <section className="mx-auto max-w-6xl px-6 md:px-10">
+      <div className="reveal grid gap-px overflow-hidden rounded-2xl border border-[color:var(--gold)]/20 bg-[color:var(--gold)]/15 sm:grid-cols-2 lg:grid-cols-4">
+        {STATS.map((s) => (
+          <div
+            key={s.label}
+            className="group relative overflow-hidden bg-background px-6 py-10 text-center transition-colors duration-500 hover:bg-[color:var(--charcoal)]"
+          >
+            <span className="pointer-events-none absolute -top-16 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full bg-[color:var(--gold)]/15 blur-3xl opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
+            <p className="relative font-serif text-4xl text-[color:var(--gold)] transition-transform duration-500 group-hover:scale-110 md:text-5xl">
+              <CountUp to={s.value} suffix={s.suffix} />
+            </p>
+            <p className="relative mt-3 text-[0.62rem] uppercase tracking-[0.38em] text-ivory/60">
+              {s.label}
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function useActiveSection(ids: string[]) {
+  const [active, setActive] = useState<string>("");
+  useEffect(() => {
+    const onScroll = () => {
+      const line = window.innerHeight * 0.35;
+      let current = "";
+      ids.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= line) current = id;
+      });
+      setActive(current);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [ids.join(",")]);
+  return active;
+}
+
 function Index() {
   useReveal();
   const [scrolled, setScrolled] = useState(false);
