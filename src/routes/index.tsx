@@ -41,15 +41,14 @@ import burgerBg from "@/assets/burger-bg.png";
 import furnitureBg from "@/assets/furniture-bg.png";
 import hotelBg from "@/assets/hotel-bg.png";
 import realestateBg from "@/assets/realestate-bg.png";
-import flyerFurnitureImg from "@/assets/flyer-furniture.jpg.asset.json";
-import flyerHotelImg from "@/assets/flyer-hotel.jpg.asset.json";
-import flyerFurniturePdf from "@/assets/flyer-furniture.pdf.asset.json";
-import flyerHotelPdf from "@/assets/flyer-hotel.pdf.asset.json";
-import flyerBurgerImg from "@/assets/flyer-burger.jpg.asset.json";
-import flyerRealestateImg from "@/assets/flyer-realestate.jpg.asset.json";
-import flyerBurgerPdf from "@/assets/flyer-burger.pdf.asset.json";
-import flyerRealestatePdf from "@/assets/flyer-realestate.pdf.asset.json";
-
+import flyerFurnitureImg from "@/assets/nafloniya-furniture-flyer-qr.jpg";
+import flyerHotelImg from "@/assets/nafloniya-hotel-flyer-qr.jpg";
+import flyerFurniturePdf from "@/assets/furniture-flyer.pdf";
+import flyerHotelPdf from "@/assets/hotel-flyer.pdf";
+import flyerBurgerImg from "@/assets/nafloniya-burger-flyer-qr.jpg";
+import flyerRealestateImg from "@/assets/nafloniya-realestate-flyer-qr.jpg";
+import flyerBurgerPdf from "@/assets/burger-flyer.pdf";
+import flyerRealestatePdf from "@/assets/real-estate-flyer.pdf";
 export const Route = createFileRoute("/")({
   component: Index,
 });
@@ -90,7 +89,7 @@ const PROJECTS = [
     href: "https://nafloniyaburger.lovable.app",
    video: burgerVideo,
 bg: burgerBg,
-    flyer: { image: flyerBurgerImg.url, pdf: flyerBurgerPdf.url, title: "Burger Flyer" },
+   flyer: { image: flyerBurgerImg, pdf: flyerBurgerPdf, title: "Burger Flyer" },
   },
   {
     key: "furniture",
@@ -101,7 +100,7 @@ bg: burgerBg,
     href: "https://nafloniya-furniture.lovable.app",
    video: furnitureVideo,
 bg: furnitureBg,
-    flyer: { image: flyerFurnitureImg.url, pdf: flyerFurniturePdf.url, title: "Furniture Flyer" },
+   flyer: { image: flyerFurnitureImg, pdf: flyerFurniturePdf, title: "Furniture Flyer" },
   },
   {
     key: "hotel",
@@ -112,7 +111,7 @@ bg: furnitureBg,
     href: "https://nafloniya-hotel.lovable.app",
    video: hotelVideo,
 bg: hotelBg,
-    flyer: { image: flyerHotelImg.url, pdf: flyerHotelPdf.url, title: "Hotel Flyer" },
+   flyer: { image: flyerHotelImg, pdf: flyerHotelPdf, title: "Hotel Flyer" },
   },
   {
     key: "realestate",
@@ -123,7 +122,7 @@ bg: hotelBg,
     href: "https://nafloniya-realestate.lovable.app",
    video: realestateVideo,
 bg: realestateBg,
-    flyer: { image: flyerRealestateImg.url, pdf: flyerRealestatePdf.url, title: "Real Estate Flyer" },
+   flyer: { image: flyerRealestateImg, pdf: flyerRealestatePdf, title: "Real Estate Flyer" },
   },
 ];
 
