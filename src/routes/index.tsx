@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef, useState, type FormEvent, type MouseEvent } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type FormEvent, type MouseEvent } from "react";
 import { createPortal } from "react-dom";
 import emailjs from "@emailjs/browser";
 import {
@@ -23,6 +23,7 @@ import {
   Maximize,
   Minimize2,
   Check,
+  Flame,
   Crown,
   Star,
   Heart,
@@ -667,6 +668,106 @@ function ProductShowcase() {
   );
 }
 
+function halfPrice(p: string) {
+  return (parseInt(p.replace(/,/g, ""), 10) / 2).toLocaleString("en-US");
+}
+
+/* Golden adey abeba (Meskel daisy) — drawn, not a photo, so it stays crisp at any size */
+function Daisy({ className = "", style }: { className?: string; style?: CSSProperties }) {
+  return (
+    <svg viewBox="0 0 40 40" className={className} style={style} aria-hidden>
+      {Array.from({ length: 12 }).map((_, i) => (
+        <ellipse
+          key={i}
+          cx="20"
+          cy="9"
+          rx="2.6"
+          ry="7"
+          fill="var(--gold)"
+          opacity="0.9"
+          transform={`rotate(${i * 30} 20 20)`}
+        />
+      ))}
+      <circle cx="20" cy="20" r="4.5" fill="#3a2508" />
+      <circle cx="20" cy="20" r="2" fill="#f7e39a" opacity="0.7" />
+    </svg>
+  );
+}
+
+function MeskelOfferBanner() {
+  return (
+    <div className="reveal relative mt-14 overflow-hidden rounded-3xl border border-[color:var(--gold)]/45 bg-gradient-to-b from-[#170d02] via-black to-[#0a0703] px-6 py-12 text-center shadow-[0_30px_120px_-30px_rgba(212,175,55,0.55)] md:px-14">
+      {/* Demera bonfire glow rising from the base */}
+      <span className="pointer-events-none absolute -bottom-40 left-1/2 h-80 w-[46rem] max-w-[130%] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.4),rgba(212,175,55,0.08)_45%,transparent_72%)] blur-2xl animate-glow-pulse" />
+      <span className="pointer-events-none absolute -top-24 right-[-6rem] h-56 w-56 rounded-full bg-[color:var(--gold)]/10 blur-3xl" />
+      <span className="pointer-events-none absolute -top-16 left-[-5rem] h-48 w-48 rounded-full bg-[color:var(--gold)]/8 blur-3xl" />
+
+      {/* Embers drifting up like the Demera bonfire */}
+      {Array.from({ length: 16 }).map((_, i) => (
+        <span
+          key={i}
+          className="ember"
+          style={{
+            left: `${4 + ((i * 61) % 92)}%`,
+            bottom: `${8 + (i % 4) * 6}%`,
+            animationDelay: `${(i % 8) * 0.9}s`,
+            animationDuration: `${5 + (i % 5)}s`,
+          }}
+        />
+      ))}
+
+      {/* Corner adey abeba */}
+      <Daisy className="absolute left-6 top-6 h-10 w-10 opacity-70" style={{ animation: "daisySway 5s ease-in-out infinite" }} />
+      <Daisy className="absolute right-8 top-9 h-8 w-8 opacity-60" style={{ animation: "daisySway 6s ease-in-out infinite reverse" }} />
+
+      <div className="relative">
+        <span className="eyebrow inline-flex items-center gap-2">
+          <Flame className="h-3.5 w-3.5" strokeWidth={1.5} />
+          መስቀል በዓል · Meskel Festival Celebration
+        </span>
+
+        <div className="mt-6 flex flex-col items-center gap-8 md:flex-row md:items-center md:justify-center md:gap-12">
+          <div className="relative shrink-0">
+            <span className="gold-shimmer font-serif text-[5.5rem] leading-none md:text-[8rem]">50%</span>
+            <span className="absolute -right-6 top-1 rotate-6 rounded-full border border-[color:var(--gold)] bg-black/80 px-3 py-1 text-[0.55rem] uppercase tracking-[0.35em] text-[color:var(--gold)] md:-right-12">
+              Off
+            </span>
+          </div>
+          <div className="max-w-md text-center md:text-left">
+            <h3 className="font-serif text-3xl leading-tight text-ivory md:text-4xl">
+              Every Stage, Half Price.
+            </h3>
+            <p className="mt-3 text-sm leading-relaxed text-ivory/70">
+              In honor of the Meskel celebration — the golden season of new
+              beginnings — all four Nafloniya packages, from{" "}
+              <span className="text-ivory">Basic</span> to{" "}
+              <span className="text-[color:var(--gold)]">Premium</span>, are
+              half price for a limited time.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[0.6rem] uppercase tracking-[0.4em] text-[color:var(--gold)]/85">
+          <span>Limited Meskel season offer</span>
+          <span className="hidden h-1 w-1 rounded-full bg-[color:var(--gold)] md:block" />
+          <span>50% deposit to begin · 50% on delivery</span>
+        </div>
+
+        {/* Adey abeba garland */}
+        <div className="relative mt-10 flex items-center justify-center gap-4">
+          {Array.from({ length: 9 }).map((_, i) => (
+            <Daisy
+              key={i}
+              className={i % 2 ? "h-3.5 w-3.5 opacity-50" : "h-5 w-5 opacity-90"}
+              style={{ animation: `daisySway ${4 + (i % 3)}s ease-in-out infinite`, transformOrigin: "50% 100%" }}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function PackagesSection({ onChoose }: { onChoose: (name: string) => void }) {
   return (
     <section id="packages" className="mx-auto max-w-7xl px-6 md:px-10">
@@ -684,9 +785,11 @@ function PackagesSection({ onChoose }: { onChoose: (name: string) => void }) {
           our full cinematic, full-stack, full-brand experience.
         </p>
         <p className="mt-4 text-[0.65rem] uppercase tracking-[0.45em] text-[color:var(--gold)]/80">
-          50% deposit to begin · 50% on delivery
+          Meskel season only · 50% deposit to begin · 50% on delivery
         </p>
       </div>
+
+      <MeskelOfferBanner />
 
       {/* Ascending progression rail */}
       <div className="reveal mt-16 grid items-end gap-6 md:grid-cols-2 xl:grid-cols-4">
@@ -788,14 +891,20 @@ function PackagesSection({ onChoose }: { onChoose: (name: string) => void }) {
                 {p.tagline}
               </p>
 
-              <div className="relative mt-6 flex items-baseline gap-2">
+              <div className="relative mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-2">
+                <span className="font-serif text-lg text-ivory/40 line-through decoration-[color:var(--gold)]/70">
+                  {p.price}
+                </span>
                 <span
                   className={`font-serif ${isPeak ? "text-5xl" : "text-4xl"} text-[color:var(--gold)]`}
                 >
-                  {p.price}
+                  {halfPrice(p.price)}
                 </span>
                 <span className="text-xs uppercase tracking-[0.32em] text-ivory/60">
                   {p.currency}
+                </span>
+                <span className="rounded-full bg-[color:var(--gold)] px-2.5 py-1 text-[0.55rem] font-semibold uppercase tracking-[0.25em] text-black shadow-[0_6px_18px_-4px_rgba(212,175,55,0.9)]">
+                  −50%
                 </span>
               </div>
               <p className="relative mt-1 text-[0.65rem] uppercase tracking-[0.35em] text-ivory/50">
