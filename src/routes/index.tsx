@@ -768,6 +768,32 @@ function MeskelOfferBanner() {
   );
 }
 
+/* Golden adey abeba petals drifting down the hero when the site launches */
+function FallingDaisies() {
+  const petals = Array.from({ length: 18 });
+  return (
+    <div className="pointer-events-none absolute inset-0 z-[1] overflow-hidden" aria-hidden>
+      {petals.map((_, i) => {
+        const size = 12 + ((i * 7) % 14);
+        return (
+          <Daisy
+            key={i}
+            className="daisy-fall absolute top-0"
+            style={{
+              left: `${(i * 137) % 97}%`,
+              height: size,
+              width: size,
+              animationDelay: `${i * 0.9}s`,
+              animationDuration: `${12 + (i % 5) * 2.4}s`,
+              transformOrigin: "50% 0%",
+            }}
+          />
+        );
+      })}
+    </div>
+  );
+}
+
 function PackagesSection({ onChoose }: { onChoose: (name: string) => void }) {
   return (
     <section id="packages" className="mx-auto max-w-7xl px-6 md:px-10">
@@ -1525,6 +1551,8 @@ function Index() {
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black" />
         </div>
 
+        <FallingDaisies />
+
         <div className="relative z-10 mx-auto flex max-w-4xl flex-col items-center text-center">
           <div className="animate-rise relative mb-10">
             <div className="gold-glow absolute inset-0 -m-16 animate-glow-pulse" />
@@ -1564,6 +1592,28 @@ function Index() {
               Start a Project <ArrowUpRight className="h-3.5 w-3.5" />
             </a>
           </div>
+
+          {/* Meskel 50% off callout — links straight to the discounted packages */}
+          <a
+            href="#packages"
+            className="animate-rise group relative mt-8 inline-flex items-center gap-4 rounded-full border border-[color:var(--gold)]/60 bg-gradient-to-r from-[#170d02] via-[color:var(--gold)]/10 to-[#170d02] px-6 py-3 shadow-[0_18px_60px_-18px_rgba(212,175,55,0.8)] transition-all duration-500 hover:-translate-y-1 hover:border-[color:var(--gold)] hover:shadow-[0_25px_80px_-15px_rgba(212,175,55,1)] sm:mt-10"
+            style={{ animationDelay: "0.75s" }}
+          >
+            <span className="pointer-events-none absolute inset-0 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.18),transparent_72%)] opacity-70 transition-opacity duration-500 group-hover:opacity-100" />
+            <Daisy
+              className="relative h-6 w-6 shrink-0"
+              style={{ animation: "daisySway 4s ease-in-out infinite", transformOrigin: "50% 100%" }}
+            />
+            <span className="relative flex flex-col items-center gap-0.5 sm:items-start">
+              <span className="text-[0.5rem] font-medium uppercase tracking-[0.4em] text-[color:var(--gold)]/90">
+                መስቀል በዓል · Meskel Festival Offer
+              </span>
+              <span className="gold-shimmer font-serif text-xl leading-tight md:text-2xl">
+                50% OFF Every Package
+              </span>
+            </span>
+            <ArrowRight className="relative h-4 w-4 shrink-0 text-[color:var(--gold)] transition-transform duration-500 group-hover:translate-x-1.5" />
+          </a>
         </div>
 
         <a
