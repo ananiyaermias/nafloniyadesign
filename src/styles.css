@@ -378,3 +378,19 @@
   0%, 100% { transform: rotate(-5deg); }
   50% { transform: rotate(5deg); }
 }
+
+/* Adey abeba petals that drift down the hero on launch */
+@keyframes daisyFall {
+  0%   { transform: translate(0, -12vh) rotate(0deg); opacity: 0; }
+  8%   { opacity: 0.75; }
+  30%  { transform: translate(2.5vw, 26vh) rotate(100deg); }
+  55%  { transform: translate(-2.5vw, 58vh) rotate(210deg); opacity: 0.75; }
+  80%  { transform: translate(2vw, 88vh) rotate(290deg); }
+  100% { transform: translate(-1.5vw, 112vh) rotate(330deg); opacity: 0; }
+}
+.daisy-fall {
+  animation: daisyFall linear infinite both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .daisy-fall { animation: none; opacity: 0; }
+}
