@@ -1551,8 +1551,6 @@ function Index() {
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black" />
         </div>
 
-        <FallingDaisies />
-
         <div className="relative z-10 mx-auto flex max-w-4xl flex-col items-center text-center">
           <div className="animate-rise relative mb-10">
             <div className="gold-glow absolute inset-0 -m-16 animate-glow-pulse" />
@@ -1593,39 +1591,40 @@ function Index() {
             </a>
           </div>
 
-          {/* Meskel 50% off — big, bold statement in the lower hero, links to packages */}
+          {/* Meskel 50% off — a clean, high-impact statement linking to packages */}
           <a
             href="#packages"
-            className="animate-rise group relative mt-14 flex w-full flex-col items-center gap-5 sm:mt-16"
+            className="animate-rise group relative mt-14 w-full max-w-3xl overflow-hidden border-y border-[color:var(--gold)]/45 px-4 py-7 transition-colors duration-500 hover:border-[color:var(--gold)] sm:mt-16 sm:px-10 sm:py-9"
             style={{ animationDelay: "0.75s" }}
           >
-            <span className="pointer-events-none gold-glow animate-glow-pulse absolute -inset-x-24 top-1/2 h-64 -translate-y-1/2" />
+            <span className="pointer-events-none gold-glow animate-glow-pulse absolute -inset-x-24 top-1/2 h-72 -translate-y-1/2 opacity-80" />
+            <span className="pointer-events-none absolute inset-2 border border-[color:var(--gold)]/15 transition-colors duration-500 group-hover:border-[color:var(--gold)]/35" />
+            <span className="pointer-events-none absolute left-0 top-0 h-px w-16 bg-[color:var(--gold)] sm:w-32" />
+            <span className="pointer-events-none absolute right-0 top-0 h-px w-16 bg-[color:var(--gold)] sm:w-32" />
+            <span className="pointer-events-none absolute bottom-0 left-0 h-px w-16 bg-[color:var(--gold)] sm:w-32" />
+            <span className="pointer-events-none absolute bottom-0 right-0 h-px w-16 bg-[color:var(--gold)] sm:w-32" />
 
-            {/* Eyebrow row — gold rules leave open space on the left and right */}
-            <span className="relative flex w-full items-center justify-center gap-4 sm:gap-6">
-              <span className="h-px w-10 bg-gradient-to-r from-transparent via-[color:var(--gold)]/40 to-[color:var(--gold)]/80 sm:w-28" />
-              <span className="flex items-center gap-2.5 whitespace-nowrap text-[0.55rem] font-medium uppercase tracking-[0.45em] text-[color:var(--gold)] md:text-[0.68rem]">
-                <Daisy
-                  className="h-5 w-5 shrink-0"
-                  style={{ animation: "daisySway 4s ease-in-out infinite", transformOrigin: "50% 100%" }}
-                />
+            <span className="relative flex w-full flex-col items-center gap-4">
+              <span className="text-center text-[0.55rem] font-medium uppercase tracking-[0.38em] text-[color:var(--gold)] md:text-[0.68rem] md:tracking-[0.55em]">
                 መስቀል በዓል · Meskel Festival Offer
               </span>
-              <span className="h-px w-10 bg-gradient-to-l from-transparent via-[color:var(--gold)]/40 to-[color:var(--gold)]/80 sm:w-28" />
-            </span>
 
-            {/* The headline number — huge, impossible to miss */}
-            <span className="gold-shimmer relative font-serif text-[4.25rem] leading-none md:text-[8.5rem]">
-              50% OFF
-            </span>
+              <span className="relative flex w-full items-center justify-center gap-4 sm:gap-8">
+                <span className="h-px flex-1 bg-gradient-to-r from-transparent to-[color:var(--gold)]/65" />
+                <span className="gold-shimmer relative font-serif text-[4.5rem] leading-[0.82] md:text-[9rem]">
+                  50% OFF
+                </span>
+                <span className="h-px flex-1 bg-gradient-to-l from-transparent to-[color:var(--gold)]/65" />
+              </span>
 
-            <span className="relative font-serif text-lg uppercase tracking-[0.35em] text-ivory md:text-2xl">
-              Every Package
-            </span>
+              <span className="font-serif text-lg uppercase tracking-[0.32em] text-ivory md:text-2xl md:tracking-[0.45em]">
+                Every Package
+              </span>
 
-            <span className="relative inline-flex items-center gap-2 text-[0.6rem] font-medium uppercase tracking-[0.4em] text-[color:var(--gold)]/90 transition-colors duration-500 group-hover:text-ivory md:text-[0.7rem]">
-              See the Packages
-              <ArrowRight className="h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-1.5" />
+              <span className="mt-1 inline-flex items-center gap-3 text-[0.6rem] font-medium uppercase tracking-[0.36em] text-[color:var(--gold)] transition-colors duration-500 group-hover:text-ivory md:text-[0.7rem]">
+                Claim the Festival Offer
+                <ArrowRight className="h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-2" />
+              </span>
             </span>
           </a>
         </div>
