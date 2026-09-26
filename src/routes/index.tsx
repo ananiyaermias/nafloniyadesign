@@ -1599,7 +1599,7 @@ function Index() {
             className="animate-rise group relative mt-14 flex w-full flex-col items-center gap-5 sm:mt-16"
             style={{ animationDelay: "0.75s" }}
           >
-            <span className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 -inset-x-24 gold-glow animate-glow-pulse" />
+            <span className="pointer-events-none gold-glow animate-glow-pulse absolute -inset-x-24 top-1/2 h-64 -translate-y-1/2" />
 
             {/* Eyebrow row — gold rules leave open space on the left and right */}
             <span className="relative flex w-full items-center justify-center gap-4 sm:gap-6">
