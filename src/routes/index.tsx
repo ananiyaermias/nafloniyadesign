@@ -51,6 +51,16 @@ import flyerRealestateImg from "@/assets/nafloniya-realestate-flyer-qr.jpg";
 import flyerBurgerPdf from "@/assets/burger-flyer.pdf";
 import flyerRealestatePdf from "@/assets/real-estate-flyer.pdf";
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Nafloniya — Website Design and Promotion" },
+      { name: "description", content: "Nafloniya creates premium full-stack websites, business cards, and cinematic promotional content in Ethiopia." },
+      { property: "og:title", content: "Nafloniya — Website Design and Promotion" },
+      { property: "og:description", content: "Premium website design and promotion, with a limited Meskel celebration offer." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Index,
 });
 
@@ -770,7 +780,7 @@ function MeskelOfferBanner() {
 
 /* Golden adey abeba petals drifting down the hero when the site launches */
 function FallingDaisies() {
-  const petals = Array.from({ length: 18 });
+  const petals = Array.from({ length: 24 });
   return (
     <div className="pointer-events-none absolute inset-0 z-[1] overflow-hidden" aria-hidden>
       {petals.map((_, i) => {
@@ -783,8 +793,8 @@ function FallingDaisies() {
               left: `${(i * 137) % 97}%`,
               height: size,
               width: size,
-              animationDelay: `${i * 0.9}s`,
-              animationDuration: `${12 + (i % 5) * 2.4}s`,
+              animationDelay: `${(i % 12) * 0.55}s`,
+              animationDuration: `${11 + (i % 5) * 1.4}s`,
               transformOrigin: "50% 0%",
             }}
           />
@@ -1546,6 +1556,7 @@ function Index() {
         id="home"
         className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 pt-24"
       >
+        <FallingDaisies />
         <div className="pointer-events-none absolute inset-0">
           <div className="gold-glow animate-glow-pulse absolute left-1/2 top-1/2 h-[900px] w-[900px] -translate-x-1/2 -translate-y-1/2" />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black" />
@@ -1611,7 +1622,7 @@ function Index() {
 
               <span className="relative flex w-full items-center justify-center gap-4 sm:gap-8">
                 <span className="h-px flex-1 bg-gradient-to-r from-transparent to-[color:var(--gold)]/65" />
-                <span className="gold-shimmer relative font-serif text-[4.5rem] leading-[0.82] md:text-[9rem]">
+                <span className="gold-shimmer meskel-discount relative inline-block px-[0.12em] font-serif text-[4.5rem] leading-[0.95] md:text-[9rem]">
                   50% OFF
                 </span>
                 <span className="h-px flex-1 bg-gradient-to-l from-transparent to-[color:var(--gold)]/65" />
@@ -1621,9 +1632,8 @@ function Index() {
                 Every Package
               </span>
 
-              <span className="mt-1 inline-flex items-center gap-3 text-[0.6rem] font-medium uppercase tracking-[0.36em] text-[color:var(--gold)] transition-colors duration-500 group-hover:text-ivory md:text-[0.7rem]">
+              <span className="mt-1 inline-flex items-center text-[0.6rem] font-medium uppercase tracking-[0.36em] text-[color:var(--gold)] transition-colors duration-500 group-hover:text-ivory md:text-[0.7rem]">
                 Claim the Festival Offer
-                <ArrowRight className="h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-2" />
               </span>
             </span>
           </a>

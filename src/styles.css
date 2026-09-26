@@ -389,7 +389,12 @@
   100% { transform: translate(-1.5vw, 112vh) rotate(330deg); opacity: 0; }
 }
 .daisy-fall {
-  animation: daisyFall linear infinite both;
+  animation: daisyFall linear 1 both;
+  filter: drop-shadow(0 0 7px rgba(212, 175, 55, 0.34));
+}
+.meskel-discount {
+  overflow: visible;
+  text-wrap: nowrap;
 }
 @media (prefers-reduced-motion: reduce) {
   .daisy-fall { animation: none; opacity: 0; }
