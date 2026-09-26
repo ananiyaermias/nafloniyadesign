@@ -1593,26 +1593,40 @@ function Index() {
             </a>
           </div>
 
-          {/* Meskel 50% off callout — links straight to the discounted packages */}
+          {/* Meskel 50% off — big, bold statement in the lower hero, links to packages */}
           <a
             href="#packages"
-            className="animate-rise group relative mt-8 inline-flex items-center gap-4 rounded-full border border-[color:var(--gold)]/60 bg-gradient-to-r from-[#170d02] via-[color:var(--gold)]/10 to-[#170d02] px-6 py-3 shadow-[0_18px_60px_-18px_rgba(212,175,55,0.8)] transition-all duration-500 hover:-translate-y-1 hover:border-[color:var(--gold)] hover:shadow-[0_25px_80px_-15px_rgba(212,175,55,1)] sm:mt-10"
+            className="animate-rise group relative mt-14 flex w-full flex-col items-center gap-5 sm:mt-16"
             style={{ animationDelay: "0.75s" }}
           >
-            <span className="pointer-events-none absolute inset-0 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.18),transparent_72%)] opacity-70 transition-opacity duration-500 group-hover:opacity-100" />
-            <Daisy
-              className="relative h-6 w-6 shrink-0"
-              style={{ animation: "daisySway 4s ease-in-out infinite", transformOrigin: "50% 100%" }}
-            />
-            <span className="relative flex flex-col items-center gap-0.5 sm:items-start">
-              <span className="text-[0.5rem] font-medium uppercase tracking-[0.4em] text-[color:var(--gold)]/90">
+            <span className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 -inset-x-24 gold-glow animate-glow-pulse" />
+
+            {/* Eyebrow row — gold rules leave open space on the left and right */}
+            <span className="relative flex w-full items-center justify-center gap-4 sm:gap-6">
+              <span className="h-px w-10 bg-gradient-to-r from-transparent via-[color:var(--gold)]/40 to-[color:var(--gold)]/80 sm:w-28" />
+              <span className="flex items-center gap-2.5 whitespace-nowrap text-[0.55rem] font-medium uppercase tracking-[0.45em] text-[color:var(--gold)] md:text-[0.68rem]">
+                <Daisy
+                  className="h-5 w-5 shrink-0"
+                  style={{ animation: "daisySway 4s ease-in-out infinite", transformOrigin: "50% 100%" }}
+                />
                 መስቀል በዓል · Meskel Festival Offer
               </span>
-              <span className="gold-shimmer font-serif text-xl leading-tight md:text-2xl">
-                50% OFF Every Package
-              </span>
+              <span className="h-px w-10 bg-gradient-to-l from-transparent via-[color:var(--gold)]/40 to-[color:var(--gold)]/80 sm:w-28" />
             </span>
-            <ArrowRight className="relative h-4 w-4 shrink-0 text-[color:var(--gold)] transition-transform duration-500 group-hover:translate-x-1.5" />
+
+            {/* The headline number — huge, impossible to miss */}
+            <span className="gold-shimmer relative font-serif text-[4.25rem] leading-none md:text-[8.5rem]">
+              50% OFF
+            </span>
+
+            <span className="relative font-serif text-lg uppercase tracking-[0.35em] text-ivory md:text-2xl">
+              Every Package
+            </span>
+
+            <span className="relative inline-flex items-center gap-2 text-[0.6rem] font-medium uppercase tracking-[0.4em] text-[color:var(--gold)]/90 transition-colors duration-500 group-hover:text-ivory md:text-[0.7rem]">
+              See the Packages
+              <ArrowRight className="h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-1.5" />
+            </span>
           </a>
         </div>
 
