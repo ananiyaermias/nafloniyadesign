@@ -329,6 +329,21 @@
   animation: shimmerSweep 6s linear infinite;
 }
 
+.discount-figure {
+  font-family: "Jost", ui-sans-serif, system-ui, sans-serif;
+  font-variant-numeric: lining-nums tabular-nums;
+  letter-spacing: 0;
+  font-weight: 300;
+}
+
+.meskel-hero-offer {
+  box-shadow: inset 0 0 70px color-mix(in oklab, var(--gold) 7%, transparent), 0 28px 90px color-mix(in oklab, var(--gold) 12%, transparent);
+}
+
+.meskel-hero-offer:hover {
+  box-shadow: inset 0 0 90px color-mix(in oklab, var(--gold) 12%, transparent), 0 32px 110px color-mix(in oklab, var(--gold) 20%, transparent);
+}
+
 /* Cursor spotlight that trails the pointer (desktop only) */
 .cursor-spot {
   position: fixed;
@@ -374,23 +389,3 @@
   pointer-events: none;
 }
 
-@keyframes daisySway {
-  0%, 100% { transform: rotate(-5deg); }
-  50% { transform: rotate(5deg); }
-}
-
-/* Adey abeba petals that drift down the hero on launch */
-@keyframes daisyFall {
-  0%   { transform: translate(0, -12vh) rotate(0deg); opacity: 0; }
-  8%   { opacity: 0.75; }
-  30%  { transform: translate(2.5vw, 26vh) rotate(100deg); }
-  55%  { transform: translate(-2.5vw, 58vh) rotate(210deg); opacity: 0.75; }
-  80%  { transform: translate(2vw, 88vh) rotate(290deg); }
-  100% { transform: translate(-1.5vw, 112vh) rotate(330deg); opacity: 0; }
-}
-.daisy-fall {
-  animation: daisyFall linear infinite both;
-}
-@media (prefers-reduced-motion: reduce) {
-  .daisy-fall { animation: none; opacity: 0; }
-}
