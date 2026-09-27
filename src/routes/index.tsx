@@ -711,8 +711,8 @@ function MeskelOfferBanner() {
               Every Stage, Half Price.
             </h3>
             <p className="mt-3 text-sm leading-relaxed text-ivory/70">
-              In honor of the Meskel celebration — the golden season of new
-              beginnings — all four Nafloniya packages, from{" "}
+              In honor of the Meskel celebration, the golden season of new
+              beginnings, all four Nafloniya packages, from{" "}
               <span className="text-ivory">Basic</span> to{" "}
               <span className="text-[color:var(--gold)]">Premium</span>, are
               half price for a limited time.
