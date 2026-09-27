@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef, useState, type CSSProperties, type FormEvent, type MouseEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent, type MouseEvent } from "react";
 import { createPortal } from "react-dom";
 import emailjs from "@emailjs/browser";
 import {
@@ -15,7 +15,6 @@ import {
   Layout,
   Palette,
   Rocket,
-  ChevronDown,
   Play,
   Sparkles,
   Volume2,
@@ -672,28 +671,6 @@ function halfPrice(p: string) {
   return (parseInt(p.replace(/,/g, ""), 10) / 2).toLocaleString("en-US");
 }
 
-/* Golden adey abeba (Meskel daisy) — drawn, not a photo, so it stays crisp at any size */
-function Daisy({ className = "", style }: { className?: string; style?: CSSProperties }) {
-  return (
-    <svg viewBox="0 0 40 40" className={className} style={style} aria-hidden>
-      {Array.from({ length: 12 }).map((_, i) => (
-        <ellipse
-          key={i}
-          cx="20"
-          cy="9"
-          rx="2.6"
-          ry="7"
-          fill="var(--gold)"
-          opacity="0.9"
-          transform={`rotate(${i * 30} 20 20)`}
-        />
-      ))}
-      <circle cx="20" cy="20" r="4.5" fill="#3a2508" />
-      <circle cx="20" cy="20" r="2" fill="#f7e39a" opacity="0.7" />
-    </svg>
-  );
-}
-
 function MeskelOfferBanner() {
   return (
     <div className="reveal relative mt-14 overflow-hidden rounded-3xl border border-[color:var(--gold)]/45 bg-gradient-to-b from-[#170d02] via-black to-[#0a0703] px-6 py-12 text-center shadow-[0_30px_120px_-30px_rgba(212,175,55,0.55)] md:px-14">
@@ -715,10 +692,6 @@ function MeskelOfferBanner() {
           }}
         />
       ))}
-
-      {/* Corner adey abeba */}
-      <Daisy className="absolute left-6 top-6 h-10 w-10 opacity-70" style={{ animation: "daisySway 5s ease-in-out infinite" }} />
-      <Daisy className="absolute right-8 top-9 h-8 w-8 opacity-60" style={{ animation: "daisySway 6s ease-in-out infinite reverse" }} />
 
       <div className="relative">
         <span className="eyebrow inline-flex items-center gap-2">
@@ -753,43 +726,8 @@ function MeskelOfferBanner() {
           <span>50% deposit to begin · 50% on delivery</span>
         </div>
 
-        {/* Adey abeba garland */}
-        <div className="relative mt-10 flex items-center justify-center gap-4">
-          {Array.from({ length: 9 }).map((_, i) => (
-            <Daisy
-              key={i}
-              className={i % 2 ? "h-3.5 w-3.5 opacity-50" : "h-5 w-5 opacity-90"}
-              style={{ animation: `daisySway ${4 + (i % 3)}s ease-in-out infinite`, transformOrigin: "50% 100%" }}
-            />
-          ))}
-        </div>
+        <div className="mx-auto mt-10 h-px w-36 bg-gradient-to-r from-transparent via-[color:var(--gold)] to-transparent" />
       </div>
-    </div>
-  );
-}
-
-/* Golden adey abeba petals drifting down the hero when the site launches */
-function FallingDaisies() {
-  const petals = Array.from({ length: 18 });
-  return (
-    <div className="pointer-events-none absolute inset-0 z-[1] overflow-hidden" aria-hidden>
-      {petals.map((_, i) => {
-        const size = 12 + ((i * 7) % 14);
-        return (
-          <Daisy
-            key={i}
-            className="daisy-fall absolute top-0"
-            style={{
-              left: `${(i * 137) % 97}%`,
-              height: size,
-              width: size,
-              animationDelay: `${i * 0.9}s`,
-              animationDuration: `${12 + (i % 5) * 2.4}s`,
-              transformOrigin: "50% 0%",
-            }}
-          />
-        );
-      })}
     </div>
   );
 }
@@ -1594,11 +1532,11 @@ function Index() {
           {/* Meskel 50% off — a clean, high-impact statement linking to packages */}
           <a
             href="#packages"
-            className="animate-rise group relative mt-14 w-full max-w-3xl overflow-hidden border-y border-[color:var(--gold)]/45 px-4 py-7 transition-colors duration-500 hover:border-[color:var(--gold)] sm:mt-16 sm:px-10 sm:py-9"
+            className="meskel-hero-offer animate-rise group relative mt-14 w-full max-w-3xl overflow-hidden border-y border-[color:var(--gold)]/55 px-4 py-8 transition-colors duration-500 hover:border-[color:var(--gold)] sm:mt-16 sm:px-10 sm:py-10"
             style={{ animationDelay: "0.75s" }}
           >
-            <span className="pointer-events-none gold-glow animate-glow-pulse absolute -inset-x-24 top-1/2 h-72 -translate-y-1/2 opacity-80" />
-            <span className="pointer-events-none absolute inset-2 border border-[color:var(--gold)]/15 transition-colors duration-500 group-hover:border-[color:var(--gold)]/35" />
+            <span className="pointer-events-none gold-glow animate-glow-pulse absolute -inset-x-24 top-1/2 h-72 -translate-y-1/2 opacity-90" />
+            <span className="pointer-events-none absolute inset-2 border border-[color:var(--gold)]/20 transition-colors duration-500 group-hover:border-[color:var(--gold)]/50" />
             <span className="pointer-events-none absolute left-0 top-0 h-px w-16 bg-[color:var(--gold)] sm:w-32" />
             <span className="pointer-events-none absolute right-0 top-0 h-px w-16 bg-[color:var(--gold)] sm:w-32" />
             <span className="pointer-events-none absolute bottom-0 left-0 h-px w-16 bg-[color:var(--gold)] sm:w-32" />
@@ -1609,12 +1547,18 @@ function Index() {
                 መስቀል በዓል · Meskel Festival Offer
               </span>
 
-              <span className="relative flex w-full items-center justify-center gap-4 sm:gap-8">
-                <span className="h-px flex-1 bg-gradient-to-r from-transparent to-[color:var(--gold)]/65" />
-                <span className="gold-shimmer relative font-serif text-[4.5rem] leading-[0.82] md:text-[9rem]">
-                  50% OFF
+              <span className="relative flex w-full items-center justify-center gap-3 sm:gap-7">
+                <span className="h-px min-w-5 flex-1 bg-gradient-to-r from-transparent to-[color:var(--gold)]/75" />
+                <span className="relative flex items-center gap-3 sm:gap-5">
+                  <span className="discount-figure gold-shimmer text-[4.8rem] font-light leading-[0.78] sm:text-[6.5rem] md:text-[9.5rem]">
+                    50%
+                  </span>
+                  <span className="flex flex-col items-start border-l border-[color:var(--gold)]/45 pl-3 sm:pl-5">
+                    <span className="font-serif text-[2.5rem] leading-none text-[color:var(--gold)] sm:text-[4rem] md:text-[5.6rem]">OFF</span>
+                    <span className="mt-2 text-[0.5rem] font-semibold uppercase tracking-[0.38em] text-ivory/75 sm:text-[0.62rem]">Meskel special</span>
+                  </span>
                 </span>
-                <span className="h-px flex-1 bg-gradient-to-l from-transparent to-[color:var(--gold)]/65" />
+                <span className="h-px min-w-5 flex-1 bg-gradient-to-l from-transparent to-[color:var(--gold)]/75" />
               </span>
 
               <span className="font-serif text-lg uppercase tracking-[0.32em] text-ivory md:text-2xl md:tracking-[0.45em]">
@@ -1629,13 +1573,6 @@ function Index() {
           </a>
         </div>
 
-        <a
-          href="#services"
-          className="animate-float-slow absolute bottom-8 left-1/2 -translate-x-1/2 text-[color:var(--gold)]/70 hover:text-[color:var(--gold)]"
-          aria-label="Scroll"
-        >
-          <ChevronDown className="h-6 w-6" />
-        </a>
       </section>
 
       <GoldMarquee />
